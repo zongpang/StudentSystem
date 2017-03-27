@@ -1,10 +1,14 @@
 package com.bc.stdsys.util;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 import com.bc.stdsys.entitys.ClassWorker;
 import com.bc.stdsys.entitys.Course;
@@ -25,22 +29,14 @@ public class DButil {
 	 * 获得数据库连接对象
 	 * 
 	 * @return
+	 * @throws Exception
 	 */
-	public static Connection getConnection() {
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/studentsystem?useUnicode=true&characterEncoding=utf-8";
-			String user = "root";
-			String password = "root";
-			conn = DriverManager.getConnection(url, user, password);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	public static Connection getConnection() throws Exception {
+		Context context = new InitialContext();
+		Context envContext = (Context) context.lookup("java:/comp/env");
+		DataSource ds = (DataSource) envContext.lookup("jdbc/demo");
+		conn = ds.getConnection();
 		return conn;
-
 	}
 
 	/**
@@ -169,8 +165,8 @@ public class DButil {
 			}
 		}
 		try {
-			conn.close();
-		} catch (SQLException e) {
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -184,9 +180,10 @@ public class DButil {
 	 * @param name
 	 * @param password
 	 * @return
+	 * @throws Exception 
 	 */
 
-	public static boolean login(String userId, String name, String password) {
+	public static Object login(String userId, String name, String password) throws Exception {
 		if (userId.equals("教师")) {
 			Teacher teacher = new Teacher();
 			teacher.setName(name);
@@ -196,9 +193,10 @@ public class DButil {
 					"select * from teacher where name=? and password=?");
 			ResultSet rst = DButil.getResultSet(statement, 4, teacher);
 			try {
-				if (rst.next())
-					return true;
-
+				if (rst.next()) {
+					teacher.setNum(rst.getInt("num"));
+					return teacher;
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -213,9 +211,10 @@ public class DButil {
 					"select * from classworker where name=? and password=?");
 			ResultSet rst = DButil.getResultSet(statement, 4, classWorker);
 			try {
-				if (rst.next())
-					return true;
-
+				if (rst.next()) {
+					classWorker.setNum(rst.getInt("num"));
+					return classWorker;
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -228,9 +227,10 @@ public class DButil {
 			PreparedStatement statement = DButil.getStatement(conn, "select * from master where name=? and password=?");
 			ResultSet rst = DButil.getResultSet(statement, 4, master);
 			try {
-				if (rst.next())
-					return true;
-
+				if (rst.next()) {
+					master.setNum(rst.getInt("num"));
+					return master;
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -245,9 +245,10 @@ public class DButil {
 					"select * from deanery where name=? and password=?");
 			ResultSet rst = DButil.getResultSet(statement, 4, deanery);
 			try {
-				if (rst.next())
-					return true;
-
+				if (rst.next()) {
+					deanery.setNum(rst.getInt("num"));
+					return deanery;
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

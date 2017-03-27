@@ -32,35 +32,28 @@ public class MyServlet extends HttpServlet {
 		String userId = request.getParameter("user");
 		System.out.println(userId + "   " + userName + "    " + passWord);
 		// 2017-3-26
-		boolean isLogin = DButil.login(userId, userName, passWord);
-		if (isLogin) {
-			HttpSession session = request.getSession();
-			Object obj = null;
-			if ("教师".equals(userId)) {
-				obj = new Teacher(userName, passWord);
-				session.setAttribute("user", obj);
-				// response.sendRedirect("main/index2.jsp");
-				request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
-			} else if ("班主任".equals(userId)) {
-				obj = new ClassWorker(userName, passWord);
-				session.setAttribute("user", obj);
-				// response.sendRedirect("main/index2.jsp");
-				request.getRequestDispatcher("main/classworker.jsp").forward(request, response);
-			} else if ("管理员".equals(userId)) {
-				obj = new Master(userName, passWord);
-				session.setAttribute("user", obj);
-				// response.sendRedirect("main/index2.jsp");
-				request.getRequestDispatcher("main/master.jsp").forward(request, response);
-			} else if ("院长".equals(userId)) {
-				obj = new Deanery(userName, passWord);
-				session.setAttribute("user", obj);
-				// response.sendRedirect("main/index2.jsp");
-				request.getRequestDispatcher("main/deanery.jsp").forward(request, response);
-			}
-
+		Object obj = null;
+		try {
+			obj = DButil.login(userId, userName, passWord);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HttpSession session = request.getSession();
+		if (obj instanceof Teacher) {
+			session.setAttribute("user", obj);
+			request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
+		} else if (obj instanceof ClassWorker) {
+			session.setAttribute("user", obj);
+			request.getRequestDispatcher("main/classworker.jsp").forward(request, response);
+		} else if (obj instanceof Master) {
+			session.setAttribute("user", obj);
+			request.getRequestDispatcher("main/master.jsp").forward(request, response);
+		} else if (obj instanceof Deanery) {
+			session.setAttribute("user", obj);
+			request.getRequestDispatcher("main/deanery.jsp").forward(request, response);
 		} else {
 			response.sendRedirect("login/Login.jsp");
 		}
-
 	}
 }

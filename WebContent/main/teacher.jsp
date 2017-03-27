@@ -55,15 +55,27 @@
 	href="main/assets/ico/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="main/assets/ico/favicon.png">
 
+<script type="text/javascript" src="main/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	function init() {
+		document.getElementById("findStudentByClass").click();
+	}
+	$(function() {
+
+		$("#").click(function() {
+			$.ajax({
+				url : ""
+
+			});
+		});
+	});
+</script>
+
+
 </head>
 
 <body data-spy="scroll" data-target=".bs-docs-sidebar"
-	data-twttr-rendered="true">
-	<%
-
-	%>
-	
-	
+	data-twttr-rendered="true" onload="init()">
 	<!-- Navbar
         ================================================== -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -103,38 +115,22 @@
 				<div class="page-header">
 					<h1>操作</h1>
 				</div>
-						
+
 				<div id="menu-collapse">
 					<div>
 						<h3>
 							<a href="#">学生管理</a>
 						</h3>
 						<div>
-							<a href="">查看学生</a>
+							<a href="find?name=aaa&pass=bbb" id="findStudentByClass">按班级查询</a>
 						</div>
 					</div>
 					<div>
 						<h3>
-							<a href="#">班主任管理</a>
+							<a href="#">课程管理</a>
 						</h3>
 						<div>
-							<a href="">查看学生</a>
-						</div>
-					</div>
-					<div>
-						<h3>
-							<a href="#">教师管理</a>
-						</h3>
-						<div>
-							<a href="">查看学生</a>
-						</div>
-					</div>
-					<div>
-						<h3>
-							<a href="#">院长管理</a>
-						</h3>
-						<div>
-							<a href="">查看学生</a>
+							<a href="">我的课程</a>
 						</div>
 					</div>
 				</div>
@@ -153,86 +149,28 @@
 					<a href="" class="btn btn-danger pull-right">添加</a>
 					<table class="table table-hover">
 						<tr>
-							<th>序号</th>
+							<th>学号</th>
 							<th>姓名</th>
 							<th>性别</th>
-							<th>身份证</th>
 							<th>所在班级</th>
-							<th>任课老师</th>
+							<th>班主任</th>
+							<th>综合学分</th>
+							<th>任课教师</th>
+							<th>平均分（上月）</th>
 							<td>操作</td>
 						</tr>
 						<tr>
 							<td>1</td>
 							<td>张三</td>
 							<td>男</td>
-							<td>130705200105020918</td>
 							<td>1609A</td>
 							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
+							<td>120</td>
+							<td>一个长者</td>
+							<td>90</td>
+							<td><a href="">历史成绩</a></td>
 						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>130705200105020918</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td><a href="">修改</a>/ <a href="">删除</a></td>
-						</tr>
+
 					</table>
 					<div class="pagination pull-right">
 						<ul>
