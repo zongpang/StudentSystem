@@ -2,6 +2,7 @@ package com.bc.stdsys.entitys;
 
 public class Course {
 	private int id;
+	private int teacherNum;
 	private String name;
 	private String myClass;
 	private String teacher;
@@ -11,12 +12,21 @@ public class Course {
 
 	}
 
-	public Course(int id, String name, String myClass, String teacher, String date) {
+	public Course(int id, String name, String myClass, String teacher, String date, int teacherNum) {
 		this.id = id;
 		this.name = name;
 		this.myClass = myClass;
 		this.teacher = teacher;
 		this.date = date;
+		this.teacherNum = teacherNum;
+	}
+
+	public int getTeacherNum() {
+		return teacherNum;
+	}
+
+	public void setTeacherNum(int teacherNum) {
+		this.teacherNum = teacherNum;
 	}
 
 	public int getId() {

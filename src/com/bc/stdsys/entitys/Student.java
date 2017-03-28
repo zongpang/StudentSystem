@@ -4,26 +4,39 @@ public class Student {
 	private int id;
 	private int num;
 	private String name;
-	private String Dorm;// 宿舍号
+	private String sex;
+	private String dorm;// 宿舍号
 	private String joinDate;// 入学时间
 	private String quitDate;// 毕业、退学时间
 	private String state;// 状态（在校、毕业、处分（劝退、留校察看））
-	private double credit;// 学分
-
+	private int credit;// 学分
+    private String myClass;
+	
+	
 	public Student() {
 
 	}
 
 	public Student(int id, int num, String name, String dorm, String joinDate, String quitDate, String state,
-			double credit) {
+			int credit,String myClass,String sex) {
 		this.id = id;
 		this.num = num;
 		this.name = name;
-		Dorm = dorm;
+		this.dorm = dorm;
 		this.joinDate = joinDate;
 		this.quitDate = quitDate;
 		this.state = state;
 		this.credit = credit;
+		this.myClass=myClass;
+		this.sex=sex;
+	}
+
+	public String getMyClass() {
+		return myClass;
+	}
+
+	public void setMyClass(String myClass) {
+		this.myClass = myClass;
 	}
 
 	public int getId() {
@@ -51,11 +64,11 @@ public class Student {
 	}
 
 	public String getDorm() {
-		return Dorm;
+		return dorm;
 	}
 
 	public void setDorm(String dorm) {
-		Dorm = dorm;
+		dorm = dorm;
 	}
 
 	public String getJoinDate() {
@@ -82,12 +95,20 @@ public class Student {
 		this.state = state;
 	}
 
-	public double getCredit() {
+	public int getCredit() {
 		return credit;
 	}
 
-	public void setCredit(double credit) {
+	public void setCredit(int credit) {
 		this.credit = credit;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 }

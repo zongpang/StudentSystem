@@ -30,8 +30,7 @@ public class MyServlet extends HttpServlet {
 		String userName = request.getParameter("username");
 		String passWord = request.getParameter("passWord");
 		String userId = request.getParameter("user");
-		System.out.println(userId + "   " + userName + "    " + passWord);
-		// 2017-3-26
+		// System.out.println(userId + " " + userName + " " + passWord);
 		Object obj = null;
 		try {
 			obj = DButil.login(userId, userName, passWord);
@@ -40,18 +39,9 @@ public class MyServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		HttpSession session = request.getSession();
-		if (obj instanceof Teacher) {
+		if (obj != null) {
 			session.setAttribute("user", obj);
-			request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
-		} else if (obj instanceof ClassWorker) {
-			session.setAttribute("user", obj);
-			request.getRequestDispatcher("main/classworker.jsp").forward(request, response);
-		} else if (obj instanceof Master) {
-			session.setAttribute("user", obj);
-			request.getRequestDispatcher("main/master.jsp").forward(request, response);
-		} else if (obj instanceof Deanery) {
-			session.setAttribute("user", obj);
-			request.getRequestDispatcher("main/deanery.jsp").forward(request, response);
+			response.sendRedirect("find");
 		} else {
 			response.sendRedirect("login/Login.jsp");
 		}

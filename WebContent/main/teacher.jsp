@@ -2,6 +2,7 @@
 <%@page import="com.bc.stdsys.entitys.Master"%>
 <%@page import="com.bc.stdsys.entitys.ClassWorker"%>
 <%@page import="com.bc.stdsys.entitys.Teacher"%>
+<%@page import="com.bc.stdsys.entitys.Student"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" import="java.util.*,com.bc.*"%>
 
@@ -57,14 +58,10 @@
 
 <script type="text/javascript" src="main/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
-	function init() {
-		document.getElementById("findStudentByClass").click();
-	}
 	$(function() {
 
 		$("#").click(function() {
 			$.ajax({
-				url : ""
 
 			});
 		});
@@ -75,7 +72,12 @@
 </head>
 
 <body data-spy="scroll" data-target=".bs-docs-sidebar"
-	data-twttr-rendered="true" onload="init()">
+	data-twttr-rendered="true">
+	<%
+		Teacher teacher = (Teacher) session.getAttribute("user");
+		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");
+	%>
+
 	<!-- Navbar
         ================================================== -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -122,7 +124,15 @@
 							<a href="#">学生管理</a>
 						</h3>
 						<div>
-							<a href="find?name=aaa&pass=bbb" id="findStudentByClass">按班级查询</a>
+							<%
+								if (classList != null && classList.size() > 0) {
+									for (int i = 0; i < classList.size(); i++) {
+							%>
+							<a href="find?name=aaa&pass=bbb"><%=classList.get(i)%></a><br>
+							<%
+								}
+								}
+							%>
 						</div>
 					</div>
 					<div>
@@ -153,24 +163,37 @@
 							<th>姓名</th>
 							<th>性别</th>
 							<th>所在班级</th>
-							<th>班主任</th>
 							<th>综合学分</th>
 							<th>任课教师</th>
-							<th>平均分（上月）</th>
+							<th>状态</th>
 							<td>操作</td>
 						</tr>
+						<%-- 
+						<%
+							Set<String> kSet = map.keySet();
+							Iterator<String> it = kSet.iterator();
+							while (it.hasNext()) {
+								String key = it.next();
+								ArrayList<Student> listA = map.get(key);
+								for (int i = 0; i < listA.size(); i++) {
+									//System.out.println(key + ":  " + listA.get(i).getName());
+									Student stu = listA.get(i);
+						%>
 						<tr>
-							<td>1</td>
-							<td>张三</td>
-							<td>男</td>
-							<td>1609A</td>
-							<td>啊倒萨阿斯顿</td>
-							<td>120</td>
-							<td>一个长者</td>
-							<td>90</td>
+							<td><%=stu.getNum()%></td>
+							<td><%=stu.getName()%></td>
+							<td><%=stu.getSex()%></td>
+							<td><%=stu.getMyClass()%></td>
+							<td><%=stu.getCredit()%></td>
+							<td><%=teacher.getName()%></td>
+							<td><%=stu.getState()%></td>
 							<td><a href="">历史成绩</a></td>
 						</tr>
-
+						<%
+							}
+							}
+						%>
+						--%>
 					</table>
 					<div class="pagination pull-right">
 						<ul>
