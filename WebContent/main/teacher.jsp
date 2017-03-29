@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" import="java.util.*,com.bc.*"%>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -17,12 +18,12 @@
 %>
 <base href="<%=basePath%>">
 <meta charset="utf-8">
+<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
 <title>北京财经专修学院</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
 	content="A preview of the jQuery UI Bootstrap theme">
 <meta name="author" content="Addy Osmani">
-
 <!-- Le styles -->
 <link href="main/assets/css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css"
@@ -43,7 +44,7 @@
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-            <![endif]-->
+<![endif]-->
 
 <!-- Le fav and touch icons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144"
@@ -55,20 +56,6 @@
 <link rel="apple-touch-icon-precomposed"
 	href="main/assets/ico/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="main/assets/ico/favicon.png">
-
-<script type="text/javascript" src="main/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-
-		$("#").click(function() {
-			$.ajax({
-
-			});
-		});
-	});
-</script>
-
-
 </head>
 
 <body data-spy="scroll" data-target=".bs-docs-sidebar"
@@ -123,12 +110,12 @@
 						<h3>
 							<a href="#">学生管理</a>
 						</h3>
-						<div>
+						<div id="studentManager">
 							<%
 								if (classList != null && classList.size() > 0) {
 									for (int i = 0; i < classList.size(); i++) {
 							%>
-							<a href="find?name=aaa&pass=bbb"><%=classList.get(i)%></a><br>
+							<a href="javascript:;" id="aaa" class="aaa"><%=classList.get(i)%></a><br>
 							<%
 								}
 								}
@@ -197,19 +184,16 @@
 					</table>
 					<div class="pagination pull-right">
 						<ul>
-							<li><a href="#">上一页</a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">下一页</a></li>
+							<li><a href="javascript:;">上一页</a></li>
+							<li><a href="javascript:;">1</a></li>
+							<li><a href="javascript:;">2</a></li>
+							<li><a href="javascript:;">3</a></li>
+							<li><a href="javascript:;">4</a></li>
+							<li><a href="javascript:;">5</a></li>
+							<li><a href="javascript:;">下一页</a></li>
 						</ul>
 					</div>
 				</div>
-
-
-
 			</div>
 		</div>
 	</div>
@@ -222,5 +206,21 @@
 		type="text/javascript"></script>
 	<script src="main/assets/js/docs.js" type="text/javascript"></script>
 	<script src="main/assets/js/demo.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function() {
+			//<c:forEach items="&{list}" var="user">
+			//&{user.id} 
+			//</c:forEach>
+			//$()   html()  val() text()
+			//			function test() {
+			//				alert(11111111111);
+
+			$("a").bind('click', function() {
+				alert("aaaaaaaaa");
+			});
+
+		});
+	</script>
+
 </body>
 </html>
