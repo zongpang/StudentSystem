@@ -108,7 +108,7 @@
 				<div id="menu-collapse">
 					<div>
 						<h3>
-							<a href="#">学生管理</a>
+							<a id="studentM" href="javascript:;">学生管理</a>
 						</h3>
 						<div id="studentManager">
 							<%
@@ -124,10 +124,10 @@
 					</div>
 					<div>
 						<h3>
-							<a href="#">课程管理</a>
+							<a id="classM" href="javascript:;">课程管理</a>
 						</h3>
 						<div>
-							<a href="">我的课程</a>
+							<a href="javascript:;">我的课程</a>
 						</div>
 					</div>
 				</div>
@@ -139,12 +139,12 @@
 					style="margin-left: 40px; margin-top: 20px; display: block">
 					<li><a href="#">北财学生管理系统</a> <span class="divider">/</span></li>
 					<li><a href="#">操作</a> <span class="divider">/</span></li>
-					<li class="active">学生管理</li>
+					<li id="M" class="active">学生管理</li>
 				</ul>
 				<div style="margin-left: 33px;">
 					<h2 style="display: inline;">学生信息列表</h2>
-					<a href="" class="btn btn-danger pull-right">添加</a>
-					<table class="table table-hover">
+					<a href="javascript:;" class="btn btn-danger pull-right">添加</a>
+					<table id="tab" class="table table-hover">
 						<tr>
 							<th>学号</th>
 							<th>姓名</th>
@@ -156,7 +156,7 @@
 							<td>操作</td>
 						</tr>
 					</table>
-					<div class="pagination pull-right">
+					<div id="page" class="pagination pull-right">
 						<ul>
 							<li><a href="javascript:;">上一页</a></li>
 							<li><a href="javascript:;">1</a></li>
@@ -176,40 +176,64 @@
 	<c:forEach var="temp" items="${myClass }">
 		<script type="text/javascript">
 			$(function() {
-				$("#${temp}").click(function() {
-					//alert($("#${temp}").html())
-					var myClass = $('#${temp}').html();
-					$.ajax({
-						type : 'post',
-						url : 'find',
-						data : {
-							classNo : $('#${temp}').html(),
-							type : 1,
-							pageNow : 1
-						},
-						dataType : "json",
-						success : function(data) {
-							//alert(data);
-							var Data = data;
-							for ( var key in Data) {
-								var arr = Data[key];
-								for (var i = 0; i < arr.length; i++) {
-									//alert(arr[i].name);
-									
-									
-									
-									
-									
-									
+				//f = $("#tab").html()
+				$("#${temp}").click(
+						function() {
+							//alert($("#${temp}").html())
+							var myClass = $('#${temp}').html();
+							$.ajax({
+								type : 'post',
+								url : 'find',
+								data : {
+									classNo : $('#${temp}').html(),
+									type : 1,
+									pageNow : 1
+								},
+								dataType : "json",
+								success : function(data) {
+									//alert(data);
+									var Data = data;
+									for ( var key in Data) {
+										var arr = Data[key];
+										$("#tab").empty();
+										for (var i = 0; i < arr.length; i++) {
+											//alert(arr[i].name);
+											s = "<tr><td>" + arr[i].num
+													+ "</td>" + "<td>"
+													+ arr[i].name + "</td>"
+													+ "<td>" + arr[i].sex
+													+ "</td>" + "<td>"
+													+ arr[i].myClass + "</td>"
+													+ "<td>" + arr[i].credit
+													+ "</td>" + "<td>" + key
+													+ "</td>" + "<td>"
+													+ arr[i].state + "</td>"
+													+ "<td>操作</td>" + "</tr>"
+
+											$("#tab").append(s)
+
+										}
+									}
 								}
-							}
-						}
-					})
-				})
+							})
+						})
 
 			})
 		</script>
 	</c:forEach>
+	<script type="text/javascript">
+		$(function() {
+			var stdM = $("#studentM").html()
+			var claM = $("#classM").html()
+			//alert(stdM);
+			$("#studentM").click(function() {
+				$("#M").html(stdM)
+			})
+			$("#classM").click(function() {
+				$("#M").html(claM)
+			})
+		})
+	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="main/assets/js/jquery-ui-1.10.0.custom.min.js"
 		type="text/javascript"></script>
@@ -219,7 +243,10 @@
 	<script src="main/assets/js/demo.js" type="text/javascript"></script>
 
 
-
+	<%
+		//out.clear();
+		//out = pageContext.pushBody();
+	%>
 
 </body>
 </html>

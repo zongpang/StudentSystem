@@ -21,7 +21,6 @@ public class Localutil {
 		int pageTotal = total / pageSize + 1;// 总页数
 		for (int i = 0; i < pageTotal; i++) {
 			if (i == (pageNow - 1)) {
-
 				if (total == pageSize) {// 总页数等于每页条数
 					for (int j = i * pageSize; j < pageSize; j++) {
 						arrayList.add(objects.get(j));

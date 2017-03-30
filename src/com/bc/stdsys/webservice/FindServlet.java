@@ -23,6 +23,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class FindServlet extends HttpServlet {
+	boolean flag = true;// 判断是否首次登陆
+	JSONObject json = new JSONObject();// 创建JO对象
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -33,7 +35,7 @@ public class FindServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8"); 
+		response.setContentType("text/html;charset=utf-8");
 		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("user");
@@ -50,22 +52,24 @@ public class FindServlet extends HttpServlet {
 				Integer myType = Integer.parseInt(type);
 				if (myType == 1) {// 作分页查询
 					ArrayList<Student> students = dao.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
-					ArrayList<Student> stu = Localutil.findStudentByPage(students, 3,
-							Localutil.pageDefine(students, 1, Integer.parseInt(pageNow)));// （学生集合，每页条数，当前页）得到分页后每页的集合
+					ArrayList<Student> stu = Localutil.findStudentByPage(students, 3, Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
 					session.setAttribute("myStudent", stu);
-					for (int i = 0; i < stu.size(); i++) {
-						System.out.println(stu.get(i).getName());
-					}
-					JSONObject json = new JSONObject();// 创建JO对象
+					// for (int i = 0; i < stu.size(); i++) {
+					// System.out.println(stu.get(i).getName());
+					// }
 					json.put(classNo, stu);// 放入数据
 					System.out.println(json.toString());
 					PrintWriter pw = response.getWriter();
-					pw.print(json.toString());
-					// 以字符串的格式传给ajax
+					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 				}
 			}
-			request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
+			if (flag) {
+				flag = false;
+				request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
+			}
+
+			// response.sendRedirect("main/teacher.jsp");
 
 		} else if (obj instanceof ClassWorker) {
 
