@@ -28,5 +28,5 @@ public interface TeacherDao {
 	 * @param teacher
 	 * @return students 返回学生集合
 	 */
-	public Map<String, ArrayList<Student>> findStudentByTeacher(List<String> list);
+	public  ArrayList<Student> findStudentByTeacher(String className);
 }

@@ -56,41 +56,37 @@ public class TeacherDaoImpl implements TeacherDao {
 	}
 
 	@Override
-	public Map<String, ArrayList<Student>> findStudentByTeacher(List<String> list) {
+	public ArrayList<Student> findStudentByTeacher(String className) {
 		// TODO Auto-generated method stub
 		PreparedStatement pst = null;// 预编译对象
 		ResultSet rst = null;// 结果集
-		Map<String, ArrayList<Student>> map = new HashMap<String, ArrayList<Student>>();
 		ArrayList<Student> listStd = null;
 		String sql = "select * from student where myclass=?;";
 		try {
-			for (String str : list) {
-				listStd = new ArrayList<Student>();// 创建学生集合
-				pst = conn.prepareStatement(sql);
-				pst.setString(1, str);
-				rst = pst.executeQuery();
-				Student std = null;
-				while (rst.next()) {
-					std = new Student();// 创建学生对象
-					std.setName(rst.getString("name"));// 姓名
-					std.setCredit(rst.getInt("credit"));// 学分
-					std.setDorm(rst.getString("dorm"));
-					std.setMyClass(rst.getString("myclass"));
-					std.setJoinDate(rst.getString("joinDate"));
-					std.setQuitDate(rst.getString("quitDate"));
-					std.setState(rst.getString("state"));
-					std.setNum(rst.getInt("num"));// 学号
-					std.setSex(rst.getString("sex"));
-					listStd.add(std);
-				}
-				map.put(str, listStd);
+			listStd = new ArrayList<Student>();// 创建学生集合
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, className);
+			rst = pst.executeQuery();
+			Student std = null;
+			while (rst.next()) {
+				std = new Student();// 创建学生对象
+				std.setName(rst.getString("name"));// 姓名
+				std.setCredit(rst.getInt("credit"));// 学分
+				std.setDorm(rst.getString("dorm"));
+				std.setMyClass(rst.getString("myclass"));
+				std.setJoinDate(rst.getString("joinDate"));
+				std.setQuitDate(rst.getString("quitDate"));
+				std.setState(rst.getString("state"));
+				std.setNum(rst.getInt("num"));// 学号
+				std.setSex(rst.getString("sex"));
+				listStd.add(std);
 			}
-			return map;
+			return listStd;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return map;
+		return listStd;
 	}
 
 }

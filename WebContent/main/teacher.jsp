@@ -3,10 +3,11 @@
 <%@page import="com.bc.stdsys.entitys.ClassWorker"%>
 <%@page import="com.bc.stdsys.entitys.Teacher"%>
 <%@page import="com.bc.stdsys.entitys.Student"%>
-<%@ page language="java" contentType="text/html; charset=utf-8"
+<%@page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" import="java.util.*,com.bc.*"%>
 
-
+<%@page isELIgnored="false"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -18,7 +19,6 @@
 %>
 <base href="<%=basePath%>">
 <meta charset="utf-8">
-<script src="http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
 <title>北京财经专修学院</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
@@ -115,7 +115,7 @@
 								if (classList != null && classList.size() > 0) {
 									for (int i = 0; i < classList.size(); i++) {
 							%>
-							<a href="javascript:;" id="aaa" class="aaa"><%=classList.get(i)%></a><br>
+							<a href="javascript:;" id="<%=classList.get(i)%>"><%=classList.get(i)%></a><br>
 							<%
 								}
 								}
@@ -155,32 +155,6 @@
 							<th>状态</th>
 							<td>操作</td>
 						</tr>
-						<%-- 
-						<%
-							Set<String> kSet = map.keySet();
-							Iterator<String> it = kSet.iterator();
-							while (it.hasNext()) {
-								String key = it.next();
-								ArrayList<Student> listA = map.get(key);
-								for (int i = 0; i < listA.size(); i++) {
-									//System.out.println(key + ":  " + listA.get(i).getName());
-									Student stu = listA.get(i);
-						%>
-						<tr>
-							<td><%=stu.getNum()%></td>
-							<td><%=stu.getName()%></td>
-							<td><%=stu.getSex()%></td>
-							<td><%=stu.getMyClass()%></td>
-							<td><%=stu.getCredit()%></td>
-							<td><%=teacher.getName()%></td>
-							<td><%=stu.getState()%></td>
-							<td><a href="">历史成绩</a></td>
-						</tr>
-						<%
-							}
-							}
-						%>
-						--%>
 					</table>
 					<div class="pagination pull-right">
 						<ul>
@@ -199,6 +173,43 @@
 	</div>
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="main/assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+	<c:forEach var="temp" items="${myClass }">
+		<script type="text/javascript">
+			$(function() {
+				$("#${temp}").click(function() {
+					//alert($("#${temp}").html())
+					var myClass = $('#${temp}').html();
+					$.ajax({
+						type : 'post',
+						url : 'find',
+						data : {
+							classNo : $('#${temp}').html(),
+							type : 1,
+							pageNow : 1
+						},
+						dataType : "json",
+						success : function(data) {
+							//alert(data);
+							var Data = data;
+							for ( var key in Data) {
+								var arr = Data[key];
+								for (var i = 0; i < arr.length; i++) {
+									//alert(arr[i].name);
+									
+									
+									
+									
+									
+									
+								}
+							}
+						}
+					})
+				})
+
+			})
+		</script>
+	</c:forEach>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="main/assets/js/jquery-ui-1.10.0.custom.min.js"
 		type="text/javascript"></script>
@@ -206,21 +217,9 @@
 		type="text/javascript"></script>
 	<script src="main/assets/js/docs.js" type="text/javascript"></script>
 	<script src="main/assets/js/demo.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(function() {
-			//<c:forEach items="&{list}" var="user">
-			//&{user.id} 
-			//</c:forEach>
-			//$()   html()  val() text()
-			//			function test() {
-			//				alert(11111111111);
 
-			$("a").bind('click', function() {
-				alert("aaaaaaaaa");
-			});
 
-		});
-	</script>
+
 
 </body>
 </html>
