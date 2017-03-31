@@ -8,10 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.bc.stdsys.entitys.ClassWorker;
-import com.bc.stdsys.entitys.Deanery;
-import com.bc.stdsys.entitys.Master;
-import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.DButil;
 
 public class MyServlet extends HttpServlet {
@@ -41,7 +37,9 @@ public class MyServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		if (obj != null) {
 			session.setAttribute("user", obj);
-			response.sendRedirect("find");
+			request.setAttribute("user", obj);
+			session.setAttribute("loginFirst", true);
+			request.getRequestDispatcher("find").forward(request, response);
 		} else {
 			response.sendRedirect("login/Login.jsp");
 		}

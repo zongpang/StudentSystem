@@ -1,6 +1,8 @@
 package com.bc.stdsys.entitys;
 
-public class Teacher {
+import java.io.Serializable;
+
+public class Teacher implements Serializable {
 	private int id;
 	private int num;
 	private String name;
@@ -12,12 +14,10 @@ public class Teacher {
 
 	}
 
-
 	public Teacher(String name, String passwrod) {
 		this.name = name;
 		this.passWord = passwrod;
 	}
-
 
 	public Teacher(int id, int num, String name, String passWord, String course, String myClass) {
 

@@ -5,11 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 import com.bc.stdsys.dao.TeacherDao;
 import com.bc.stdsys.entitys.Student;
@@ -35,12 +31,15 @@ public class TeacherDaoImpl implements TeacherDao {
 
 	@Override
 	public List<String> findMyclassByTeacher(Teacher teacher) {
-		PreparedStatement pst = null;// 预编译对象
-		ResultSet rst = null;// 结果集
+
 		// TODO Auto-generated method stub
 		List<String> list = new ArrayList<String>();// 数据集
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
 		try {
 			String sql = "select name from myclass where teachernum=?;";
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);// 这里pst直接获取，避免大量调用Dbutil静态方法
 			pst.setInt(1, teacher.getNum());
 			rst = pst.executeQuery();
@@ -48,9 +47,18 @@ public class TeacherDaoImpl implements TeacherDao {
 				list.add(rst.getString("name"));
 			}
 			return list;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -64,6 +72,8 @@ public class TeacherDaoImpl implements TeacherDao {
 		String sql = "select * from student where myclass=?;";
 		try {
 			listStd = new ArrayList<Student>();// 创建学生集合
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, className);
 			rst = pst.executeQuery();
@@ -82,9 +92,18 @@ public class TeacherDaoImpl implements TeacherDao {
 				listStd.add(std);
 			}
 			return listStd;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return listStd;
 	}

@@ -1,6 +1,8 @@
 package com.bc.stdsys.entitys;
 
-public class ClassWorker {
+import java.io.Serializable;
+
+public class ClassWorker implements Serializable{
 	private int id;
 	private int num;
 	private String name;

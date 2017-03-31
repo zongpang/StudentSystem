@@ -62,7 +62,11 @@
 	data-twttr-rendered="true">
 	<%
 		Teacher teacher = (Teacher) session.getAttribute("user");
-		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");
+		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级集合
+		//ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
+		//ArrayList<Student> studentP = (ArrayList<Student>) session.getAttribute("myStudentP");//每页班学生集合
+		//Integer pageSize = 2;//设计每页显示的条数
+		//Integer PageTotal = 0;//总页数-
 	%>
 
 	<!-- Navbar
@@ -142,29 +146,26 @@
 					<li id="M" class="active">学生管理</li>
 				</ul>
 				<div style="margin-left: 33px;">
-					<h2 style="display: inline;">学生信息列表</h2>
+					<h2 id="table_title" style="display: inline;">学生信息列表</h2>
 					<a href="javascript:;" class="btn btn-danger pull-right">添加</a>
 					<table id="tab" class="table table-hover">
-						<tr>
+						<tr id="tab_1">
 							<th>学号</th>
 							<th>姓名</th>
 							<th>性别</th>
 							<th>所在班级</th>
 							<th>综合学分</th>
-							<th>任课教师</th>
 							<th>状态</th>
 							<td>操作</td>
 						</tr>
 					</table>
 					<div id="page" class="pagination pull-right">
 						<ul>
-							<li><a href="javascript:;">上一页</a></li>
-							<li><a href="javascript:;">1</a></li>
-							<li><a href="javascript:;">2</a></li>
-							<li><a href="javascript:;">3</a></li>
-							<li><a href="javascript:;">4</a></li>
-							<li><a href="javascript:;">5</a></li>
-							<li><a href="javascript:;">下一页</a></li>
+							<li><a id="pageUp" href="javascript:;">上一页</a></li>
+							<li><a id="pageNow" href="javascript:;">1</a></li>
+							<li><a id="pageDown" href="javascript:;">下一页</a></li>
+							<li><input type="text" id="goto" style="width: 20px"></li>
+							<li><input type="submit" id="go" value="go"></li>
 						</ul>
 					</div>
 				</div>
@@ -177,9 +178,10 @@
 		<script type="text/javascript">
 			$(function() {
 				//f = $("#tab").html()
+				var title = $("#tab_1").html()//学生标题栏
+				var pageN = 1;
 				$("#${temp}").click(
 						function() {
-							//alert($("#${temp}").html())
 							var myClass = $('#${temp}').html();
 							$.ajax({
 								type : 'post',
@@ -187,15 +189,17 @@
 								data : {
 									classNo : $('#${temp}').html(),
 									type : 1,
-									pageNow : 1
+									pageNow : pageN
 								},
 								dataType : "json",
 								success : function(data) {
 									//alert(data);
 									var Data = data;
 									for ( var key in Data) {
+										//alert(key);
 										var arr = Data[key];
 										$("#tab").empty();
+										$("#tab").append(title);
 										for (var i = 0; i < arr.length; i++) {
 											//alert(arr[i].name);
 											s = "<tr><td>" + arr[i].num
@@ -205,13 +209,10 @@
 													+ "</td>" + "<td>"
 													+ arr[i].myClass + "</td>"
 													+ "<td>" + arr[i].credit
-													+ "</td>" + "<td>" + key
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
 													+ "<td>操作</td>" + "</tr>"
-
 											$("#tab").append(s)
-
 										}
 									}
 								}
@@ -221,16 +222,44 @@
 			})
 		</script>
 	</c:forEach>
+	<div id="page" class="pagination pull-right">
+		<ul>
+			<li><a id="pageUp" href="javascript:;">上一页</a></li>
+			<li><a id="pageNow" href="javascript:;">1</a></li>
+			<li><a id="pageDown" href="javascript:;">下一页</a></li>
+			<li><input type="text" id="goto" style="width: 20px"></li>
+			<li><input type="submit" id="go" value="go"></li>
+		</ul>
+	</div>
+
 	<script type="text/javascript">
 		$(function() {
-			var stdM = $("#studentM").html()
-			var claM = $("#classM").html()
+			$("pageUp").click(function() {
+                 
+				
+				
+				
+			})
+			$("pageDown").click(function() {
+
+				
+				
+				
+				
+			})
+
+			$("pageNow").html()
+
+			var stdM = $("#studentM").html()//菜单值
+			var claM = $("#classM").html()//菜单值
 			//alert(stdM);
 			$("#studentM").click(function() {
 				$("#M").html(stdM)
+				$("#table_title").html("学生信息列表")
 			})
 			$("#classM").click(function() {
 				$("#M").html(claM)
+				$("#table_title").html("课程信息列表")
 			})
 		})
 	</script>
@@ -241,12 +270,6 @@
 		type="text/javascript"></script>
 	<script src="main/assets/js/docs.js" type="text/javascript"></script>
 	<script src="main/assets/js/demo.js" type="text/javascript"></script>
-
-
-	<%
-		//out.clear();
-		//out = pageContext.pushBody();
-	%>
 
 </body>
 </html>

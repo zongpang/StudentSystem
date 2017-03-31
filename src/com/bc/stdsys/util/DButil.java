@@ -71,53 +71,8 @@ public class DButil {
 
 		switch (type) {
 		case 1:
-
-			if (objs instanceof Student) {// 增加一个学生
-
-			} else if (objs instanceof Teacher) {// 增加一个老师
-
-			} else if (objs instanceof ClassWorker) {// 增加一个班主任
-
-			} else if (objs instanceof MyClass) {// 添加一个班级
-
-			} else if (objs instanceof Course) {// 添加一门课程
-
-			} else if (objs instanceof Score) {// 插入一次学生月度考试成绩
-
-			}
-
 		case 2:
-
-			if (objs instanceof Student) {// 删除一个学生
-
-			} else if (objs instanceof Teacher) {// 删除一个老师
-
-			} else if (objs instanceof ClassWorker) {// 删除一个班主任
-
-			} else if (objs instanceof MyClass) {// 删除一个班级
-
-			} else if (objs instanceof Course) {// 删除一门课程
-
-			} else if (objs instanceof Score) {// 删除一次学生月度考试成绩
-
-			}
-
 		case 3:
-
-			if (objs instanceof Student) {// 修改一个学生
-
-			} else if (objs instanceof Teacher) {// 修改一个老师
-
-			} else if (objs instanceof ClassWorker) {// 修改一个班主任
-
-			} else if (objs instanceof MyClass) {// 修改一个班级
-
-			} else if (objs instanceof Course) {// 修改一门课程
-
-			} else if (objs instanceof Score) {// 修改一次学生月度考试成绩
-
-			}
-
 		case 4:
 			// 查询验证登陆
 			if (objs instanceof Teacher) {
@@ -125,7 +80,7 @@ public class DButil {
 					statement.setString(1, ((Teacher) objs).getName());
 					statement.setString(2, ((Teacher) objs).getPassWord());
 					rst = statement.executeQuery();
-				} catch (SQLException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -164,12 +119,7 @@ public class DButil {
 				return rst;
 			}
 		}
-		try {
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		return rst;
 	}
 
@@ -180,7 +130,7 @@ public class DButil {
 	 * @param name
 	 * @param password
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	public static Object login(String userId, String name, String password) throws Exception {
@@ -200,6 +150,10 @@ public class DButil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				rst.close();
+				statement.close();
+				conn.close();
 			}
 
 		} else if (userId.equals("班主任")) {
@@ -218,6 +172,10 @@ public class DButil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				rst.close();
+				statement.close();
+				conn.close();
 			}
 		} else if (userId.equals("管理员")) {
 			Master master = new Master();
@@ -234,6 +192,10 @@ public class DButil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				rst.close();
+				statement.close();
+				conn.close();
 			}
 
 		} else if (userId.equals("院长")) {
@@ -252,6 +214,10 @@ public class DButil {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				rst.close();
+				statement.close();
+				conn.close();
 			}
 
 		}

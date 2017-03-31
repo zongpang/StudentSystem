@@ -19,12 +19,15 @@ import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.Localutil;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class FindServlet extends HttpServlet {
-	boolean flag = true;// 判断是否首次登陆
-	JSONObject json = new JSONObject();// 创建JO对象
+	JSONObject json;// 创建JO对象
+	HttpSession session;
+	TeacherDao dao;
+	final int PAGE_SIZE = 3;
+
+	// boolean teacherFlag = true;// 判断首次登陆
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -35,41 +38,48 @@ public class FindServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("findServlet进来了");
 		response.setContentType("text/html;charset=utf-8");
 		request.setCharacterEncoding("utf-8");
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		Object obj = session.getAttribute("user");
+		// Object obj = request.getAttribute("user");
 		if (obj instanceof Teacher) {
-			Teacher teacher = (Teacher) obj;
-			TeacherDao dao = new TeacherDaoImpl();
-			List<String> list = dao.findMyclassByTeacher(teacher);
-			session.setAttribute("myClass", list);// 向session中放入班级列表
-			// 分页
+			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
+
+			if (teacherFlag) {// 首次登陆数据初始化
+				// System.out.println(obj.toString());
+				Teacher teacher = (Teacher) obj;
+				dao = new TeacherDaoImpl();
+				List<String> list = dao.findMyclassByTeacher(teacher);
+				session.setAttribute("myClass", list);// 向session中放入班级
+				session.setAttribute("loginFirst", false);// 首次登陆置否
+				response.sendRedirect("main/teacher.jsp");
+			}
+			// 分页查询代码段
 			String classNo = request.getParameter("classNo");
 			String pageNow = request.getParameter("pageNow");
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
 				if (myType == 1) {// 作分页查询
+					if (dao == null)
+						dao = new TeacherDaoImpl();
 					ArrayList<Student> students = dao.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
-					ArrayList<Student> stu = Localutil.findStudentByPage(students, 3, Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					session.setAttribute("myStudent", stu);
-					// for (int i = 0; i < stu.size(); i++) {
-					// System.out.println(stu.get(i).getName());
-					// }
-					json.put(classNo, stu);// 放入数据
+					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
+							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
+					// session.setAttribute("myStudentC", students);//班级所有学生的集合
+					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
+					// Integer totalP=Localutil.totalPage(students.size(),
+					// PAGE_SIZE);//总页数
+					json = new JSONObject();
+					json.put(classNo, stu);// 放入数据(以总页数为key)
 					System.out.println(json.toString());
 					PrintWriter pw = response.getWriter();
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 				}
 			}
-			if (flag) {
-				flag = false;
-				request.getRequestDispatcher("main/teacher.jsp").forward(request, response);
-			}
-
-			// response.sendRedirect("main/teacher.jsp");
 
 		} else if (obj instanceof ClassWorker) {
 

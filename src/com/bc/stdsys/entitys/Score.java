@@ -1,6 +1,8 @@
 package com.bc.stdsys.entitys;
 
-public class Score {
+import java.io.Serializable;
+
+public class Score implements Serializable{
 	private int id;
 	private String studentNum;
 	private String course;// 课程名称

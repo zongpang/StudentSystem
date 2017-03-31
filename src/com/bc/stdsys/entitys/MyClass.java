@@ -1,6 +1,8 @@
 package com.bc.stdsys.entitys;
 
-public class MyClass {
+import java.io.Serializable;
+
+public class MyClass implements Serializable{
 	private int id;
 	private String name;
 	private String classRoom;//班级所在房间

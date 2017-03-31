@@ -29,7 +29,7 @@ public class Test {
 		// e.printStackTrace();
 		// }
 
-		
+		System.out.println((5%1)+"");
 
 	}
 }
