@@ -63,7 +63,7 @@
 	<%
 		Teacher teacher = (Teacher) session.getAttribute("user");
 		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级集合
-		//ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
+		ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
 		//ArrayList<Student> studentP = (ArrayList<Student>) session.getAttribute("myStudentP");//每页班学生集合
 		//Integer pageSize = 2;//设计每页显示的条数
 		//Integer PageTotal = 0;//总页数-
@@ -159,10 +159,13 @@
 							<td>操作</td>
 						</tr>
 					</table>
+					<%
+						
+					%>
 					<div id="page" class="pagination pull-right">
 						<ul>
 							<li><a id="pageUp" href="javascript:;">上一页</a></li>
-							<li><a id="pageNow" href="javascript:;">1</a></li>
+							<li><a id="pageNow" href="javascript:;" value="1">1</a></li>
 							<li><a id="pageDown" href="javascript:;">下一页</a></li>
 							<li><input type="text" id="goto" style="width: 20px"></li>
 							<li><input type="submit" id="go" value="go"></li>
@@ -177,7 +180,7 @@
 	<c:forEach var="temp" items="${myClass }">
 		<script type="text/javascript">
 			$(function() {
-				//f = $("#tab").html()
+				//f = $("#tab").html()			
 				var title = $("#tab_1").html()//学生标题栏
 				var pageN = 1;
 				$("#${temp}").click(
@@ -218,38 +221,13 @@
 								}
 							})
 						})
-
 			})
 		</script>
 	</c:forEach>
-	<div id="page" class="pagination pull-right">
-		<ul>
-			<li><a id="pageUp" href="javascript:;">上一页</a></li>
-			<li><a id="pageNow" href="javascript:;">1</a></li>
-			<li><a id="pageDown" href="javascript:;">下一页</a></li>
-			<li><input type="text" id="goto" style="width: 20px"></li>
-			<li><input type="submit" id="go" value="go"></li>
-		</ul>
-	</div>
+
 
 	<script type="text/javascript">
 		$(function() {
-			$("pageUp").click(function() {
-                 
-				
-				
-				
-			})
-			$("pageDown").click(function() {
-
-				
-				
-				
-				
-			})
-
-			$("pageNow").html()
-
 			var stdM = $("#studentM").html()//菜单值
 			var claM = $("#classM").html()//菜单值
 			//alert(stdM);
@@ -261,6 +239,27 @@
 				$("#M").html(claM)
 				$("#table_title").html("课程信息列表")
 			})
+
+			//${myStudentC}
+			now = Number($("#pageNow").html());
+
+			$("#pageUp").click(function() {
+				total = Number("${pageTotal}")
+				alert(total);
+				now = now - 1;
+				if (now < 1) {
+					now = 1;
+				}
+				$("#pageNow").html(now)
+			})
+			$("#pageDown").click(function() {
+				now = now + 1;
+				if (now > 5) {
+					now = 5;
+				}
+				$("#pageNow").html(now)
+			})
+
 		})
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>

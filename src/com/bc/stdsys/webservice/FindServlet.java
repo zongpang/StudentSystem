@@ -25,7 +25,7 @@ public class FindServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
 	HttpSession session;
 	TeacherDao dao;
-	final int PAGE_SIZE = 3;
+	final int PAGE_SIZE = 1;
 
 	// boolean teacherFlag = true;// 判断首次登陆
 	@Override
@@ -68,10 +68,12 @@ public class FindServlet extends HttpServlet {
 					ArrayList<Student> students = dao.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
 					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
 							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					// session.setAttribute("myStudentC", students);//班级所有学生的集合
+					session.setAttribute("myStudentC", students);// 班级所有学生的集合
+					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+					System.out.println(totalP);
+					session.setAttribute("pageTotal", totalP);
 					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
-					// Integer totalP=Localutil.totalPage(students.size(),
-					// PAGE_SIZE);//总页数
+
 					json = new JSONObject();
 					json.put(classNo, stu);// 放入数据(以总页数为key)
 					System.out.println(json.toString());
