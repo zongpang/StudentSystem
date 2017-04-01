@@ -25,7 +25,7 @@ public class FindServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
 	HttpSession session;
 	TeacherDao dao;
-	final int PAGE_SIZE = 1;
+	final int PAGE_SIZE = 3;//分页查找每页的容量
 
 	// boolean teacherFlag = true;// 判断首次登陆
 	@Override

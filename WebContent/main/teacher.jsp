@@ -207,6 +207,7 @@
 										$("#pageT").html(key)//为隐藏标签赋key值分页用
 										var arr = Data[key];
 										$("#tab").empty();
+										$("#tab").append(title)
 										for (var i = 0; i < arr.length; i++) {
 											s = "<tr><td>" + arr[i].num
 													+ "</td>" + "<td>"
@@ -218,7 +219,7 @@
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
 													+ "<td>详情</td>" + "</tr>"
-											$("#tab").append(title)
+
 											$("#tab").append(s)
 											$("#classN").html(arr[i].myClass)//为隐藏标签赋值分页用
 										}
@@ -255,9 +256,12 @@
 						if (now < 1) {//作分页限定
 							now = 1;
 						}
-						$("#pageNow").html(now)//给pageNow再赋值
+
 						classNow = $("#classN").html()//当前选中班级
 						if (classNow != "") {//判断是否返回了数据
+							$("#tab").empty();
+							$("#tab").append(title)
+							$("#pageNow").html(now)//给pageNow再赋值
 							$.ajax({
 								type : 'post',
 								url : 'find',
@@ -272,7 +276,6 @@
 									for ( var key in Data) {
 										$("#pageT").html(key)
 										var arr = Data[key];
-										$("#tab").empty();
 										for (var i = 0; i < arr.length; i++) {
 											s = "<tr><td>" + arr[i].num
 													+ "</td>" + "<td>"
@@ -284,7 +287,6 @@
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
 													+ "<td>详情</td>" + "</tr>"
-											$("#tab").append(title)
 											$("#tab").append(s)
 											$("#classN").html(arr[i].myClass)
 										}
@@ -306,9 +308,13 @@
 						} else if (now > total) {
 							now = total;
 						}
-						$("#pageNow").html(now)//给pageNow再赋值
+
 						classNow = $("#classN").html()//当前选中班级
 						if (classNow != "") {//作分页限定
+							$("#tab").empty();
+							$("#tab").append(title)
+							//alert(title);
+							$("#pageNow").html(now)//给pageNow再赋值
 							$.ajax({
 								type : 'post',
 								url : 'find',
@@ -323,7 +329,6 @@
 									for ( var key in Data) {
 										$("#pageT").html(key)
 										var arr = Data[key];
-										$("#tab").empty();
 										for (var i = 0; i < arr.length; i++) {
 											s = "<tr><td>" + arr[i].num
 													+ "</td>" + "<td>"
@@ -335,7 +340,6 @@
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
 													+ "<td>详情</td>" + "</tr>"
-											$("#tab").append(title)
 											$("#tab").append(s)
 											$("#classN").html(arr[i].myClass)
 										}
