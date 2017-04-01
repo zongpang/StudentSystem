@@ -48,7 +48,6 @@ public class FindServlet extends HttpServlet {
 			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
 
 			if (teacherFlag) {// 首次登陆数据初始化
-				// System.out.println(obj.toString());
 				Teacher teacher = (Teacher) obj;
 				dao = new TeacherDaoImpl();
 				List<String> list = dao.findMyclassByTeacher(teacher);
@@ -56,9 +55,11 @@ public class FindServlet extends HttpServlet {
 				session.setAttribute("loginFirst", false);// 首次登陆置否
 				response.sendRedirect("main/teacher.jsp");
 			}
-			// 分页查询代码段
+			// 分页查询代码段(处理ajax请求)
 			String classNo = request.getParameter("classNo");
+			System.out.println("classNo:" + classNo);
 			String pageNow = request.getParameter("pageNow");
+			System.out.println("pageNow:" + pageNow);
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
@@ -68,14 +69,13 @@ public class FindServlet extends HttpServlet {
 					ArrayList<Student> students = dao.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
 					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
 							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					session.setAttribute("myStudentC", students);// 班级所有学生的集合
+					// session.setAttribute("myStudentC", students);// 班级所有学生的集合
+					// session.setAttribute("pageTotal", totalP);
+					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
 					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
 					System.out.println(totalP);
-					session.setAttribute("pageTotal", totalP);
-					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
-
 					json = new JSONObject();
-					json.put(classNo, stu);// 放入数据(以总页数为key)
+					json.put(totalP, stu);// 放入数据(以总页数为key)
 					System.out.println(json.toString());
 					PrintWriter pw = response.getWriter();
 					pw.print(json.toString());// 以字符串的格式传给ajax
@@ -85,6 +85,13 @@ public class FindServlet extends HttpServlet {
 
 		} else if (obj instanceof ClassWorker) {
 
+			
+			
+			
+			
+			
+			
+			
 		} else if (obj instanceof Master) {
 
 		} else {

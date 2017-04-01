@@ -21,7 +21,6 @@ public class Localutil {
 		}
 		return totalP;
 	}
-
 	/**
 	 * 分页小工具 说明： 1.objects:所有对象的集合 2.pageSize:每页的条数3.pageNow:当前页
 	 * 
@@ -68,24 +67,5 @@ public class Localutil {
 		return arrayList;
 	}
 
-	// /**
-	// *
-	// * @param list
-	// * @param pageSize
-	// * @param pageNow
-	// * @return
-	// */
-	// public static int pageDefine(ArrayList list, Integer pageSize, Integer
-	// pageNow) {
-	// int total = list.size();// 总条数
-	// int pageTotal = total / pageSize + 1;
-	// if (pageNow >= pageTotal) {
-	// pageNow = pageTotal;
-	// return pageNow;
-	// } else if (pageNow < 1) {
-	// pageNow = 1;
-	// return pageNow;
-	// }
-	// return pageNow;
-	// }
+
 }

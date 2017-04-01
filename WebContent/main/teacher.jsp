@@ -148,8 +148,9 @@
 				<div style="margin-left: 33px;">
 					<h2 id="table_title" style="display: inline;">学生信息列表</h2>
 					<a href="javascript:;" class="btn btn-danger pull-right">添加</a>
+
 					<table id="tab" class="table table-hover">
-						<tr id="tab_1">
+						<tr id="tab_0">
 							<th>学号</th>
 							<th>姓名</th>
 							<th>性别</th>
@@ -158,10 +159,10 @@
 							<th>状态</th>
 							<td>操作</td>
 						</tr>
+						<tr id="tab_1">
+
+						</tr>
 					</table>
-					<%
-						
-					%>
 					<div id="page" class="pagination pull-right">
 						<ul>
 							<li><a id="pageUp" href="javascript:;">上一页</a></li>
@@ -175,13 +176,18 @@
 			</div>
 		</div>
 	</div>
+	<!--通过ajax返回总页数  -->
+	<p id="pageT" hidden></p>
+	<!--通过ajax返回班级 号 -->
+	<p id="classN" hidden></p>
+
+
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="main/assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
 	<c:forEach var="temp" items="${myClass }">
 		<script type="text/javascript">
 			$(function() {
-				//f = $("#tab").html()			
-				var title = $("#tab_1").html()//学生标题栏
+				var title = $("#tab_0").html()//学生标题栏
 				var pageN = 1;
 				$("#${temp}").click(
 						function() {
@@ -196,15 +202,12 @@
 								},
 								dataType : "json",
 								success : function(data) {
-									//alert(data);
 									var Data = data;
 									for ( var key in Data) {
-										//alert(key);
+										$("#pageT").html(key)//为隐藏标签赋key值分页用
 										var arr = Data[key];
 										$("#tab").empty();
-										$("#tab").append(title);
 										for (var i = 0; i < arr.length; i++) {
-											//alert(arr[i].name);
 											s = "<tr><td>" + arr[i].num
 													+ "</td>" + "<td>"
 													+ arr[i].name + "</td>"
@@ -214,10 +217,14 @@
 													+ "<td>" + arr[i].credit
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
-													+ "<td>操作</td>" + "</tr>"
+													+ "<td>详情</td>" + "</tr>"
+											$("#tab").append(title)
 											$("#tab").append(s)
+											$("#classN").html(arr[i].myClass)//为隐藏标签赋值分页用
 										}
 									}
+									$("#pageNow").html("1");
+
 								}
 							})
 						})
@@ -230,36 +237,114 @@
 		$(function() {
 			var stdM = $("#studentM").html()//菜单值
 			var claM = $("#classM").html()//菜单值
-			//alert(stdM);
-			$("#studentM").click(function() {
+			$("#studentM").click(function() {//点击修给导航栏方法
 				$("#M").html(stdM)
 				$("#table_title").html("学生信息列表")
 			})
-			$("#classM").click(function() {
+			$("#classM").click(function() {//点击修给导航栏方法
 				$("#M").html(claM)
 				$("#table_title").html("课程信息列表")
 			})
 
-			//${myStudentC}
-			now = Number($("#pageNow").html());
+			var title = $("#tab_0").html()//学生标题栏			
+			$("#pageUp").click(
+					//点击向上分页        
+					function() {
+						now = Number($("#pageNow").html());
+						now = now - 1;
+						if (now < 1) {//作分页限定
+							now = 1;
+						}
+						$("#pageNow").html(now)//给pageNow再赋值
+						classNow = $("#classN").html()//当前选中班级
+						if (classNow != "") {//判断是否返回了数据
+							$.ajax({
+								type : 'post',
+								url : 'find',
+								data : {
+									classNo : classNow,
+									type : 1,
+									pageNow : now
+								},
+								dataType : "json",
+								success : function(data) {
+									var Data = data;
+									for ( var key in Data) {
+										$("#pageT").html(key)
+										var arr = Data[key];
+										$("#tab").empty();
+										for (var i = 0; i < arr.length; i++) {
+											s = "<tr><td>" + arr[i].num
+													+ "</td>" + "<td>"
+													+ arr[i].name + "</td>"
+													+ "<td>" + arr[i].sex
+													+ "</td>" + "<td>"
+													+ arr[i].myClass + "</td>"
+													+ "<td>" + arr[i].credit
+													+ "</td>" + "<td>"
+													+ arr[i].state + "</td>"
+													+ "<td>详情</td>" + "</tr>"
+											$("#tab").append(title)
+											$("#tab").append(s)
+											$("#classN").html(arr[i].myClass)
+										}
+									}
+								}
+							})
+						}
 
-			$("#pageUp").click(function() {
-				total = Number("${pageTotal}")
-				alert(total);
-				now = now - 1;
-				if (now < 1) {
-					now = 1;
-				}
-				$("#pageNow").html(now)
-			})
-			$("#pageDown").click(function() {
-				now = now + 1;
-				if (now > 5) {
-					now = 5;
-				}
-				$("#pageNow").html(now)
-			})
+					})
 
+			$("#pageDown").click(
+					//点击向下分页
+					function() {
+						now = Number($("#pageNow").html());//当前页
+						total = Number($("#pageT").html());//总页数
+						now = now + 1;
+						if (now == 2 && total == "") {
+							now = 1;
+						} else if (now > total) {
+							now = total;
+						}
+						$("#pageNow").html(now)//给pageNow再赋值
+						classNow = $("#classN").html()//当前选中班级
+						if (classNow != "") {//作分页限定
+							$.ajax({
+								type : 'post',
+								url : 'find',
+								data : {
+									classNo : classNow,
+									type : 1,
+									pageNow : now
+								},
+								dataType : "json",
+								success : function(data) {
+									var Data = data;
+									for ( var key in Data) {
+										$("#pageT").html(key)
+										var arr = Data[key];
+										$("#tab").empty();
+										for (var i = 0; i < arr.length; i++) {
+											s = "<tr><td>" + arr[i].num
+													+ "</td>" + "<td>"
+													+ arr[i].name + "</td>"
+													+ "<td>" + arr[i].sex
+													+ "</td>" + "<td>"
+													+ arr[i].myClass + "</td>"
+													+ "<td>" + arr[i].credit
+													+ "</td>" + "<td>"
+													+ arr[i].state + "</td>"
+													+ "<td>详情</td>" + "</tr>"
+											$("#tab").append(title)
+											$("#tab").append(s)
+											$("#classN").html(arr[i].myClass)
+										}
+									}
+								}
+							})
+						}
+
+					})
 		})
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
