@@ -25,7 +25,7 @@ public class FindServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
 	HttpSession session;
 	TeacherDao dao;
-	final int PAGE_SIZE = 3;//分页查找每页的容量
+	final int PAGE_SIZE = 3;// 分页查找每页的容量
 
 	// boolean teacherFlag = true;// 判断首次登陆
 	@Override
@@ -46,11 +46,11 @@ public class FindServlet extends HttpServlet {
 		// Object obj = request.getAttribute("user");
 		if (obj instanceof Teacher) {
 			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
-
 			if (teacherFlag) {// 首次登陆数据初始化
 				Teacher teacher = (Teacher) obj;
 				dao = new TeacherDaoImpl();
 				List<String> list = dao.findMyclassByTeacher(teacher);
+				//System.out.println(list.get(0));
 				session.setAttribute("myClass", list);// 向session中放入班级
 				session.setAttribute("loginFirst", false);// 首次登陆置否
 				response.sendRedirect("main/teacher.jsp");
@@ -63,35 +63,30 @@ public class FindServlet extends HttpServlet {
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
-				if (myType == 1) {// 作分页查询
+				if (myType == 1) {// 作学生分页查询
 					if (dao == null)
 						dao = new TeacherDaoImpl();
 					ArrayList<Student> students = dao.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
 					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
 							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					// session.setAttribute("myStudentC", students);// 班级所有学生的集合
+					  session.setAttribute("myStudentC", students);// 班级所有学生的集合
 					// session.setAttribute("pageTotal", totalP);
 					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
 					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
-					System.out.println(totalP);
 					json = new JSONObject();
 					json.put(totalP, stu);// 放入数据(以总页数为key)
-					System.out.println(json.toString());
 					PrintWriter pw = response.getWriter();
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
+				} else if (myType == 2) {// 作课程分页查询
+
+					
 				}
+
 			}
 
 		} else if (obj instanceof ClassWorker) {
 
-			
-			
-			
-			
-			
-			
-			
 		} else if (obj instanceof Master) {
 
 		} else {

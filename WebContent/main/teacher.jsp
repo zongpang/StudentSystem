@@ -63,7 +63,7 @@
 	<%
 		Teacher teacher = (Teacher) session.getAttribute("user");
 		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级集合
-		ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
+		//ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
 		//ArrayList<Student> studentP = (ArrayList<Student>) session.getAttribute("myStudentP");//每页班学生集合
 		//Integer pageSize = 2;//设计每页显示的条数
 		//Integer PageTotal = 0;//总页数-
@@ -91,7 +91,7 @@
 				<form class="navbar-search ">
 					<input type="text" class="search-query" placeholder="Search">
 					<input class="btn btn-danger" style="margin-top: -1px;"
-						type="submit" value="查询">
+						type="submit" value="查询" >
 				</form>
 
 			</div>
@@ -184,6 +184,30 @@
 
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="main/assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+	<!--每个学生的详细信息显示 -->
+	<c:forEach var="stu" items="${myStudentC } ">
+		<script type="text/javascript">
+	${function(){
+		
+		
+		
+		
+		
+	}}	
+	</script>
+	</c:forEach>
+
+
+
+
+
+
+
+
+
+
+
+	<!--点击班级查看学生  -->
 	<c:forEach var="temp" items="${myClass }">
 		<script type="text/javascript">
 			$(function() {
@@ -191,7 +215,7 @@
 				var pageN = 1;
 				$("#${temp}").click(
 						function() {
-							var myClass = $('#${temp}').html();
+							var myClass = $('#${temp}').html();					
 							$.ajax({
 								type : 'post',
 								url : 'find',
@@ -218,8 +242,7 @@
 													+ "<td>" + arr[i].credit
 													+ "</td>" + "<td>"
 													+ arr[i].state + "</td>"
-													+ "<td>详情</td>" + "</tr>"
-
+													+ "<td id="+arr[i].num+"onclick=stuInfo"+">详情</td>" + "</tr>"                    
 											$("#tab").append(s)
 											$("#classN").html(arr[i].myClass)//为隐藏标签赋值分页用
 										}
