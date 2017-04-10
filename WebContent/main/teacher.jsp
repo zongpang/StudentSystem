@@ -468,25 +468,48 @@
 			})
 
 			var title = $("#tab_0").html()//学生标题栏			
-			$("#pageUp")
+			$("#pageUp,#pageDown,#go")
 					.click(
 							//点击向上分页        
 							function() {
-														
-									classNow = $("#classN").html()//当前选中班级
-									$("#goto").val("");//goto框滞空
+								classNow = $("#classN").html()//当前选中班级
+
+								id = $(this).attr("id");
+								var now;
+								var total;
+								if (id == "pageUp") {
 									now = $("#pageNow").html().substring(0, 1);//当前页
+									$("#goto").val("");//goto框滞空
 									total = Number($("#pageT").html());//总页数
 									now = now - 1;
 									if (now < 1) {//作分页限定
 										now = 1;
 									}
+								} else if (id == "pageDown") {
+									now = $("#pageNow").html().substring(0, 1);//当前页
+									$("#goto").val("");//goto框滞空
+									total = Number($("#pageT").html());//总页数
+									now = now + 1;
+									if (now == 2 && total == "") {
+										now = 1;
+									} else if (now > total) {
+										now = total;
+									}
+								} else if (id == "go") {
+									now = Number($("#goto").val());//当前页
+									total = Number($("#pageT").html());//总页数									
+									if (now > total) {
+										now = total;
+									}else if(now<1){
+										now=1
+									}
+								}
+
 								if (classNow != "") {//判断是否返回了数据
 									$("#tab").empty();
 									$("#tab").append(title)
 									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$
-											.ajax({
+									$.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -527,171 +550,12 @@
 																	+ "</tr>"
 															$("#tab").append(s)
 															$("#classN")
-																	.html(
-																			arr[i].myClass)
+																	.html(arr[i].myClass)
 															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
+																	.on('click',function() {
 																				var nn = $(
 																						this)
-																						.attr(
-																								"value");
-																				alert(nn)
-																			})
-														}
-													}
-												}
-											})
-								}
-
-							})
-			
-			$("#pageDown").click(
-							//点击向下分页
-							function() {
-								classNow = $("#classN").html()//当前选中班级
-								$("#goto").val("");//goto框滞空
-								now = $("#pageNow").html().substring(0, 1);//当前页
-								total = Number($("#pageT").html());//总页数
-								now = now + 1;
-								if (now == 2 && total == "") {
-									now = 1;
-								} else if (now > total) {
-									now = total;
-								}
-
-								if (classNow != "") {//作分页限定
-									$("#tab").empty();
-									$("#tab").append(title)
-									//alert(title);
-									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$
-											.ajax({
-												type : 'post',
-												url : 'find',
-												data : {
-													classNo : classNow,
-													type : 1,
-													pageNow : now
-												},
-												dataType : "json",
-												success : function(data) {
-													var Data = data;
-													for ( var key in Data) {
-														$("#pageT").html(key)
-														var arr = Data[key];
-														for (var i = 0; i < arr.length; i++) {
-															s = "<tr><td>"
-																	+ arr[i].num
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].name
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].sex
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].myClass
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].credit
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].state
-																	+ "</td>"
-																	+ "<td >"
-																	+ "<a id="+arr[i].num+" value="+arr[i].num+" href='#myModal' data-toggle='modal'>"
-																	+ "详情"
-																	+ "</a>"
-																	+ "</td>"
-																	+ "</tr>"
-															$("#tab").append(s)
-															$("#classN")
-																	.html(
-																			arr[i].myClass)
-															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
-																				var nn = $(
-																						this)
-																						.attr(
-																								"value");
-																				alert(nn)
-																			})
-														}
-													}
-												}
-											})
-								}
-
-							})
-
-			$("#go").click(
-							function() {
-								classNow = $("#classN").html()//当前选中班级
-								now = Number($("#goto").val());//当前页
-								total = Number($("#pageT").html());//总页数
-								if (now > total)
-									now = total;
-								if (classNow != "") {//作分页限定
-									$("#tab").empty();
-									$("#tab").append(title)
-									//alert(title);
-									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$
-											.ajax({
-												type : 'post',
-												url : 'find',
-												data : {
-													classNo : classNow,
-													type : 1,
-													pageNow : now
-												},
-												dataType : "json",
-												success : function(data) {
-													var Data = data;
-													for ( var key in Data) {
-														$("#pageT").html(key)
-														var arr = Data[key];
-														for (var i = 0; i < arr.length; i++) {
-															s = "<tr><td>"
-																	+ arr[i].num
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].name
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].sex
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].myClass
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].credit
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].state
-																	+ "</td>"
-																	+ "<td >"
-																	+ "<a id="+arr[i].num+" value="+arr[i].num+" class='info' href='#myModal' data-toggle='modal'>"
-																	+ "详情"
-																	+ "</a>"
-																	+ "</td>"
-																	+ "</tr>"
-															$("#tab").append(s)
-															$("#classN")
-																	.html(
-																			arr[i].myClass)
-															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
-																				var nn = $(
-																						this)
-																						.attr(
-																								"value");
+																						.attr("value");
 																				alert(nn)
 																			})
 														}
@@ -700,7 +564,6 @@
 											})
 								}
 							})
-			
 		})
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
