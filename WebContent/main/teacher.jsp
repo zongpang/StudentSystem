@@ -1,3 +1,4 @@
+<%@page import="com.bc.stdsys.entitys.MyClass"%>
 <%@page import="com.bc.stdsys.entitys.Course"%>
 <%@page import="com.bc.stdsys.entitys.Deanery"%>
 <%@page import="com.bc.stdsys.entitys.Master"%>
@@ -57,6 +58,7 @@
 <link rel="apple-touch-icon-precomposed"
 	href="main/assets/ico/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="main/assets/ico/favicon.png">
+
 </head>
 
 <body data-spy="scroll" data-target=".bs-docs-sidebar"
@@ -64,11 +66,9 @@
 	<%
 		Teacher teacher = (Teacher) session.getAttribute("user");
 		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级名称集合
-		ArrayList<Course> courseList = (ArrayList<Course>) session.getAttribute("myCourse");//课程集合
+		//ArrayList<Course> courseList = (ArrayList<Course>) session.getAttribute("myCourse");//课程集合
 		//ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
 		//ArrayList<Student> studentP = (ArrayList<Student>) session.getAttribute("myStudentP");//每页班学生集合
-		//Integer pageSize = 2;//设计每页显示的条数
-		//Integer PageTotal = 0;//总页数-
 	%>
 
 	<!-- Navbar
@@ -113,18 +113,18 @@
 			<div>
 				<table class="table table-bordered">
 					<tr>
-						<th>studentnum</th>
-						<th>myclass</th>
-						<th>course</th>
-						<th>facetoface</th>
-						<th>write</th>
-						<th>computer</th>
-						<th>average</th>
-						<th>teacher</th>
-						<th>teacherSpeak</th>
-						<th>classWorker</th>
-						<th>classWorkerSpeak</th>
-						<th>date</th>
+						<th>学号</th>
+						<th>班级</th>
+						<th>课程</th>
+						<th>答辩</th>
+						<th>笔试</th>
+						<th>机试</th>
+						<th>平均分</th>
+						<th>教师</th>
+						<th>教师评价</th>
+						<th>班主任</th>
+						<th>班主任评价</th>
+						<th>日期</th>
 						<th>操作</th>
 					</tr>
 					<tr>
@@ -142,126 +142,7 @@
 						<td>4</td>
 						<td><a href="#myModal1" role="button" data-toggle="modal">修改</a></td>
 					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td><a>修改</a></td>
-					</tr>
+					
 				</table>
 			</div>
 		</div>
@@ -344,7 +225,7 @@
 							<th>所在班级</th>
 							<th>综合学分</th>
 							<th>状态</th>
-							<td>操作</td>
+							<th>操作</th>
 						</tr>
 						<tr id="tab_1">
 
@@ -363,6 +244,11 @@
 			</div>
 		</div>
 	</div>
+
+
+
+
+
 	<!--通过ajax返回总页数  -->
 	<p id="pageT" hidden></p>
 	<!--通过ajax返回班级 号 -->
@@ -371,16 +257,16 @@
 
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="main/assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
-
 	<!--点击班级查看学生  -->
 	<c:forEach var="temp" items="${myClass }">
 		<script type="text/javascript">
 			$(function() {
-				var title = $("#tab_0").html()//学生标题栏
+				var title = $("#tab_0").html()//得到学生标题栏
 				var pageN = 1;//初始化为第一页
 				$("#${temp}")
 						.click(
 								function() {
+									$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//显示翻页按钮
 									var myClass = $('#${temp}').html();
 									$
 											.ajax({
@@ -399,10 +285,14 @@
 														//alert(key)
 														$("#pageT").html(key)//为隐藏标签赋key值分页用
 														var arr = Data[key];
-														$("#tab").empty();
-														$("#tab").append(title)
+														$("#tab").empty();//tab滞空重新赋值
+														$("#tab")
+																.append(
+																		"<tr id=tab_0>"
+																				+ title
+																				+ "</tr>")//tab添加标题栏												
 														for (var i = 0; i < arr.length; i++) {
-															s = "<tr><td>"
+															s = "<tr id=tab_1 class=std_inf><td>"
 																	+ arr[i].num
 																	+ "</td>"
 																	+ "<td>"
@@ -463,23 +353,59 @@
 			$("#add").hide();//加载隐藏添加按钮
 			$("#studentM").click(function() {//点击修改导航栏方法
 				$("#add").hide();//隐藏添加按钮
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏返页控制按钮
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
 				$("#M").html(stdM)//让导航栏显示当前菜单
 				$("#table_title").html("学生信息列表")
-				//var title = $("#tab_0").html()//学生标题栏
-				$("#tab_0").html(title);
+				$("#tab").empty()//清空tab下的列表
+			    $("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
 			})
 			$("#classM").click(function() {//点击修给导航栏方法
 				$("#add").show();//隐藏添加按钮
 				$("#M").html(claM)//让导航栏显示当前菜单
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏返页控制按钮
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
 				$("#table_title").html("课程信息列表");
-				$("#tab_0").empty();
-				$("#tab_1").empty();
+				$("#tab_0").empty();//清空标题栏
+				$(".std_inf").remove();//删除学生列表
+				//alert($("#tab").html());
 			})
-			$("#myCourse").click(function() {
-                 
-			})
+			$("#myCourse")
+					.click(function() {//点击获取班级信息
+								//定义课程标题栏
+								if ($("#tab_0").html() == "") {
+									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th>"
+									$("#tab_0").append(courseTitle);//添加标题栏
+									$.ajax({
+												type : 'post',
+												url : 'find',
+												data : {
+													type : 2,
+												},
+												dataType : "json",
+												success : function(data) {
+													var Data = data;
+													for ( var key in Data) {
+														var aaa = Data[key]
+														for (var i = 0; i < aaa.length; i++) {
+															$("#tab")
+																	.append(
+																			"<tr id=tab_1 class=std_inf><td>"
+																					+ aaa[i].name
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].myClass
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].teacher
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].date
+																					+ "</td></tr>")
+														}
+													}
+												}
+											})
+								}
+							})
 
 			var title = $("#tab_0").html()//学生标题栏			
 			$("#pageUp,#pageDown,#go")
@@ -517,8 +443,6 @@
 									}
 								}
 								if (classNow != "") {//判断是否返回了数据
-									$("#tab").empty();
-									$("#tab").append(title)
 									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
 									$
 											.ajax({
@@ -535,8 +459,14 @@
 													for ( var key in Data) {
 														$("#pageT").html(key)
 														var arr = Data[key];
+														$("#tab").empty();//tab滞空重新赋值
+														$("#tab")
+																.append(
+																		"<tr id=tab_0>"
+																				+ title
+																				+ "</tr>")//tab添加标题栏		
 														for (var i = 0; i < arr.length; i++) {
-															s = "<tr><td>"
+															s = "<tr id=tab_1 class=std_inf><td>"
 																	+ arr[i].num
 																	+ "</td>"
 																	+ "<td>"

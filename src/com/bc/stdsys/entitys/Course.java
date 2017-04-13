@@ -2,26 +2,30 @@ package com.bc.stdsys.entitys;
 
 import java.io.Serializable;
 
-public class Course implements Serializable{
+public class Course implements Serializable {
 	private int id;
-	private int teacherNum;
-	private String name;
-	private String myClass;
-	private String teacher;
+	private int teacherNum;// 教师工号
+	private String name;// 课程名称
+	private String myClass;// 所受班级
+	private String teacher;// 教师姓名
 	private String date;// 开课日期
+
 
 	public Course() {
 
 	}
 
-	public Course(int id, String name, String myClass, String teacher, String date, int teacherNum) {
+	public Course(int id, int teacherNum, String name, String myClass, String teacher, String date) {
 		this.id = id;
+		this.teacherNum = teacherNum;
 		this.name = name;
 		this.myClass = myClass;
 		this.teacher = teacher;
 		this.date = date;
-		this.teacherNum = teacherNum;
+		
 	}
+
+
 
 	public int getTeacherNum() {
 		return teacherNum;

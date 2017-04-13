@@ -26,7 +26,9 @@ public class FindServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
 	HttpSession session;
 	TeacherDao daoT;
-	final int PAGE_SIZE = 3;// 分页查找每页的容量
+	final int PAGE_SIZE = 2;// 分页查找每页的容量
+	PrintWriter pw;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -43,43 +45,47 @@ public class FindServlet extends HttpServlet {
 		Object obj = session.getAttribute("user");
 		if (obj instanceof Teacher) {
 			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
+			Teacher teacher = (Teacher) obj;
 			if (teacherFlag) {// 首次登陆数据初始化
-				Teacher teacher = (Teacher) obj;
 				daoT = new TeacherDaoImpl();
-				List<Course> myCourse=daoT.findCourseByTeacher(teacher);//查出所有课程
-				List<String> list = daoT.findMyclassByTeacher(teacher);//查出所教班级的名称
+				List<String> list = daoT.findMyclassByTeacher(teacher);// 查出所教班级的名称
 				session.setAttribute("myClass", list);// 向session中放入班级
-				session.setAttribute("myCourse", myCourse);//向session中放入该教师所受课程
 				session.setAttribute("loginFirst", false);// 首次登陆置否
-				response.sendRedirect("main/teacher.jsp");//重定向到main/teacher.jsp
+				response.sendRedirect("main/teacher.jsp");// 重定向到main/teacher.jsp
 			}
-			// 查询代码段(处理ajax请求)
+			// 处理ajax请求
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
 				if (myType == 1) {// 作学生分页查询
-					String classNo = request.getParameter("classNo");//得到班级号
-					String pageNow = request.getParameter("pageNow");//得到当前页
+					String classNo = request.getParameter("classNo");// 得到班级号
+					String pageNow = request.getParameter("pageNow");// 得到当前页
 					if (daoT == null)
-						daoT = new TeacherDaoImpl();//实例化teacherDao
+						daoT = new TeacherDaoImpl();// 实例化teacherDao
 					ArrayList<Student> students = daoT.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
 					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
 							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					//session.setAttribute("myStudentC", students);// 班级所有学生的集合
-					// session.setAttribute("pageTotal", totalP);
-					// session.setAttribute("myStudentP", stu);//每页展示学生的集合
 					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
-					json = new JSONObject();
+					if (json==null) 
+						json = new JSONObject();
+					json.clear();
 					json.put(totalP, stu);// 放入数据(以总页数为key)
-					PrintWriter pw = response.getWriter();//得到printWriter
+					pw = response.getWriter();// 得到printWriter
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 				} else if (myType == 2) {// 作课程查询
-                      
+					System.out.println(myType + "");
+					List<Course> myCourse = daoT.findCourseByTeacher(teacher);// 查出所有课程
+					if (json==null) 
+					json = new JSONObject();
+					json.clear();
+					json.put(teacher.getName(), myCourse);// 以教师的姓名或工号作为返回key
+					pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				}else if (myType==3) {
 					
-					
-					
-				}
+				} 
 
 			}
 
