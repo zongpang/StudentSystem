@@ -7,26 +7,42 @@ public class Teacher implements Serializable {
 	private int num;
 	private String name;
 	private String passWord;
-	private String course;
-	private String myClass;
-
+	private String phone;
+	private String aDdress;
+	//private String course;
+	//private String myClass;
 	public Teacher() {
 
 	}
 
-	public Teacher(String name, String passwrod) {
-		this.name = name;
-		this.passWord = passwrod;
+
+	public String getPhone() {
+		return phone;
 	}
 
-	public Teacher(int id, int num, String name, String passWord, String course, String myClass) {
 
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	public String getaDdress() {
+		return aDdress;
+	}
+
+
+	public void setaDdress(String aDdress) {
+		this.aDdress = aDdress;
+	}
+
+
+	public Teacher(int id, int num, String name, String passWord, String phone, String aDdress) {
 		this.id = id;
 		this.num = num;
 		this.name = name;
 		this.passWord = passWord;
-		this.course = course;
-		this.myClass = myClass;
+		this.phone = phone;
+		this.aDdress = aDdress;
 	}
 
 	public int getId() {
@@ -61,20 +77,20 @@ public class Teacher implements Serializable {
 		this.passWord = passWord;
 	}
 
-	public String getCourse() {
-		return course;
-	}
+//	public String getCourse() {
+//		return course;
+//	}
+//
+//	public void setCourse(String course) {
+//		this.course = course;
+//	}
 
-	public void setCourse(String course) {
-		this.course = course;
-	}
-
-	public String getMyClass() {
-		return myClass;
-	}
-
-	public void setMyClass(String myClass) {
-		this.myClass = myClass;
-	}
+//	public String getMyClass() {
+//		return myClass;
+//	}
+//
+//	public void setMyClass(String myClass) {
+//		this.myClass = myClass;
+//	}
 
 }

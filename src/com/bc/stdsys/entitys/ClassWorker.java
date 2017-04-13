@@ -7,25 +7,33 @@ public class ClassWorker implements Serializable{
 	private int num;
 	private String name;
 	private String passWord;
-	private String myClass;
-
+	private String phone;
+	private String aDdress;
+	//private String myClass;
 	public ClassWorker() {
 
 	}
-
-	public ClassWorker(String name, String pass) {
-		this.name = name;
-		this.passWord = pass;
-	}
-
-	public ClassWorker(int id, int num, String name, String passWord, String myClass) {
+	public ClassWorker(int id, int num, String name, String passWord, String phone, String aDdress) {
 		this.id = id;
 		this.num = num;
 		this.name = name;
 		this.passWord = passWord;
-		this.myClass = myClass;
+		this.phone = phone;
+		this.aDdress = aDdress;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getaDdress() {
+		return aDdress;
+	}
+	public void setaDdress(String aDdress) {
+		this.aDdress = aDdress;
+	}
 	public int getId() {
 		return id;
 	}
@@ -58,12 +66,12 @@ public class ClassWorker implements Serializable{
 		this.passWord = passWord;
 	}
 
-	public String getMyClass() {
-		return myClass;
-	}
-
-	public void setMyClass(String myClass) {
-		this.myClass = myClass;
-	}
+//	public String getMyClass() {
+//		return myClass;
+//	}
+//
+//	public void setMyClass(String myClass) {
+//		this.myClass = myClass;
+//	}
 
 }

@@ -1,3 +1,4 @@
+<%@page import="com.bc.stdsys.entitys.Course"%>
 <%@page import="com.bc.stdsys.entitys.Deanery"%>
 <%@page import="com.bc.stdsys.entitys.Master"%>
 <%@page import="com.bc.stdsys.entitys.ClassWorker"%>
@@ -62,7 +63,8 @@
 	data-twttr-rendered="true">
 	<%
 		Teacher teacher = (Teacher) session.getAttribute("user");
-		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级集合
+		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级名称集合
+		ArrayList<Course> courseList = (ArrayList<Course>) session.getAttribute("myCourse");//课程集合
 		//ArrayList<Student> studentC = (ArrayList<Student>) session.getAttribute("myStudentC");//每个班学生集合
 		//ArrayList<Student> studentP = (ArrayList<Student>) session.getAttribute("myStudentP");//每页班学生集合
 		//Integer pageSize = 2;//设计每页显示的条数
@@ -315,7 +317,7 @@
 							<a id="classM" href="javascript:;">课程管理</a>
 						</h3>
 						<div>
-							<a href="javascript:;">我的课程</a>
+							<a href="javascript:;" id="myCourse">我的课程</a>
 						</div>
 					</div>
 				</div>
@@ -332,7 +334,7 @@
 				</ul>
 				<div style="margin-left: 33px;">
 					<h2 id="table_title" style="display: inline;">学生信息列表</h2>
-					<a href="javascript:;" class="btn btn-danger pull-right">添加</a>
+					<a id="add" href="javascript:;" class="btn btn-danger pull-right">添加</a>
 
 					<table id="tab" class="table table-hover">
 						<tr id="tab_0">
@@ -375,7 +377,7 @@
 		<script type="text/javascript">
 			$(function() {
 				var title = $("#tab_0").html()//学生标题栏
-				var pageN = 1;
+				var pageN = 1;//初始化为第一页
 				$("#${temp}")
 						.click(
 								function() {
@@ -458,26 +460,36 @@
 		$(function() {
 			var stdM = $("#studentM").html()//菜单值
 			var claM = $("#classM").html()//菜单值
-			$("#studentM").click(function() {//点击修给导航栏方法
-				$("#M").html(stdM)
+			$("#add").hide();//加载隐藏添加按钮
+			$("#studentM").click(function() {//点击修改导航栏方法
+				$("#add").hide();//隐藏添加按钮
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏返页控制按钮
+				$("#M").html(stdM)//让导航栏显示当前菜单
 				$("#table_title").html("学生信息列表")
+				//var title = $("#tab_0").html()//学生标题栏
+				$("#tab_0").html(title);
 			})
 			$("#classM").click(function() {//点击修给导航栏方法
-				$("#M").html(claM)
-				$("#table_title").html("课程信息列表")
+				$("#add").show();//隐藏添加按钮
+				$("#M").html(claM)//让导航栏显示当前菜单
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏返页控制按钮
+				$("#table_title").html("课程信息列表");
+				$("#tab_0").empty();
+				$("#tab_1").empty();
+			})
+			$("#myCourse").click(function() {
+                 
 			})
 
 			var title = $("#tab_0").html()//学生标题栏			
 			$("#pageUp,#pageDown,#go")
 					.click(
-							//点击向上分页        
 							function() {
 								classNow = $("#classN").html()//当前选中班级
-
 								id = $(this).attr("id");
 								var now;
 								var total;
-								if (id == "pageUp") {
+								if (id == "pageUp") {//上翻
 									now = $("#pageNow").html().substring(0, 1);//当前页
 									$("#goto").val("");//goto框滞空
 									total = Number($("#pageT").html());//总页数
@@ -485,7 +497,7 @@
 									if (now < 1) {//作分页限定
 										now = 1;
 									}
-								} else if (id == "pageDown") {
+								} else if (id == "pageDown") {//下翻
 									now = $("#pageNow").html().substring(0, 1);//当前页
 									$("#goto").val("");//goto框滞空
 									total = Number($("#pageT").html());//总页数
@@ -495,21 +507,21 @@
 									} else if (now > total) {
 										now = total;
 									}
-								} else if (id == "go") {
+								} else if (id == "go") {//goto
 									now = Number($("#goto").val());//当前页
 									total = Number($("#pageT").html());//总页数									
 									if (now > total) {
 										now = total;
-									}else if(now<1){
-										now=1
+									} else if (now < 1) {
+										now = 1
 									}
 								}
-
 								if (classNow != "") {//判断是否返回了数据
 									$("#tab").empty();
 									$("#tab").append(title)
 									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$.ajax({
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -550,12 +562,16 @@
 																	+ "</tr>"
 															$("#tab").append(s)
 															$("#classN")
-																	.html(arr[i].myClass)
+																	.html(
+																			arr[i].myClass)
 															$("#" + arr[i].num)
-																	.on('click',function() {
+																	.on(
+																			'click',
+																			function() {
 																				var nn = $(
 																						this)
-																						.attr("value");
+																						.attr(
+																								"value");
 																				alert(nn)
 																			})
 														}

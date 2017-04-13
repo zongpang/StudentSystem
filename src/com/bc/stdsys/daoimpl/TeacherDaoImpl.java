@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bc.stdsys.dao.TeacherDao;
+import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.DButil;
@@ -37,11 +38,11 @@ public class TeacherDaoImpl implements TeacherDao {
 		PreparedStatement pst = null;// 预编译对象
 		ResultSet rst = null;// 结果集
 		try {
-			String sql = "select name from myclass where teachernum=?;";
+			String sql = "select name from myclass where teacher=?;";
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);// 这里pst直接获取，避免大量调用Dbutil静态方法
-			pst.setInt(1, teacher.getNum());
+			pst.setString(1, teacher.getName());
 			rst = pst.executeQuery();
 			while (rst.next()) {
 				list.add(rst.getString("name"));
@@ -106,6 +107,48 @@ public class TeacherDaoImpl implements TeacherDao {
 			}
 		}
 		return listStd;
+	}
+
+	@Override
+	public List<Course> findCourseByTeacher(Teacher teacher) {
+		// TODO Auto-generated method stub
+		List<Course> myCourse = new ArrayList<Course>();
+		String sql = "select * from course where teacher=?;";
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, teacher.getName());
+			rst = pst.executeQuery();
+			Course c = null;
+			while (rst.next()) {
+				c = new Course();
+				c.setName(rst.getString("name"));
+				c.setDate(rst.getString("date"));
+				c.setMyClass(rst.getString("myclass"));
+				c.setTeacher(rst.getString("teacher"));
+				c.setTeacherNum(rst.getInt("teachernum"));
+				myCourse.add(c);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return myCourse;
 	}
 
 }

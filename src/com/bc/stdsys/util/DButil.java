@@ -11,13 +11,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import com.bc.stdsys.entitys.ClassWorker;
-import com.bc.stdsys.entitys.Course;
-
 import com.bc.stdsys.entitys.Deanery;
 import com.bc.stdsys.entitys.Master;
-import com.bc.stdsys.entitys.MyClass;
-import com.bc.stdsys.entitys.Score;
-import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 
 public class DButil {
@@ -145,6 +140,10 @@ public class DButil {
 			try {
 				if (rst.next()) {
 					teacher.setNum(rst.getInt("num"));
+					teacher.setName(rst.getString("name"));
+					teacher.setPassWord(rst.getString("password"));
+					teacher.setPhone(rst.getString("phone"));
+					teacher.setaDdress(rst.getString("address"));
 					return teacher;
 				}
 			} catch (SQLException e) {
@@ -167,6 +166,10 @@ public class DButil {
 			try {
 				if (rst.next()) {
 					classWorker.setNum(rst.getInt("num"));
+					classWorker.setName(rst.getString("name"));
+					classWorker.setPassWord(rst.getString("password"));
+					classWorker.setPhone(rst.getString("phone"));
+					classWorker.setaDdress(rst.getString("address"));
 					return classWorker;
 				}
 			} catch (SQLException e) {
