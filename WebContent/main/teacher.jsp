@@ -111,7 +111,7 @@
 		</div>
 		<div class="modal-body" STYLE="HEIGHT: 200PX;">
 			<div>
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="score_info">
 					<tr>
 						<th>学号</th>
 						<th>班级</th>
@@ -127,7 +127,8 @@
 						<th>日期</th>
 						<th>操作</th>
 					</tr>
-					<tr>
+					<!--  
+					<tr >
 						<td>1</td>
 						<td>2</td>
 						<td>3</td>
@@ -142,7 +143,7 @@
 						<td>4</td>
 						<td><a href="#myModal1" role="button" data-toggle="modal">修改</a></td>
 					</tr>
-					
+					-->
 				</table>
 			</div>
 		</div>
@@ -319,10 +320,8 @@
 																	+ "</td>"
 																	+ "</tr>"
 															$("#tab").append(s)
-															$("#classN")
-																	.html(
-																			arr[i].myClass)//为隐藏标签赋值分页用	
-															$("#" + arr[i].num).on('click',function() {
+															$("#classN").html(arr[i].myClass)//为隐藏标签赋值分页用	
+															$("#" + arr[i].num).on('click',function() {//显示详情
 																				var stdNum = $(this).attr("value");//得到学生的学号
 																				//alert(nn)
 																				$.ajax({//查出该生的历史信息
@@ -333,16 +332,62 @@
 																					success:function(data){
 																					var Data=data
 																					for(var key in Data){
-																						var arr=Data[key];
-																						for (var i = 0; i < arr.length; i++) {
-																							alert(arr[i].teacher)
+																						var arr=Data[key];//得到数据
+																						$("#score_info").empty();
+																						$("#score_info").append("<tr>"//添加标题
+																								+"<th>学号</th>"
+																								+"<th>班级</th>"
+																								+"<th>课程</th>"
+																								+"<th>答辩</th>"
+																								+"<th>笔试</th>"
+																								+"<th>机试</th>"
+																								+"<th>平均分</th>"
+																								+"<th>教师</th>"
+																								+"<th>教师评价</th>"
+																								+"<th>班主任</th>"
+																								+"<th>班主任评价</th>"
+																								+"<th>日期</th>"
+																								+"<th>操作</th>"
+																							+"</tr>");
+																						for (var i = 0; i < arr.length; i++) {																							
+																							//alert(arr[i].teacher)
+																							if(i==(arr.length-1)){//最后一行可操作(由管理员更新)
+																								$("#score_info").append("<tr>"
+																										 +"<td>"+arr[i].studentNum+"</td>"	
+																										 +"<td>"+arr[i].myClass+"</td>"	
+																										 +"<td>"+arr[i].course+"</td>"	
+																										 +"<td>"+arr[i].faceToFace+"</td>"	
+																										 +"<td>"+arr[i].write+"</td>"	
+																										 +"<td>"+arr[i].computer+"</td>"	
+																										 +"<td>"+arr[i].average+"</td>"	
+																										 +"<td>"+arr[i].teacher+"</td>"	
+																										 +"<td>"+arr[i].teacherSpeak+"</td>"	
+																										 +"<td>"+arr[i].classWorker+"</td>"	
+																										 +"<td>"+arr[i].classWorkerSpeak+"</td>"	
+																										 +"<td>"+arr[i].date+"</td>"
+																										 +"<td>"+"<a href='#myModal1' role='button' data-toggle='modal'>修改</a>"+"</td></tr>");
+																							}else{
+																							$("#score_info").append("<tr>"
+																							 +"<td>"+arr[i].studentNum+"</td>"	
+																							 +"<td>"+arr[i].myClass+"</td>"	
+																							 +"<td>"+arr[i].course+"</td>"	
+																							 +"<td>"+arr[i].faceToFace+"</td>"	
+																							 +"<td>"+arr[i].write+"</td>"	
+																							 +"<td>"+arr[i].computer+"</td>"	
+																							 +"<td>"+arr[i].average+"</td>"	
+																							 +"<td>"+arr[i].teacher+"</td>"	
+																							 +"<td>"+arr[i].teacherSpeak+"</td>"	
+																							 +"<td>"+arr[i].classWorker+"</td>"	
+																							 +"<td>"+arr[i].classWorkerSpeak+"</td>"	
+																							 +"<td>"+arr[i].date+"</td></tr>");	
+																							}
 																						}
 																					}	
 																					}
 																				})
 												
 																			})
-																$("#d" + arr[i].num).on('click',function() {
+																$("#d" + arr[i].num).on('click',function() {//删除某一学生
 																				var nn = $(this).attr("id");
 																				alert(nn)
 																			})			
@@ -351,12 +396,7 @@
 																			
 														}
 													}
-													$("#pageNow")
-															.html(
-																	"1/"
-																			+ $(
-																					"#pageT")
-																					.html());
+													$("#pageNow").html("1/"+ $("#pageT").html());
 												}
 											})
 								})
@@ -405,8 +445,7 @@
 													for ( var key in Data) {
 														var aaa = Data[key]
 														for (var i = 0; i < aaa.length; i++) {
-															$("#tab")
-																	.append(
+															$("#tab").append(
 																			"<tr id=tab_1 class=std_inf><td>"
 																					+ aaa[i].name
 																					+ "</td>"
@@ -427,108 +466,166 @@
 							})
 
 			var title = $("#tab_0").html()//学生标题栏			
-			$("#pageUp,#pageDown,#go")
-					.click(
-							function() {
-								classNow = $("#classN").html()//当前选中班级
-								id = $(this).attr("id");
-								var now;
-								var total;
-								if (id == "pageUp") {//上翻
-									now = $("#pageNow").html().substring(0, 1);//当前页
-									$("#goto").val("");//goto框滞空
-									total = Number($("#pageT").html());//总页数
-									now = now - 1;
-									if (now < 1) {//作分页限定
-										now = 1;
-									}
-								} else if (id == "pageDown") {//下翻
-									now = $("#pageNow").html().substring(0, 1);//当前页
-									$("#goto").val("");//goto框滞空
-									total = Number($("#pageT").html());//总页数
-									now = now + 1;
-									if (now == 2 && total == "") {
-										now = 1;
-									} else if (now > total) {
-										now = total;
-									}
-								} else if (id == "go") {//goto
-									now = Number($("#goto").val());//当前页
-									total = Number($("#pageT").html());//总页数									
-									if (now > total) {
-										now = total;
-									} else if (now < 1) {
-										now = 1
-									}
-								}
-								if (classNow != "") {//判断是否返回了数据
-									$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$
-											.ajax({
-												type : 'post',
-												url : 'find',
-												data : {
-													classNo : classNow,
-													type : 1,
-													pageNow : now
-												},
-												dataType : "json",
-												success : function(data) {
-													var Data = data;
-													for ( var key in Data) {
-														$("#pageT").html(key)
-														var arr = Data[key];
-														$("#tab").empty();//tab滞空重新赋值
-														$("#tab")
-																.append(
-																		"<tr id=tab_0>"
-																				+ title
-																				+ "</tr>")//tab添加标题栏		
-														for (var i = 0; i < arr.length; i++) {
-															s = "<tr id=tab_1 class=std_inf><td>"
-																	+ arr[i].num
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].name
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].sex
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].myClass
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].credit
-																	+ "</td>"
-																	+ "<td>"
-																	+ arr[i].state
-																	+ "</td>"
-																	+ "<td >"
-																	+ "<a id="+arr[i].num+" value="+arr[i].num+" href='#myModal' data-toggle='modal'>"
-																	+ "详情"
-																	+ "</a>"
-																	+ "</td>"
-																	+ "</tr>"
-															$("#tab").append(s)
-															$("#classN")
-																	.html(
-																			arr[i].myClass)
-															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
-																				var nn = $(
-																						this)
-																						.attr(
-																								"value");
-																				alert(nn)
+			$("#pageUp,#pageDown,#go").click(function() {
+						classNow = $("#classN").html()//当前选中班级
+						id = $(this).attr("id");
+						var now;
+						var total;
+						if (id == "pageUp") {//上翻
+							now = $("#pageNow").html().substring(0, 1);//当前页
+							$("#goto").val("");//goto框滞空
+							total = Number($("#pageT").html());//总页数
+							now = now - 1;
+							if (now < 1) {//作分页限定
+								now = 1;
+							}
+						} else if (id == "pageDown") {//下翻
+							now = $("#pageNow").html().substring(0, 1);//当前页
+							$("#goto").val("");//goto框滞空
+							total = Number($("#pageT").html());//总页数
+							now = now + 1;
+							if (now == 2 && total == "") {
+								now = 1;
+							} else if (now > total) {
+								now = total;
+							}
+						} else if (id == "go") {//goto
+							now = Number($("#goto").val());//当前页
+							total = Number($("#pageT").html());//总页数									
+							if (now > total) {
+								now = total;
+							} else if (now < 1) {
+								now = 1
+							}
+						}
+						if (classNow != "") {//判断是否返回了数据
+							$("#pageNow").html(now + "/" + total)//给pageNow再赋值
+							$.ajax({
+										type : 'post',
+										url : 'find',
+										data : {
+											classNo : classNow,
+											type : 1,
+											pageNow : now
+										},
+										dataType : "json",
+										success : function(data) {
+											var Data = data;
+											for ( var key in Data) {
+												$("#pageT").html(key)
+												var arr = Data[key];
+												$("#tab").empty();//tab滞空重新赋值
+												$("#tab").append("<tr id=tab_0>"
+																		+ title
+																		+ "</tr>")//tab添加标题栏		
+												for (var i = 0; i < arr.length; i++) {
+													s = "<tr id=tab_1 class=std_inf><td>"
+														+ arr[i].num
+														+ "</td>"
+														+ "<td>"
+														+ arr[i].name
+														+ "</td>"
+														+ "<td>"
+														+ arr[i].sex
+														+ "</td>"
+														+ "<td>"
+														+ arr[i].myClass
+														+ "</td>"
+														+ "<td>"
+														+ arr[i].credit
+														+ "</td>"
+														+ "<td>"
+														+ arr[i].state
+														+ "</td>"
+														+ "<td >"
+														+ "<a id="+arr[i].num+" value="+arr[i].num+" href='#myModal' data-toggle='modal'>"
+														+ "详情"
+														+ "</a>"
+														+ "<a id=d"+arr[i].num+" value="+arr[i].num+" href='javascript:;'>"
+														+ "/删除"
+														+ "</a>"
+														+ "</td>"
+														+ "</tr>"
+													$("#tab").append(s)
+													$("#classN").html(arr[i].myClass)
+													$("#" + arr[i].num).on('click',function() {//显示详情
+																				var stdNum = $(this).attr("value");//得到学生的学号
+																				//alert(nn)
+																				$.ajax({//查出该生的历史信息
+																					type : 'post',
+																					url : 'find',
+																					data:{stdN:stdNum,type:3},
+																					dataType:"json",
+																					success:function(data){
+																					var Data=data
+																					for(var key in Data){
+																						var arr=Data[key];//得到数据
+																						$("#score_info").empty();
+																						$("#score_info").append("<tr>"//添加标题
+																								+"<th>学号</th>"
+																								+"<th>班级</th>"
+																								+"<th>课程</th>"
+																								+"<th>答辩</th>"
+																								+"<th>笔试</th>"
+																								+"<th>机试</th>"
+																								+"<th>平均分</th>"
+																								+"<th>教师</th>"
+																								+"<th>教师评价</th>"
+																								+"<th>班主任</th>"
+																								+"<th>班主任评价</th>"
+																								+"<th>日期</th>"
+																								+"<th>操作</th>"
+																							+"</tr>");
+																						for (var i = 0; i < arr.length; i++) {																							
+																							//alert(arr[i].teacher)
+																							if(i==(arr.length-1)){//最后一行可操作(由管理员更新)
+																								$("#score_info").append("<tr>"
+																										 +"<td>"+arr[i].studentNum+"</td>"	
+																										 +"<td>"+arr[i].myClass+"</td>"	
+																										 +"<td>"+arr[i].course+"</td>"	
+																										 +"<td>"+arr[i].faceToFace+"</td>"	
+																										 +"<td>"+arr[i].write+"</td>"	
+																										 +"<td>"+arr[i].computer+"</td>"	
+																										 +"<td>"+arr[i].average+"</td>"	
+																										 +"<td>"+arr[i].teacher+"</td>"	
+																										 +"<td>"+arr[i].teacherSpeak+"</td>"	
+																										 +"<td>"+arr[i].classWorker+"</td>"	
+																										 +"<td>"+arr[i].classWorkerSpeak+"</td>"	
+																										 +"<td>"+arr[i].date+"</td>"
+																										 +"<td>"+"<a href='#myModal1' role='button' data-toggle='modal'>修改</a>"+"</td></tr>");
+																							}else{
+																							$("#score_info").append("<tr>"
+																							 +"<td>"+arr[i].studentNum+"</td>"	
+																							 +"<td>"+arr[i].myClass+"</td>"	
+																							 +"<td>"+arr[i].course+"</td>"	
+																							 +"<td>"+arr[i].faceToFace+"</td>"	
+																							 +"<td>"+arr[i].write+"</td>"	
+																							 +"<td>"+arr[i].computer+"</td>"	
+																							 +"<td>"+arr[i].average+"</td>"	
+																							 +"<td>"+arr[i].teacher+"</td>"	
+																							 +"<td>"+arr[i].teacherSpeak+"</td>"	
+																							 +"<td>"+arr[i].classWorker+"</td>"	
+																							 +"<td>"+arr[i].classWorkerSpeak+"</td>"	
+																							 +"<td>"+arr[i].date+"</td></tr>");	
+																							}
+																						}
+																					}	
+																					}
+																				})
+												
 																			})
-														}
-													}
+																			
+																			$("#d" + arr[i].num).on('click',function() {//删除某一学生
+																				var nn = $(this).attr("id");
+																				alert(nn)
+																			})	
+																	
 												}
-											})
-								}
-							})
+											}
+										}
+									})
+						}
+					})
 		})
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
