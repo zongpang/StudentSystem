@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bc.stdsys.entitys.Course;
+import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 
@@ -40,7 +41,12 @@ public interface TeacherDao {
 	public  ArrayList<Student> findStudentByTeacher(String className);
 	
 	
-	
+	/**
+	 * 根据学号返回该生的历史成绩
+	 * @param stdNum
+	 * @return
+	 */
+	public List<Score> findScoreByStudentNum(String stdNum);
 	
 	
 	

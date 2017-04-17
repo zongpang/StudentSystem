@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Score implements Serializable{
 	private int id;
-	private String studentNum;
+	private int studentNum;
 	private String course;// 课程名称
 	private double faceToFace;// 面试成绩
 	private double write;// 笔试成绩
@@ -15,14 +15,15 @@ public class Score implements Serializable{
 	private String classWorker;
 	private String classWorkerSpeak;// 班主任评价
 	private String date;// 考试日期
+	private String myClass;
 
 	public Score() {
 
 	}
 
-	public Score(int id, String studentNum, String course, double faceToFace, double write, double computer,
+	public Score(int id, int studentNum, String course, double faceToFace, double write, double computer,
 			double average, String teacher, String teacherSpeak, String classWorker, String classWorkerSpeak,
-			String date) {
+			String date,String myClass) {
 		this.id = id;
 		this.studentNum = studentNum;
 		this.course = course;
@@ -35,6 +36,15 @@ public class Score implements Serializable{
 		this.classWorker = classWorker;
 		this.classWorkerSpeak = classWorkerSpeak;
 		this.date = date;
+		this.myClass=myClass;
+	}
+
+	public String getMyClass() {
+		return myClass;
+	}
+
+	public void setMyClass(String myClass) {
+		this.myClass = myClass;
 	}
 
 	public int getId() {
@@ -45,11 +55,11 @@ public class Score implements Serializable{
 		this.id = id;
 	}
 
-	public String getStudentNum() {
+	public int getStudentNum() {
 		return studentNum;
 	}
 
-	public void setStudentNum(String studentNum) {
+	public void setStudentNum(int studentNum) {
 		this.studentNum = studentNum;
 	}
 

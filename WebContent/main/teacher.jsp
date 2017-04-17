@@ -268,8 +268,7 @@
 								function() {
 									$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//显示翻页按钮
 									var myClass = $('#${temp}').html();
-									$
-											.ajax({
+									$.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -314,22 +313,42 @@
 																	+ "<a id="+arr[i].num+" value="+arr[i].num+" href='#myModal' data-toggle='modal'>"
 																	+ "详情"
 																	+ "</a>"
+																	+ "<a id=d"+arr[i].num+" value="+arr[i].num+" href='javascript:;'>"
+																	+ "/删除"
+																	+ "</a>"
 																	+ "</td>"
 																	+ "</tr>"
 															$("#tab").append(s)
 															$("#classN")
 																	.html(
 																			arr[i].myClass)//为隐藏标签赋值分页用	
-															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
-																				var nn = $(
-																						this)
-																						.attr(
-																								"value");
-																				alert(nn)
+															$("#" + arr[i].num).on('click',function() {
+																				var stdNum = $(this).attr("value");//得到学生的学号
+																				//alert(nn)
+																				$.ajax({//查出该生的历史信息
+																					type : 'post',
+																					url : 'find',
+																					data:{stdN:stdNum,type:3},
+																					dataType:"json",
+																					success:function(data){
+																					var Data=data
+																					for(var key in Data){
+																						var arr=Data[key];
+																						for (var i = 0; i < arr.length; i++) {
+																							alert(arr[i].teacher)
+																						}
+																					}	
+																					}
+																				})
+												
 																			})
+																$("#d" + arr[i].num).on('click',function() {
+																				var nn = $(this).attr("id");
+																				alert(nn)
+																			})			
+																			
+																			
+																			
 														}
 													}
 													$("#pageNow")

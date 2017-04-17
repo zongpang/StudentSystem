@@ -16,6 +16,7 @@ import com.bc.stdsys.daoimpl.TeacherDaoImpl;
 import com.bc.stdsys.entitys.ClassWorker;
 import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Master;
+import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.Localutil;
@@ -66,26 +67,36 @@ public class FindServlet extends HttpServlet {
 					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
 							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
 					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
-					if (json==null) 
+					if (json == null)
 						json = new JSONObject();
 					json.clear();
 					json.put(totalP, stu);// 放入数据(以总页数为key)
-					pw = response.getWriter();// 得到printWriter
+					if (pw == null)
+						pw = response.getWriter();// 得到printWriter
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 				} else if (myType == 2) {// 作课程查询
-					System.out.println(myType + "");
 					List<Course> myCourse = daoT.findCourseByTeacher(teacher);// 查出所有课程
-					if (json==null) 
-					json = new JSONObject();
+					if (json == null)
+						json = new JSONObject();
 					json.clear();
 					json.put(teacher.getName(), myCourse);// 以教师的姓名或工号作为返回key
-					pw = response.getWriter();
+					if (pw == null)
+						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				}else if (myType==3) {
-					
-				} 
+				} else if (myType == 3) {
+					String stdNum = request.getParameter("stdN");
+					ArrayList<Score> historyScore = (ArrayList<Score>) daoT.findScoreByStudentNum(stdNum);
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(stdNum, historyScore);
+					if (pw == null)
+						pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				}
 
 			}
 

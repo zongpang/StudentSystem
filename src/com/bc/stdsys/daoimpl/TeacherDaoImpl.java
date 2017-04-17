@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.bc.stdsys.dao.TeacherDao;
 import com.bc.stdsys.entitys.Course;
+import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.DButil;
@@ -149,6 +150,52 @@ public class TeacherDaoImpl implements TeacherDao {
 		}
 
 		return myCourse;
+	}
+
+	@Override
+	public List<Score> findScoreByStudentNum(String stdNum) {
+		List<Score> historyScore = new ArrayList<Score>();
+		String sql = "select * from score where studentnum=?;";
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, Integer.parseInt(stdNum));
+			rst = pst.executeQuery();
+			Score s = null;
+			while (rst.next()) {
+				s = new Score();
+				s.setStudentNum(rst.getInt("studentnum"));
+				s.setMyClass(rst.getString("myclass"));
+				s.setCourse(rst.getString("course"));
+				s.setFaceToFace(rst.getDouble("facetoface"));
+				s.setWrite(rst.getDouble("write"));
+				s.setComputer(rst.getDouble("computer"));
+				s.setAverage(rst.getDouble("average"));
+				s.setTeacher(rst.getString("teacher"));
+				s.setTeacherSpeak(rst.getString("teacherspeak"));
+				s.setClassWorker(rst.getString("classworker"));
+				s.setClassWorkerSpeak(rst.getString("classworkerspeak"));
+				s.setDate(rst.getString("date"));
+				historyScore.add(s);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return historyScore;
 	}
 
 }
