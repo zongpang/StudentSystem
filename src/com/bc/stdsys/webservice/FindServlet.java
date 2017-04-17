@@ -85,7 +85,7 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				} else if (myType == 3) {
+				} else if (myType == 3) {//作学生详情展示
 					String stdNum = request.getParameter("stdN");
 					ArrayList<Score> historyScore = (ArrayList<Score>) daoT.findScoreByStudentNum(stdNum);
 					if (json == null)
@@ -96,6 +96,16 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
+				}else if (myType==4) {//作删除学生
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				}
 
 			}

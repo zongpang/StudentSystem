@@ -287,8 +287,7 @@
 														var arr = Data[key];
 														$("#tab").empty();//tab滞空重新赋值
 														$("#tab")
-																.append(
-																		"<tr id=tab_0>"
+																.append("<tr id=tab_0>"
 																				+ title
 																				+ "</tr>")//tab添加标题栏												
 														for (var i = 0; i < arr.length; i++) {
@@ -310,7 +309,7 @@
 																	+ "<td>"
 																	+ arr[i].state
 																	+ "</td>"
-																	+ "<td >"
+																	+ "<td>"
 																	+ "<a id="+arr[i].num+" value="+arr[i].num+" href='#myModal' data-toggle='modal'>"
 																	+ "详情"
 																	+ "</a>"
@@ -388,12 +387,20 @@
 												
 																			})
 																$("#d" + arr[i].num).on('click',function() {//删除某一学生
-																				var nn = $(this).attr("id");
-																				alert(nn)
+																				var id = $(this).attr("id");
+																				//alert(nn)
+																				$.ajax({
+																					
+																					
+																					
+																					
+																					
+																					
+																					
+																				})
+													
 																			})			
-																			
-																			
-																			
+						
 														}
 													}
 													$("#pageNow").html("1/"+ $("#pageT").html());
@@ -627,6 +634,7 @@
 						}
 					})
 		})
+		
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="main/assets/js/jquery-ui-1.10.0.custom.min.js"
