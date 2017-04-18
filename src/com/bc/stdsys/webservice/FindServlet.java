@@ -56,17 +56,26 @@ public class FindServlet extends HttpServlet {
 			}
 			// 处理ajax请求
 			String type = request.getParameter("type");// 表示查询类型
-			if (type != null) {
+			String del = request.getParameter("del");// 接收删除后转发请求(删除后重新分页查询)
+			if (type != null || del != null) {
 				Integer myType = Integer.parseInt(type);
+				if (myType == null)
+					myType = Integer.parseInt(del);
 				if (myType == 1) {// 作学生分页查询
 					String classNo = request.getParameter("classNo");// 得到班级号
+					if (classNo == null)
+						classNo = (String) request.getAttribute("classNo");
 					String pageNow = request.getParameter("pageNow");// 得到当前页
+					if (pageNow == null)
+						pageNow = request.getParameter("pageNow");
 					if (daoT == null)
 						daoT = new TeacherDaoImpl();// 实例化teacherDao
 					ArrayList<Student> students = daoT.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
-					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE,
-							Integer.parseInt(pageNow));// （学生集合，每页条数，当前页）得到分页后每页的集合
-					Integer totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+					int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+					int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
+					if (pageNowOn > totalP) // 如果当前页大于总页数
+						pageNowOn = totalP;// 设为最后一页
+					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
@@ -85,7 +94,7 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				} else if (myType == 3) {//作学生详情展示
+				} else if (myType == 3) {// 作学生详情展示
 					String stdNum = request.getParameter("stdN");
 					ArrayList<Score> historyScore = (ArrayList<Score>) daoT.findScoreByStudentNum(stdNum);
 					if (json == null)
@@ -96,18 +105,7 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				}else if (myType==4) {//作删除学生
-					
-					
-					
-					
-					
-					
-					
-					
-					
 				}
-
 			}
 
 		} else if (obj instanceof ClassWorker) {

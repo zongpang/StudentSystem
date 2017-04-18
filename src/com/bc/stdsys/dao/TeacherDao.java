@@ -48,8 +48,11 @@ public interface TeacherDao {
 	 */
 	public List<Score> findScoreByStudentNum(String stdNum);
 	
-	
-	
+	/**
+	 * 根据学号将学生所在班级更新为‘’
+	 * @param stdNum
+	 */
+	public void deleteMyclassFromStudent(String stdNum);
 	
 	
 	

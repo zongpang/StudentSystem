@@ -198,4 +198,30 @@ public class TeacherDaoImpl implements TeacherDao {
 		return historyScore;
 	}
 
+	@Override
+	public void deleteMyclassFromStudent(String stdNum) {
+		// TODO Auto-generated method stub
+		String sql = "update student set myClass='' where num=?;";
+		PreparedStatement pst = null;// 预编译对象
+		
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, Integer.parseInt(stdNum));
+		    pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
+
 }

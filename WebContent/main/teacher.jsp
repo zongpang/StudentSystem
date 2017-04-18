@@ -167,6 +167,20 @@
 			<button class="btn ">Save changes</button>
 		</div>
 	</div>
+	<div style="margin-top: 100px; width: 300px;" id="myModal2"
+		class="modal hide fade" tabindex="-2" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Modal header</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;"></div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn ">Save changes</button>
+		</div>
+	</div>
 	<!-- Subhead
         ================================================== -->
 	<div class="container">
@@ -216,7 +230,7 @@
 				</ul>
 				<div style="margin-left: 33px;">
 					<h2 id="table_title" style="display: inline;">学生信息列表</h2>
-					<a id="add" href="javascript:;" class="btn btn-danger pull-right">添加</a>
+					<a id="add"  class="btn btn-danger pull-right" href='#myModal2' role='button' data-toggle='modal'>添加</a>
 
 					<table id="tab" class="table table-hover">
 						<tr id="tab_0">
@@ -283,7 +297,7 @@
 													var Data = data;
 													for ( var key in Data) {
 														//alert(key)
-														$("#pageT").html(key)//为隐藏标签赋key值分页用
+														$("#pageT").html(key)//为隐藏标签赋key值分页用(总页数为key)
 														var arr = Data[key];
 														$("#tab").empty();//tab滞空重新赋值
 														$("#tab")
@@ -386,20 +400,24 @@
 																				})
 												
 																			})
-																$("#d" + arr[i].num).on('click',function() {//删除某一学生
-																				var id = $(this).attr("id");
-																				//alert(nn)
+															$("#d" + arr[i].num).on('click',function() {//删除本班某一学生
+																				var nn = $(this).attr("id");
+																				var stdNum=nn.substring(1,nn.length);//得到该学生的id
+																				now = $("#pageNow").html().substring(0, 1);//得到当前页
+																				classNow = $("#classN").html()//当前选中班级
+																				//alert(now+"")
 																				$.ajax({
-																					
-																					
-																					
-																					
-																					
-																					
-																					
+																					type:'post',
+																					url : 'delete',
+																					data:{stdN:stdNum,type:1,classNo:classNow,pageNow:now},
+																					dataType:"json",
+																					success:function(){
+	                                                                                 $("#go").click();
+																					}
+	
 																				})
-													
-																			})			
+																				
+																			})		
 						
 														}
 													}
@@ -416,9 +434,9 @@
 		$(function() {
 			var stdM = $("#studentM").html()//菜单值
 			var claM = $("#classM").html()//菜单值
-			$("#add").hide();//加载隐藏添加按钮
+			//$("#add").hide();//加载隐藏添加按钮
 			$("#studentM").click(function() {//点击修改导航栏方法
-				$("#add").hide();//隐藏添加按钮
+				$("#add").show();//隐藏添加按钮
 				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
 				$("#M").html(stdM)//让导航栏显示当前菜单
 				$("#table_title").html("学生信息列表")
@@ -426,7 +444,7 @@
 			    $("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
 			})
 			$("#classM").click(function() {//点击修给导航栏方法
-				$("#add").show();//隐藏添加按钮
+				$("#add").hide();//隐藏添加按钮
 				$("#M").html(claM)//让导航栏显示当前菜单
 				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
 				$("#table_title").html("课程信息列表");
@@ -498,6 +516,8 @@
 							}
 						} else if (id == "go") {//goto
 							now = Number($("#goto").val());//当前页
+							if(now=='')
+								now= $("#pageNow").html().substring(0, 1);//当前页
 							total = Number($("#pageT").html());//总页数									
 							if (now > total) {
 								now = total;
@@ -506,7 +526,7 @@
 							}
 						}
 						if (classNow != "") {//判断是否返回了数据
-							$("#pageNow").html(now + "/" + total)//给pageNow再赋值
+							//$("#pageNow").html(now + "/" + total)//给pageNow再赋值
 							$.ajax({
 										type : 'post',
 										url : 'find',
@@ -519,7 +539,12 @@
 										success : function(data) {
 											var Data = data;
 											for ( var key in Data) {
-												$("#pageT").html(key)
+												var keyVal=Number(key)
+												if (now>=keyVal){ //如果当前页大于总页数则限定当前页为最后一页
+													now=keyVal;
+												    total=keyVal;
+												}
+												$("#pageT").html(keyVal)//为隐藏总页数赋值
 												var arr = Data[key];
 												$("#tab").empty();//tab滞空重新赋值
 												$("#tab").append("<tr id=tab_0>"
@@ -616,23 +641,43 @@
 																							 +"<td>"+arr[i].date+"</td></tr>");	
 																							}
 																						}
-																					}	
+																					}
+																					$("#pageNow").html(now+"/"+total);
 																					}
 																				})
 												
 																			})
 																			
-																			$("#d" + arr[i].num).on('click',function() {//删除某一学生
+																			$("#d" + arr[i].num).on('click',function() {//删除本班某一学生
 																				var nn = $(this).attr("id");
-																				alert(nn)
-																			})	
-																	
+																				var stdNum=nn.substring(1,nn.length);//得到该学生的id
+																				now = $("#pageNow").html().substring(0, 1);//得到当前页
+																				classNow = $("#classN").html()//当前选中班级
+																				//alert(now+"")
+																				$.ajax({
+																					type:'post',
+																					url : 'delete',
+																					data:{stdN:stdNum,type:1,classNo:classNow,pageNow:now},
+																					dataType:"json",
+																					success:function(){
+	                                                                                 $("#go").click();
+																					}
+	
+																				})
+																				
+																			})																
 												}
 											}
+											$("#pageNow").html(now+"/"+total);
 										}
 									})
 						}
 					})
+					
+					//$("#add").onclick(function(){
+	//
+					//})	
+					
 		})
 		
 	</script>
