@@ -54,8 +54,16 @@ public interface TeacherDao {
 	 */
 	public void deleteMyclassFromStudent(String stdNum);
 	
+	/**
+	 * 根据学生姓名和学号查出该学生
+	 * @param name
+	 * @param num
+	 * @return
+	 */
+	public Student addStudentByNameAndNum(String name,String num);
 	
-	
-	
-	
+	/**
+	 * 为本班添加一名学生
+	 */
+	public void addStudentInMyClass(String myClass,Student stu);
 }

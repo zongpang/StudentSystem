@@ -57,10 +57,14 @@ public class FindServlet extends HttpServlet {
 			// 处理ajax请求
 			String type = request.getParameter("type");// 表示查询类型
 			String del = request.getParameter("del");// 接收删除后转发请求(删除后重新分页查询)
-			if (type != null || del != null) {
+			String add = request.getParameter("add");// 接收添加后转发请求(添加后重新分页查询)
+			if (type != null || del != null || add != null) {
 				Integer myType = Integer.parseInt(type);
-				if (myType == null)
+				if (myType == null) {
 					myType = Integer.parseInt(del);
+				}else if (myType==null&&del==null) {
+					myType = Integer.parseInt(add);
+				}
 				if (myType == 1) {// 作学生分页查询
 					String classNo = request.getParameter("classNo");// 得到班级号
 					if (classNo == null)

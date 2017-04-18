@@ -201,15 +201,15 @@ public class TeacherDaoImpl implements TeacherDao {
 	@Override
 	public void deleteMyclassFromStudent(String stdNum) {
 		// TODO Auto-generated method stub
-		String sql = "update student set myClass='' where num=?;";
+		String sql = "update student set myclass='' where num=?;";
 		PreparedStatement pst = null;// 预编译对象
-		
+
 		try {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, Integer.parseInt(stdNum));
-		    pst.execute();
+			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -221,7 +221,84 @@ public class TeacherDaoImpl implements TeacherDao {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+		}
+	}
+
+	@Override
+	public Student addStudentByNameAndNum(String name, String num) {
+		// TODO Auto-generated method stub
+		Student std = null;
+		String sql = "select * from student where name=? and num=?;";
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, name);
+			pst.setInt(2, Integer.parseInt(num));
+			rst = pst.executeQuery();
+			while (rst.next()) {
+				std = new Student();
+				std.setNum(rst.getInt("num"));
+				std.setName(rst.getString("name"));
+				std.setDorm(rst.getString("dorm"));
+				std.setJoinDate(rst.getString("joindate"));
+				std.setQuitDate(rst.getString("quitdate"));
+				std.setCount_time(rst.getInt("count_time"));
+				std.setState(rst.getString("state"));
+				std.setCredit(rst.getInt("credit"));// 学分
+				std.setMyClass(rst.getString("myclass"));
+				std.setSex(rst.getString("sex"));
+				std.setAddress(rst.getString("address"));
+				std.setPhone(rst.getString("phone"));
+				std.setParentPhone(rst.getString("parentphone"));
+				return std;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return std;
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return std;
+	}
+
+	@Override
+	public void addStudentInMyClass(String myClass, Student stu) {
+		// TODO Auto-generated method stub
+		String sql = "update student set myclass=? where num=?;";
+		PreparedStatement pst = null;// 预编译对象
+
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, myClass);
+			pst.setInt(2, stu.getNum());
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }
