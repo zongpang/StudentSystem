@@ -66,4 +66,21 @@ public interface TeacherDao {
 	 * 为本班添加一名学生
 	 */
 	public void addStudentInMyClass(String myClass,Student stu);
+	/**
+	 * 修改学生历史信息
+	 * @param studentNo
+	 * @param faceToFace
+	 * @param write
+	 * @param computer
+	 * @param teacherSpeak
+	 */
+	public void updateStudentHistoryScore(int studentNo,double faceToFace,double write,double computer,String teacherSpeak);
+	
+	
+	
+	
+	
+	
+	
+	
 }

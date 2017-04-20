@@ -301,4 +301,35 @@ public class TeacherDaoImpl implements TeacherDao {
 
 	}
 
+	@Override
+	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
+			String teacherSpeak) {
+		Score score = null;
+		List<Score> list = null;
+		String sql = "update score set facetoface=? ,write=?,computer=?,teacherspeak=? where studentnum=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setDouble(1, faceToFace);
+			pst.setDouble(2, write);
+			pst.setDouble(3, computer);
+			pst.setString(4, teacherSpeak);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 }

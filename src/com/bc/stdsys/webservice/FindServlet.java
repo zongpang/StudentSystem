@@ -36,6 +36,7 @@ public class FindServlet extends HttpServlet {
 		doPost(req, resp);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -56,14 +57,19 @@ public class FindServlet extends HttpServlet {
 			}
 			// 处理ajax请求
 			String type = request.getParameter("type");// 表示查询类型
-			String del = request.getParameter("del");// 接收删除后转发请求(删除后重新分页查询)
-			String add = request.getParameter("add");// 接收添加后转发请求(添加后重新分页查询)
-			if (type != null || del != null || add != null) {
+			String del = (String) request.getAttribute("del");// 接收删除后转发请求(删除后重新分页查询)
+			String add = (String) request.getAttribute("add");// 接收添加后转发请求(添加后重新分页查询)
+			String upd = (String) request.getAttribute("update");// 接收修改后的转发请求(修改后返回新的学生历史信息)
+			if (type != null || del != null || add != null || upd != null) {
 				Integer myType = Integer.parseInt(type);
 				if (myType == null) {
-					myType = Integer.parseInt(del);
-				}else if (myType==null&&del==null) {
-					myType = Integer.parseInt(add);
+					if (del != null) {
+                      myType=Integer.parseInt(del);
+					} else if (add != null) {
+						myType = Integer.parseInt(add);
+					} else if (upd != null) {
+						myType=Integer.parseInt(upd);
+					}
 				}
 				if (myType == 1) {// 作学生分页查询
 					String classNo = request.getParameter("classNo");// 得到班级号
@@ -100,6 +106,8 @@ public class FindServlet extends HttpServlet {
 					pw.close();
 				} else if (myType == 3) {// 作学生详情展示
 					String stdNum = request.getParameter("stdN");
+					if (stdNum == null)
+						stdNum = (String) request.getAttribute("stdNum");
 					ArrayList<Score> historyScore = (ArrayList<Score>) daoT.findScoreByStudentNum(stdNum);
 					if (json == null)
 						json = new JSONObject();
