@@ -7,7 +7,7 @@ public class Score implements Serializable{
 	private int studentNum;
 	private String course;// 课程名称
 	private double faceToFace;// 面试成绩
-	private double write;// 笔试成绩
+	private double writeScore;// 笔试成绩
 	private double computer;// 机试成绩
 	private double average;// 三科综合成绩
 	private String teacher;
@@ -28,7 +28,7 @@ public class Score implements Serializable{
 		this.studentNum = studentNum;
 		this.course = course;
 		this.faceToFace = faceToFace;
-		this.write = write;
+		this.writeScore = write;
 		this.computer = computer;
 		this.average = average;
 		this.teacher = teacher;
@@ -79,12 +79,14 @@ public class Score implements Serializable{
 		this.faceToFace = faceToFace;
 	}
 
-	public double getWrite() {
-		return write;
+
+
+	public double getWriteScore() {
+		return writeScore;
 	}
 
-	public void setWrite(double write) {
-		this.write = write;
+	public void setWriteScore(double writeScore) {
+		this.writeScore = writeScore;
 	}
 
 	public double getComputer() {

@@ -27,9 +27,9 @@ public class MyServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
-		String userName = request.getParameter("username");
-		String passWord = request.getParameter("passWord");
-		String userId = request.getParameter("user");
+		String userName = request.getParameter("username");//姓名
+		String passWord = request.getParameter("passWord");//密码
+		String userId = request.getParameter("user");//用户身份
 		Object obj = null;
 		try {
 			obj = DButil.login(userId, userName, passWord);
@@ -37,17 +37,23 @@ public class MyServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HttpSession session = request.getSession();
-		if (obj != null && obj instanceof Teacher) {
+		HttpSession session = request.getSession();		
+		if (obj != null && obj instanceof Teacher) {//登陆成功转发查询处理
 			session.setAttribute("user", obj);
 			session.setAttribute("loginFirst", true);
 			request.getRequestDispatcher("find").forward(request, response);
 		} else if (obj != null && obj instanceof ClassWorker) {
-            
+			session.setAttribute("user", obj);
+			session.setAttribute("loginFirst", true);
+			request.getRequestDispatcher("find").forward(request, response);
 		} else if (obj != null && obj instanceof Master) {
-
+			session.setAttribute("user", obj);
+			session.setAttribute("loginFirst", true);
+			request.getRequestDispatcher("find").forward(request, response);
 		} else if (obj != null && obj instanceof Deanery) {
-
+			session.setAttribute("user", obj);
+			session.setAttribute("loginFirst", true);
+			request.getRequestDispatcher("find").forward(request, response);
 		}else {//重定向到登陆界面
 			response.sendRedirect("login/Login.jsp");
 		}

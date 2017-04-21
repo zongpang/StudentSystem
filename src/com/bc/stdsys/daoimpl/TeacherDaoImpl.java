@@ -172,7 +172,7 @@ public class TeacherDaoImpl implements TeacherDao {
 				s.setMyClass(rst.getString("myclass"));
 				s.setCourse(rst.getString("course"));
 				s.setFaceToFace(rst.getDouble("facetoface"));
-				s.setWrite(rst.getDouble("write"));
+				s.setWriteScore(rst.getDouble("writescore"));
 				s.setComputer(rst.getDouble("computer"));
 				s.setAverage(rst.getDouble("average"));
 				s.setTeacher(rst.getString("teacher"));
@@ -306,7 +306,7 @@ public class TeacherDaoImpl implements TeacherDao {
 			String teacherSpeak) {
 		Score score = null;
 		List<Score> list = null;
-		String sql = "update score set facetoface=? ,write=?,computer=?,teacherspeak=? where studentnum=?;";
+		String sql = "update score set facetoface=?,writescore=?,computer=?,teacherspeak=? where studentnum=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
 			if (conn == null || conn.isClosed())
@@ -316,6 +316,7 @@ public class TeacherDaoImpl implements TeacherDao {
 			pst.setDouble(2, write);
 			pst.setDouble(3, computer);
 			pst.setString(4, teacherSpeak);
+			pst.setInt(5, studentNo);
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

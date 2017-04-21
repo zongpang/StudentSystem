@@ -44,8 +44,7 @@ public class ChangeServlet extends HttpServlet {
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
-				if (myType == 1) {// 修改学生历史成绩（当月）
-					
+				if (myType == 1) {// 修改学生历史成绩（当月）				
 						String pj = request.getParameter("pj");
 						String wr = request.getParameter("wr");
 						String cp = request.getParameter("cp");
