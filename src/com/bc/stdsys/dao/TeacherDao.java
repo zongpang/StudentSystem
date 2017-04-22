@@ -74,7 +74,7 @@ public interface TeacherDao {
 	 * @param computer
 	 * @param teacherSpeak
 	 */
-	public void updateStudentHistoryScore(int studentNo,double faceToFace,double write,double computer,String teacherSpeak);
+	public void updateStudentHistoryScore(int studentNo,double faceToFace,double write,double computer,String teacherSpeak,String date,double average);
 	
 	
 	

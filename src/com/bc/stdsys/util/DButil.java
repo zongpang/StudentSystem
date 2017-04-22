@@ -14,12 +14,16 @@ import com.bc.stdsys.entitys.ClassWorker;
 import com.bc.stdsys.entitys.Deanery;
 import com.bc.stdsys.entitys.Master;
 import com.bc.stdsys.entitys.Teacher;
-
+/**
+ * 
+ * @author asus
+ * DButil（包含验证登陆方法）
+ *
+ */
 public class DButil {
 	static Connection conn;// 获得连接
 	static PreparedStatement statment;// 获得预编译对象
 	static ResultSet rst;// 获得结果
-
 	/**
 	 * 获得数据库连接对象
 	 * 

@@ -26,10 +26,6 @@ public class TeacherDaoImpl implements TeacherDao {
 			e.printStackTrace();
 		}
 	}
-	// String sql="select * from student inner join myclass on
-	// student.myclass=myclass.name inner join course on
-	// myclass.teacher=course.teacher and
-	// myclass.teachernum=course.teachernum;";
 
 	@Override
 	public List<String> findMyclassByTeacher(Teacher teacher) {
@@ -303,10 +299,10 @@ public class TeacherDaoImpl implements TeacherDao {
 
 	@Override
 	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
-			String teacherSpeak) {
+			String teacherSpeak,String date,double average) {
 		Score score = null;
 		List<Score> list = null;
-		String sql = "update score set facetoface=?,writescore=?,computer=?,teacherspeak=? where studentnum=?;";
+		String sql = "update score set facetoface=?,writescore=?,computer=?,average=?,teacherspeak=? where studentnum=? and date=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
 			if (conn == null || conn.isClosed())
@@ -315,8 +311,10 @@ public class TeacherDaoImpl implements TeacherDao {
 			pst.setDouble(1, faceToFace);
 			pst.setDouble(2, write);
 			pst.setDouble(3, computer);
-			pst.setString(4, teacherSpeak);
-			pst.setInt(5, studentNo);
+			pst.setDouble(4, average);
+			pst.setString(5, teacherSpeak);
+			pst.setInt(6, studentNo);
+			pst.setString(7, date);
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

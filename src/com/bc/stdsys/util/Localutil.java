@@ -12,6 +12,14 @@ import com.bc.stdsys.entitys.Student;
  */
 public class Localutil {
 
+	public static double average(double a, double b, double c) {
+		double result = (a + b + c) / 3;
+		java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+		String aaa = df.format(result);
+		result=Double.parseDouble(aaa);
+		return result;
+	}
+
 	public static int totalPage(int total, int pageSize) {
 		int totalP = 0;
 		if (total % pageSize == 0) {
@@ -21,6 +29,7 @@ public class Localutil {
 		}
 		return totalP;
 	}
+
 	/**
 	 * 分页小工具 说明： 1.objects:所有对象的集合 2.pageSize:每页的条数3.pageNow:当前页
 	 * 
@@ -42,12 +51,12 @@ public class Localutil {
 					}
 					return arrayList;
 				} else {// 总条数大于每页条数
-					if (total % pageSize == 0) {//总条数和页容量可以整除
+					if (total % pageSize == 0) {// 总条数和页容量可以整除
 						for (int j = i * pageSize; j < i * pageSize + pageSize; j++) {
 							arrayList.add(objects.get(j));
 						}
 						return arrayList;
-					} else {//总条数和页容量不可以整除
+					} else {// 总条数和页容量不可以整除
 						if (pageNow == pageTotal) {// 最后一页
 							for (int j = i * pageSize; j < i * pageSize + total % pageSize; j++) {
 								arrayList.add(objects.get(j));
@@ -66,6 +75,5 @@ public class Localutil {
 		}
 		return arrayList;
 	}
-
 
 }

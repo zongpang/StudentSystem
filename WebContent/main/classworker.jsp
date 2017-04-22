@@ -64,7 +64,7 @@
 <body data-spy="scroll" data-target=".bs-docs-sidebar"
 	data-twttr-rendered="true">
 	<%
-		Teacher teacher = (Teacher) session.getAttribute("user");
+		ClassWorker teacher = (ClassWorker) session.getAttribute("user");
 		ArrayList<String> classList = (ArrayList<String>) session.getAttribute("myClass");//班级名称集合
 	%>
 
@@ -208,14 +208,6 @@
 							%>
 						</div>
 					</div>
-					<div>
-						<h3>
-							<a id="classM" href="javascript:;">课程管理</a>
-						</h3>
-						<div>
-							<a href="javascript:;" id="myCourse">我的课程</a>
-						</div>
-					</div>
 				</div>
 				</section>
 
@@ -305,6 +297,7 @@
 									$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//显示翻页按钮
 									now=1;
                                     classNow=id;
+                                    $("#classN").html(classNow);
 								}
 								if (classNow != "") {//判断是否返回了数据
 									//$("#pageNow").html(now + "/" + total)//给pageNow再赋值
@@ -400,7 +393,7 @@
 																										if (i == (arr.length - 1)) {//最后一行可操作(由管理员更新)
 																											$("#score_info").append(
 																															"<tr>"
-																																	+ "<td id=u"+arr[i].studentNum+" class=update>"//给最后一行赋id
+																																	+ "<td id="+arr[i].date+" class=update>"//给最后一行赋id(用当前时间作id)
 																																	+ arr[i].studentNum
 																																	+ "</td>"
 																																	+ "<td>"
@@ -413,7 +406,7 @@
 																																	+ arr[i].faceToFace
 																																	+ "</td>"
 																																	+ "<td>"
-																																	+ arr[i].write
+																																	+ arr[i].writeScore
 																																	+ "</td>"
 																																	+ "<td>"
 																																	+ arr[i].computer
@@ -455,7 +448,7 @@
 																																	+ arr[i].faceToFace
 																																	+ "</td>"
 																																	+ "<td>"
-																																	+ arr[i].write
+																																	+ arr[i].writeScore
 																																	+ "</td>"
 																																	+ "<td>"
 																																	+ arr[i].computer
@@ -486,9 +479,9 @@
 																						})
 
 																			})
-
+                                                             //删除本班某一学生
 															$("#d" + arr[i].num).on('click',
-																			function() {//删除本班某一学生
+																			function() {
 																				var nn = $(this).attr("id");
 																				var stdNum = nn.substring(1,nn.length);//得到该学生的id
 																				now = $("#pageNow").html().substring(0,1);//得到当前页
@@ -519,8 +512,8 @@
 								}
 								
 							})
-
-			$("#add_0").click(function() {//为该班级添加一个学生
+              //为该班级添加一个学生
+			$("#add_0").click(function() {
 				stdName1 = $("#mod2_stdName").val();
 				stdNum = $("#mod2_stdNum").val();
 				classNow = $("#classN").html();//得到当前班级
@@ -554,14 +547,17 @@
 				}
 
 			})
-					
+					//修改学生当月的成绩
 			$("#save_0").click(function(){
 				 project=Number($("#mod1_project").val())
 				 write=Number($("#mod1_write").val())
 				 computer=Number($("#mod1_computer").val())
 				 studentnum=Number($(".update").html())
+				 date1=$(".update").attr("id")
 				 teacherspeak=$("#mod1_teacherspeak").val()	
-				if (project != '' && write != ''&&computer!=''&&teacherspeak!='') {
+				 //alert(date)
+				// alert(studentnum)
+				if (project != '' && write != ''&&computer!=''||teacherspeak!='') {
 					$.ajax({
 						type : 'post',
 						url : 'change',
@@ -571,11 +567,18 @@
 							cp:computer,
 							ts:teacherspeak,
 							no:studentnum,
+							date:date1,
 							type : 1,
 						},
 						dataType : "json",
 						success : function(data) {
-							$("#" + studentnum).click();//修改成功后调用#stuNum的点击方法进行刷新	
+						  var Data=data;
+						  for (var key in Data) {
+							var attr=Data[key];
+							if (attr!='') {
+								alert(attr);
+							}
+						}
 						}
 					})
 				}
@@ -597,46 +600,9 @@
 				$(".std_inf").remove();//删除学生列表
 				//alert($("#tab").html());
 			})
-			$("#myCourse").click(function() {//点击获取班级信息
-								//定义课程标题栏
-								if ($("#tab_0").html() == "") {
-									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th>"
-									$("#tab_0").append(courseTitle);//添加标题栏
-									$.ajax({
-												type : 'post',
-												url : 'find',
-												data : {
-													type : 2,
-												},
-												dataType : "json",
-												success : function(data) {
-													var Data = data;
-													for ( var key in Data) {
-														var aaa = Data[key]
-														for (var i = 0; i < aaa.length; i++) {
-															$("#tab")
-																	.append(
-																			"<tr id=tab_1 class=std_inf><td>"
-																					+ aaa[i].name
-																					+ "</td>"
-																					+ "<td>"
-																					+ aaa[i].myClass
-																					+ "</td>"
-																					+ "<td>"
-																					+ aaa[i].teacher
-																					+ "</td>"
-																					+ "<td>"
-																					+ aaa[i].date
-																					+ "</td></tr>")
-														}
-													}
-												}
-											})
-								}
-							})
+
 		})
 	</script>
-
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="main/assets/js/jquery-ui-1.10.0.custom.min.js"
 		type="text/javascript"></script>
