@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bc.stdsys.dao.ClassWorkerDao;
+import com.bc.stdsys.dao.DeaneryDao;
 import com.bc.stdsys.dao.TeacherDao;
 import com.bc.stdsys.daoimpl.ClassWorkerDaoImpl;
+import com.bc.stdsys.daoimpl.DeaneryDaoImpl;
 import com.bc.stdsys.daoimpl.TeacherDaoImpl;
 import com.bc.stdsys.entitys.ClassWorker;
 import com.bc.stdsys.entitys.Course;
-import com.bc.stdsys.entitys.Master;
+import com.bc.stdsys.entitys.Deanery;
 import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
@@ -28,8 +30,9 @@ import net.sf.json.JSONObject;
 public class FindServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
 	HttpSession session;
-	TeacherDao daoT;
-	ClassWorkerDao daoC;
+	TeacherDao daoT;// 教师操作接口
+	ClassWorkerDao daoC;// 班主任操作接口
+	DeaneryDao daoD;// 院长操作接口
 	final int PAGE_SIZE = 2;// 分页查找每页的容量
 	PrintWriter pw;
 
@@ -150,10 +153,6 @@ public class FindServlet extends HttpServlet {
 					} else if (add != null) {
 						myType = Integer.parseInt(add);
 					}
-					// else if (upd != null) {
-					// myType=Integer.parseInt(upd);
-					// System.out.println(upd);
-					// }
 				}
 				if (myType == 1) {// 作学生分页查询
 					String classNo = request.getParameter("classNo");// 得到班级号
@@ -204,7 +203,103 @@ public class FindServlet extends HttpServlet {
 				}
 			}
 
-		} else if (obj instanceof Master) {
+		} else if (obj instanceof Deanery) {
+			System.out.println("deanery进来了");
+			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
+			Deanery deanery = (Deanery) obj;
+			if (teacherFlag) {// 首次登陆数据初始化
+				daoD = new DeaneryDaoImpl();
+				List<String> list = daoD.findMyclassByDeanery();// 查出所教班级的名称
+				session.setAttribute("myClass", list);// 向session中放入班级
+				session.setAttribute("loginFirst", false);// 首次登陆置否
+				response.sendRedirect("main/deanery.jsp");// 重定向到main/Deanery.jsp
+			}
+			// 处理ajax请求
+			String type = request.getParameter("type");// 表示查询类型
+			String del = (String) request.getAttribute("del");// 接收删除后转发请求(删除后重新分页查询)
+			String add = (String) request.getAttribute("add");// 接收添加后转发请求(添加后重新分页查询)
+			String upd = (String) request.getAttribute("update");// 接收修改后的转发请求(修改后返回新的学生历史信息)
+			if (type != null || del != null || add != null || upd != null) {
+				Integer myType = Integer.parseInt(type);
+				if (myType == null) {
+					if (del != null) {
+						myType = Integer.parseInt(del);
+					} else if (add != null) {
+						myType = Integer.parseInt(add);
+					} else if (upd != null) {
+						myType = Integer.parseInt(upd);
+						System.out.println(upd);
+					}
+				}
+				if (myType == 1) {// 作学生分页查询
+					String classNo = request.getParameter("classNo");// 得到班级号
+					if (classNo == null)
+						classNo = (String) request.getAttribute("classNo");
+					String pageNow = request.getParameter("pageNow");// 得到当前页
+					if (pageNow == null)
+						pageNow = request.getParameter("pageNow");
+					if (daoD == null)
+						daoD = new DeaneryDaoImpl();// 实例化DeaneryDao
+					ArrayList<Student> students = daoD.findStudentByDeanery(classNo);// 得到该班级全体学生的集合
+					int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+					int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
+					if (pageNowOn > totalP) // 如果当前页大于总页数
+						pageNowOn = totalP;// 设为最后一页
+					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(totalP, stu);// 放入数据(以总页数为key)
+					if (pw == null)
+						pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					pw.close();
+				} else if (myType == 2) {// 作课程查询
+					List<Course> myCourse = daoD.findCourseByDeanery();// 查出所有课程
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(deanery.getName(), myCourse);// 以教师的姓名或工号作为返回key
+					if (pw == null)
+						pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				} else if (myType == 3) {// 作学生详情展示
+					String stdNum = request.getParameter("stdN");
+					if (stdNum == null)
+						stdNum = (String) request.getAttribute("stdNum");
+					ArrayList<Score> historyScore = (ArrayList<Score>) daoD.findScoreByStudentNum(stdNum);
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(stdNum, historyScore);
+					if (pw == null)
+						pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				} else if (myType == 4) {
+					List<Teacher> myTeacher = daoD.findAllTeacher();// 查出所教师
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(deanery.getName(), myTeacher);// 以教师的姓名或工号作为返回key
+					if (pw == null)
+						pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+
+				}else if (myType==5) {
+					List<ClassWorker> myTeacher = daoD.findAllClassWorker();// 查出所教师
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(deanery.getName(), myTeacher);// 以教师的姓名或工号作为返回key
+					if (pw == null)
+						pw = response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				}
+			}
 
 		} else {
 

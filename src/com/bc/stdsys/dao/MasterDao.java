@@ -6,5 +6,8 @@ package com.bc.stdsys.dao;
  *
  */
 public interface MasterDao {
-
+     
+	
+	
+	
 }
