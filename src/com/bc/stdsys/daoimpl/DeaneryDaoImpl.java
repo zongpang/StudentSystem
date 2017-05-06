@@ -302,4 +302,30 @@ public class DeaneryDaoImpl implements DeaneryDao {
 		return listClassWwoker;
 	}
 
+	@Override
+	public void changeUserPassWord(String name, String new_pass) {
+		// TODO Auto-generated method stub
+		String sql = "update deanery set password=? where name=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+            pst.setString(1, new_pass);
+            pst.setString(2, name);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

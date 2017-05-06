@@ -269,8 +269,6 @@ public class ClassWorkerDaoImpl implements ClassWorkerDao {
 	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
 			String ClassWorkerSpeak, String date, double average) {
 		// TODO Auto-generated method stub
-		Score score = null;
-		List<Score> list = null;
 		String sql = "update score set facetoface=?,writescore=?,computer=?,average=?,classworkerspeak=? where studentnum=? and date=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
@@ -298,6 +296,32 @@ public class ClassWorkerDaoImpl implements ClassWorkerDao {
 			}
 		}
 
+	}
+
+	@Override
+	public void changeUserPassWord(String name, String new_pass) {
+		// TODO Auto-generated method stub
+		String sql = "update classworker set password=? where name=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+            pst.setString(1, new_pass);
+            pst.setString(2, name);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

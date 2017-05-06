@@ -299,9 +299,7 @@ public class TeacherDaoImpl implements TeacherDao {
 
 	@Override
 	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
-			String teacherSpeak,String date,double average) {
-		Score score = null;
-		List<Score> list = null;
+			String teacherSpeak, String date, double average) {
 		String sql = "update score set facetoface=?,writescore=?,computer=?,average=?,teacherspeak=? where studentnum=? and date=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
@@ -329,6 +327,34 @@ public class TeacherDaoImpl implements TeacherDao {
 			}
 		}
 
+	}
+
+	@Override
+	public void changeUserPassWord(String name,String new_pass) {
+		// TODO Auto-generated method stub
+		Score score = null;
+		List<Score> list = null;
+		String sql = "update teacher set password=? where name=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+            pst.setString(1, new_pass);
+            pst.setString(2, name);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -84,7 +84,9 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">用户操作 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">登陆</a></li>
+								<li><a href="#">退出登陆</a></li>
+							<li><a id="changePassWord" href='#myModal3'
+								data-toggle='modal'>修改密码</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
@@ -180,7 +182,27 @@
 				aria-hidden="true">添加</button>
 		</div>
 	</div>
+	<div style="margin-top: 100px; width: 300px;" id="myModal3"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">修改密码</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
 
+			<p>密码:</p>
+			<input id="mod3_passOld" type="text"><br>
+			<p>新密码:</p>
+			<input id="mod3_passNew" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn " id="change_password" data-dismiss="modal"
+				aria-hidden="true">修改</button>
+		</div>
+	</div>
 	<!-- Subhead
         ================================================== -->
 	<div class="container">
@@ -600,7 +622,32 @@
 				$(".std_inf").remove();//删除学生列表
 				//alert($("#tab").html());
 			})
+				$("#change_password").click(function() {//用户修改密码
+				var old_pass = $("#mod3_passOld").val();
+				var new_pass = $("#mod3_passNew").val();
+				$.ajax({
+					type : 'post',
+					url : 'change',
+					data : {
+			            old_p:old_pass,
+			            new_p:new_pass,
+			            type:2,
+					},
+					dataType : "json",
+					success : function(data) {
+						var Data = data;
+						for ( var key in Data) {
+							var attr = Data[key];
+							if (attr != '') {
+								$("#mod3_passOld").val("");
+								$("#mod3_passNew").val("");
+								alert(attr);
+							}
+						}
+					}
+				})
 
+			})
 		})
 	</script>
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>

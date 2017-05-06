@@ -15,6 +15,9 @@ import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.DButil;
 
 public class MyServlet extends HttpServlet {
+	HttpSession session;
+	Object obj;
+	int i = 0;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,22 +29,37 @@ public class MyServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-		String userName = request.getParameter("username");//姓名
-		String passWord = request.getParameter("passWord");//密码
-		String userId = request.getParameter("user");//用户身份
-		Object obj = null;
-		try {
-			obj = DButil.login(userId, userName, passWord);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		i++;
+		System.out.println("myServlet:" + i);
+		response.setContentType("text/html;charset=utf-8");
+		request.setCharacterEncoding("utf-8");
+		session = request.getSession();
+		obj = session.getAttribute("user");
+		String userName = request.getParameter("username");// 姓名
+		String passWord = request.getParameter("passWord");// 密码
+		String userId = request.getParameter("user");// 用户身份
+		if (obj == null) {
+			try {
+				obj = DButil.login(userId, userName, passWord);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		HttpSession session = request.getSession();		
-		if (obj != null && obj instanceof Teacher) {//登陆成功转发查询处理
-			session.setAttribute("user", obj);
-			session.setAttribute("loginFirst", true);
-			request.getRequestDispatcher("find").forward(request, response);
+		if (obj != null && obj instanceof Teacher) {// 登陆成功转发查询处理
+			String type = request.getParameter("quit");
+			if (type != null && type.equals("q")) {
+				session.invalidate();
+				System.out.println("即将重定向");
+				response.sendRedirect("login/Login.jsp");
+				System.out.println("重定向完成");
+			} else {
+				session.setAttribute("user", obj);
+				session.setAttribute("loginFirst", true);
+				System.out.println("即将转发");
+				request.getRequestDispatcher("find").forward(request, response);
+			}
+
 		} else if (obj != null && obj instanceof ClassWorker) {
 			session.setAttribute("user", obj);
 			session.setAttribute("loginFirst", true);
@@ -54,7 +72,7 @@ public class MyServlet extends HttpServlet {
 			session.setAttribute("user", obj);
 			session.setAttribute("loginFirst", true);
 			request.getRequestDispatcher("find").forward(request, response);
-		}else {//重定向到登陆界面
+		} else {// 重定向到登陆界面
 			response.sendRedirect("login/Login.jsp");
 		}
 	}

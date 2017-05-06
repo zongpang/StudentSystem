@@ -84,7 +84,9 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">用户操作 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">登陆</a></li>
+							<li><a href="login?quit=q" name="quitLogin" >退出登陆</a></li>
+							<li><a id="changePassWord" href='#myModal3'
+								data-toggle='modal'>修改密码</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
@@ -107,32 +109,32 @@
 			<h3 id="myModalLabel">学生详情信息</h3>
 		</div>
 		<div class="modal-body" STYLE="HEIGHT: 200PX;">
-		<!-- Modal -->
-	<div style="margin-top: 100px; width: 300px;display:none" id="myModal1"
-		class="modal hide fade " tabindex="-1" role="dialog" 
-		aria-labelledby="myModalLabel" aria-hidden="true" >
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
-			<h3 id="myModalLabel">请输入本月成绩</h3>
-		</div>
-		<div class="modal-body" style="height: 350px;">
+			<!-- Modal -->
+			<div style="margin-top: 100px; width: 300px; display: none"
+				id="myModal1" class="modal hide fade " tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h3 id="myModalLabel">请输入本月成绩</h3>
+				</div>
+				<div class="modal-body" style="height: 350px;">
 
-			<p>项目答辩:</p>
-			<input id="mod1_project" type="text"><br>
-			<p>笔试:</p>
-			<input id="mod1_write" type="text"><br>
-			<p>机试:</p>
-			<input id="mod1_computer" type="text"><br>
-			<p>教师评价:</p>
-			<input id="mod1_teacherspeak" type="text"><br>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-			<button class="btn " id="save_0" data-dismiss="modal" >保存</button>
-		</div>
-	</div>
-		
+					<p>项目答辩:</p>
+					<input id="mod1_project" type="text"><br>
+					<p>笔试:</p>
+					<input id="mod1_write" type="text"><br>
+					<p>机试:</p>
+					<input id="mod1_computer" type="text"><br>
+					<p>教师评价:</p>
+					<input id="mod1_teacherspeak" type="text"><br>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+					<button class="btn " id="save_0" data-dismiss="modal">保存</button>
+				</div>
+			</div>
+
 			<div>
 				<table class="table table-bordered" id="score_info">
 					<tr>
@@ -158,7 +160,7 @@
 		</div>
 	</div>
 
-	
+
 	<div style="margin-top: 100px; width: 300px;" id="myModal2"
 		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -168,7 +170,7 @@
 			<h3 id="myModalLabel">请输入学生信息</h3>
 		</div>
 		<div class="modal-body" style="height: 350px;">
-			
+
 			<p>姓名:</p>
 			<input id="mod2_stdName" type="text"><br>
 			<p>学号:</p>
@@ -180,7 +182,27 @@
 				aria-hidden="true">添加</button>
 		</div>
 	</div>
+	<div style="margin-top: 100px; width: 300px;" id="myModal3"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">修改密码</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
 
+			<p>密码:</p>
+			<input id="mod3_passOld" type="text"><br>
+			<p>新密码:</p>
+			<input id="mod3_passNew" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn " id="change_password" data-dismiss="modal"
+				aria-hidden="true">修改</button>
+		</div>
+	</div>
 	<!-- Subhead
         ================================================== -->
 	<div class="container">
@@ -201,7 +223,8 @@
 								if (classList != null && classList.size() > 0) {
 									for (int i = 0; i < classList.size(); i++) {
 							%>
-							<a class="studentManager_1" href="javascript:;" id="<%=classList.get(i)%>"><%=classList.get(i)%></a><br>
+							<a class="studentManager_1" href="javascript:;"
+								id="<%=classList.get(i)%>"><%=classList.get(i)%></a><br>
 							<%
 								}
 								}
@@ -274,9 +297,10 @@
 			var claM = $("#classM").html()//菜单值
 			var title = $("#tab_0").html()//学生标题栏	
 			var now = Number($("#pageNow").html().substring(0, 1));//当前页
-		    var	total = Number($("#pageT").html());//总页数
-			$("#pageUp,#pageDown,#go,.studentManager_1")		
-					.click(function() {
+			var total = Number($("#pageT").html());//总页数
+			$("#pageUp,#pageDown,#go,.studentManager_1")
+					.click(
+							function() {
 								classNow = $("#classN").html()//当前选中班级
 								id = $(this).attr("id");
 								if (id == "pageUp") {//上翻
@@ -293,23 +317,26 @@
 										now = total;
 									}
 								} else if (id == "go") {//goto
-									now=Number($("#goto").val())
+									now = Number($("#goto").val())
 									if (now == '')
-										now =Number($("#pageNow").html().substring(0,1));//当前页
+										now = Number($("#pageNow").html()
+												.substring(0, 1));//当前页
 									if (now > total) {
 										now = total;
 									} else if (now < 1) {
 										now = 1
 									}
-								}else{								
-									$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//显示翻页按钮
-									now=1;
-                                    classNow=id;
-                                    $("classN").html(classNow);//给隐藏标签赋值
+								} else {
+									$("#pageUp,#pageDown,#go,#goto,#pageNow")
+											.show();//显示翻页按钮
+									now = 1;
+									classNow = id;
+									$("classN").html(classNow);//给隐藏标签赋值
 								}
 								if (classNow != "") {//判断是否返回了数据
 									//$("#pageNow").html(now + "/" + total)//给pageNow再赋值
-									$.ajax({
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -326,11 +353,18 @@
 														if (now >= total) { //如果当前页大于总页数则限定当前页为最后一页
 															now = total;
 														}
-														$("#pageT").html(keyVal)//为隐藏总页数赋值
-														$("#pageNow").html(now + "/" + total);
+														$("#pageT")
+																.html(keyVal)//为隐藏总页数赋值
+														$("#pageNow")
+																.html(
+																		now
+																				+ "/"
+																				+ total);
 														var arr = Data[key];
 														$("#tab").empty();//tab滞空重新赋值
-														$("#tab").append("<tr id=tab_0>"
+														$("#tab")
+																.append(
+																		"<tr id=tab_0>"
 																				+ title
 																				+ "</tr>")//tab添加标题栏		
 														for (var i = 0; i < arr.length; i++) {
@@ -362,12 +396,20 @@
 																	+ "</td>"
 																	+ "</tr>"
 															$("#tab").append(s)
-															$("#classN").html(arr[i].myClass)
+															$("#classN")
+																	.html(
+																			arr[i].myClass)
 															$("#" + arr[i].num)
-																	.on('click',function() {//显示详情
-																				var stdNum = $(this).attr("value");//得到学生的学号
+																	.on(
+																			'click',
+																			function() {//显示详情
+																				var stdNum = $(
+																						this)
+																						.attr(
+																								"value");//得到学生的学号
 																				//alert(nn)
-																				$.ajax({//查出该生的历史信息
+																				$
+																						.ajax({//查出该生的历史信息
 																							type : 'post',
 																							url : 'find',
 																							data : {
@@ -380,8 +422,12 @@
 																								var Data = data
 																								for ( var key in Data) {
 																									var arr = Data[key];//得到数据
-																									$("#score_info").empty();
-																									$("#score_info").append(
+																									$(
+																											"#score_info")
+																											.empty();
+																									$(
+																											"#score_info")
+																											.append(
 																													"<tr>"//添加标题
 																															+ "<th>学号</th>"
 																															+ "<th>班级</th>"
@@ -399,7 +445,9 @@
 																															+ "</tr>");
 																									for (var i = 0; i < arr.length; i++) {
 																										if (i == (arr.length - 1)) {//最后一行可操作(由管理员更新)
-																											$("#score_info").append(
+																											$(
+																													"#score_info")
+																													.append(
 																															"<tr>"
 																																	+ "<td id="+arr[i].date+" class=update>"//给最后一行赋id(用当前时间作id)
 																																	+ arr[i].studentNum
@@ -441,7 +489,9 @@
 																																	+ "<a href='#myModal1' role='button' data-toggle='modal'>修改</a>"
 																																	+ "</td></tr>");
 																										} else {
-																											$("#score_info").append(
+																											$(
+																													"#score_info")
+																													.append(
 																															"<tr>"
 																																	+ "<td>"
 																																	+ arr[i].studentNum
@@ -478,7 +528,7 @@
 																																	+ "</td>"
 																																	+ "<td>"
 																																	+ arr[i].date
-																																	+"</td><td>"
+																																	+ "</td><td>"
 																																	+ "</td></tr>");
 																										}
 																									}
@@ -487,15 +537,31 @@
 																						})
 
 																			})
-                                                             //删除本班某一学生
-															$("#d" + arr[i].num).on('click',
+															//删除本班某一学生
+															$("#d" + arr[i].num)
+																	.on(
+																			'click',
 																			function() {
-																				var nn = $(this).attr("id");
-																				var stdNum = nn.substring(1,nn.length);//得到该学生的id
-																				now = $("#pageNow").html().substring(0,1);//得到当前页
-																				classNow = $("#classN").html()//当前选中班级
+																				var nn = $(
+																						this)
+																						.attr(
+																								"id");
+																				var stdNum = nn
+																						.substring(
+																								1,
+																								nn.length);//得到该学生的id
+																				now = $(
+																						"#pageNow")
+																						.html()
+																						.substring(
+																								0,
+																								1);//得到当前页
+																				classNow = $(
+																						"#classN")
+																						.html()//当前选中班级
 																				//alert(now+"")
-																				$.ajax({
+																				$
+																						.ajax({
 																							type : 'post',
 																							url : 'delete',
 																							data : {
@@ -506,7 +572,9 @@
 																							},
 																							dataType : "json",
 																							success : function() {
-																								$("#go").click();
+																								$(
+																										"#go")
+																										.click();
 																							}
 
 																						})
@@ -514,13 +582,13 @@
 																			})
 														}
 													}
-												
+
 												}
 											})
 								}
-								
+
 							})
-              //为该班级添加一个学生
+			//为该班级添加一个学生
 			$("#add_0").click(function() {
 				stdName1 = $("#mod2_stdName").val();
 				stdNum = $("#mod2_stdNum").val();
@@ -555,43 +623,45 @@
 				}
 
 			})
-					//修改学生当月的成绩
-			$("#save_0").click(function(){
-				 project=Number($("#mod1_project").val())
-				 write=Number($("#mod1_write").val())
-				 computer=Number($("#mod1_computer").val())
-				 studentnum=Number($(".update").html())
-				 date1=$(".update").attr("id")
-				 teacherspeak=$("#mod1_teacherspeak").val()	
-				 //alert(date)
-				// alert(studentnum)
-				if (project != '' && write != ''&&computer!=''||teacherspeak!='') {
-					$.ajax({
-						type : 'post',
-						url : 'change',
-						data : {
-							pj : project,
-							wr : write,
-							cp:computer,
-							ts:teacherspeak,
-							no:studentnum,
-							date:date1,
-							type : 1,
-						},
-						dataType : "json",
-						success : function(data) {
-						  var Data=data;
-						  for (var key in Data) {
-							var attr=Data[key];
-							if (attr!='') {
-								alert(attr);
-							}
-						}
+			//修改学生当月的成绩
+			$("#save_0").click(
+					function() {
+						project = Number($("#mod1_project").val())
+						write = Number($("#mod1_write").val())
+						computer = Number($("#mod1_computer").val())
+						studentnum = Number($(".update").html())
+						date1 = $(".update").attr("id")
+						teacherspeak = $("#mod1_teacherspeak").val()
+						//alert(date)
+						// alert(studentnum)
+						if (project != '' && write != '' && computer != ''
+								|| teacherspeak != '') {
+							$.ajax({
+								type : 'post',
+								url : 'change',
+								data : {
+									pj : project,
+									wr : write,
+									cp : computer,
+									ts : teacherspeak,
+									no : studentnum,
+									date : date1,
+									type : 1,
+								},
+								dataType : "json",
+								success : function(data) {
+									var Data = data;
+									for ( var key in Data) {
+										var attr = Data[key];
+										if (attr != '') {
+											alert(attr);
+										}
+									}
+								}
+							})
 						}
 					})
-				}
-			})
-                $("#studentM").click(function() {//点击修改导航栏方法
+			$("#studentM").click(function() {//点击修改导航栏方法
 				$("#add").show();//隐藏添加按钮
 				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
 				$("#M").html(stdM)//让导航栏显示当前菜单
@@ -608,12 +678,15 @@
 				$(".std_inf").remove();//删除学生列表
 				//alert($("#tab").html());
 			})
-			$("#myCourse").click(function() {//点击获取班级信息
+			$("#myCourse")
+					.click(
+							function() {//点击获取班级信息
 								//定义课程标题栏
 								if ($("#tab_0").html() == "") {
 									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th>"
 									$("#tab_0").append(courseTitle);//添加标题栏
-									$.ajax({
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -645,6 +718,34 @@
 											})
 								}
 							})
+			$("#change_password").click(function() {//用户修改密码
+				var old_pass = $("#mod3_passOld").val();
+				var new_pass = $("#mod3_passNew").val();
+				$.ajax({
+					type : 'post',
+					url : 'change',
+					data : {
+						old_p : old_pass,
+						new_p : new_pass,
+						type : 2,
+					},
+					dataType : "json",
+					success : function(data) {
+						var Data = data;
+						for ( var key in Data) {
+							var attr = Data[key];
+							if (attr != '') {
+								$("#mod3_passOld").val("");
+								$("#mod3_passNew").val("");
+								alert(attr);
+							}
+						}
+					}
+				})
+
+			})
+
+
 		})
 	</script>
 

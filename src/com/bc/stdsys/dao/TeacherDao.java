@@ -76,8 +76,12 @@ public interface TeacherDao {
 	 */
 	public void updateStudentHistoryScore(int studentNo,double faceToFace,double write,double computer,String teacherSpeak,String date,double average);
 	
-	
-	
+	/**
+	 * 修改用户密码
+	 * @param name
+	 * @param new_pass
+	 */
+	public void changeUserPassWord(String name ,String new_pass);
 	
 	
 	

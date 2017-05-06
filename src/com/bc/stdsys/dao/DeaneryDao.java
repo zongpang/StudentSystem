@@ -8,7 +8,6 @@ import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
-import com.bc.stdsys.entitys.Deanery;
 
 /**
  * @author mayiong 院长数据库操作接口
@@ -83,4 +82,11 @@ public interface DeaneryDao {
      * @return
      */
 	public List<ClassWorker> findAllClassWorker();
+	
+	/**
+	 * 修改用户密码
+	 * @param name
+	 * @param new_pass
+	 */
+	public void changeUserPassWord(String name ,String new_pass);
 }

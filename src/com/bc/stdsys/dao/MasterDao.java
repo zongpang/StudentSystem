@@ -84,6 +84,11 @@ public interface MasterDao {
      */
 	public List<ClassWorker> findAllClassWorker();
 	
-	
+	/**
+	 * 修改用户密码
+	 * @param name
+	 * @param new_pass
+	 */
+	public void changeUserPassWord(String name ,String new_pass);
 	
 }
