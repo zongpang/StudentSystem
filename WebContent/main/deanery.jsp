@@ -676,15 +676,12 @@
 				//alert($("#tab").html());
 			})
 
-			$("#myCourse")
-					.click(
-							function() {//点击获取课程信息
+			$("#myCourse").click(function() {//点击获取课程信息
 								//定义课程标题栏
 								if ($("#tab_0").html() == "") {
 									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th>"
 									$("#tab_0").append(courseTitle);//添加标题栏
-									$
-											.ajax({
+									$.ajax({
 												type : 'post',
 												url : 'find',
 												data : {

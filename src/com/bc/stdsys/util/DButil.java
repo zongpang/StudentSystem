@@ -216,6 +216,7 @@ public class DButil {
 			try {
 				if (rst.next()) {
 					deanery.setNum(rst.getInt("num"));
+					System.out.println("deanery找到了");
 					return deanery;
 				}
 			} catch (SQLException e) {
