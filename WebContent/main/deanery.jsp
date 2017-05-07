@@ -84,13 +84,13 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">用户操作 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">退出登陆</a></li>
+							<li><a href="login?quit=q" name="quitLogin">退出登陆</a></li>
 							<li><a id="changePassWord" href='#myModal3'
 								data-toggle='modal'>修改密码</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
-					<input type="text" class="search-query" placeholder="Search">
+					<input type="text" class="search-query" placeholder="请输入学生姓名">
 					<input class="btn btn-danger" style="margin-top: -1px;"
 						type="submit" value="查询">
 				</form>

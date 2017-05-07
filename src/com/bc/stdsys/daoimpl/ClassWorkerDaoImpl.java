@@ -266,22 +266,18 @@ public class ClassWorkerDaoImpl implements ClassWorkerDao {
 	}
 
 	@Override
-	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
-			String ClassWorkerSpeak, String date, double average) {
+	public void updateStudentHistoryScore(int studentNo,
+			String ClassWorkerSpeak, String date) {
 		// TODO Auto-generated method stub
-		String sql = "update score set facetoface=?,writescore=?,computer=?,average=?,classworkerspeak=? where studentnum=? and date=?;";
+		String sql = "update score set classworkerspeak=? where studentnum=? and date=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
-			pst.setDouble(1, faceToFace);
-			pst.setDouble(2, write);
-			pst.setDouble(3, computer);
-			pst.setDouble(4, average);
-			pst.setString(5, ClassWorkerSpeak);
-			pst.setInt(6, studentNo);
-			pst.setString(7, date);
+			pst.setString(1, ClassWorkerSpeak);
+			pst.setInt(2, studentNo);
+			pst.setString(3, date);
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

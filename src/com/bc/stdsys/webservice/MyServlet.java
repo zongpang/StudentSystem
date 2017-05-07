@@ -50,28 +50,46 @@ public class MyServlet extends HttpServlet {
 			String type = request.getParameter("quit");
 			if (type != null && type.equals("q")) {
 				session.invalidate();
-				System.out.println("即将重定向");
 				response.sendRedirect("login/Login.jsp");
-				System.out.println("重定向完成");
 			} else {
 				session.setAttribute("user", obj);
 				session.setAttribute("loginFirst", true);
-				System.out.println("即将转发");
 				request.getRequestDispatcher("find").forward(request, response);
 			}
 
 		} else if (obj != null && obj instanceof ClassWorker) {
-			session.setAttribute("user", obj);
-			session.setAttribute("loginFirst", true);
-			request.getRequestDispatcher("find").forward(request, response);
+			String type = request.getParameter("quit");
+			if (type != null && type.equals("q")) {
+				session.invalidate();
+				response.sendRedirect("login/Login.jsp");
+			} else {
+				session.setAttribute("user", obj);
+				session.setAttribute("loginFirst", true);
+				request.getRequestDispatcher("find").forward(request, response);
+			}
+
 		} else if (obj != null && obj instanceof Master) {
-			session.setAttribute("user", obj);
-			session.setAttribute("loginFirst", true);
-			request.getRequestDispatcher("find").forward(request, response);
+			String type = request.getParameter("quit");
+			if (type != null && type.equals("q")) {
+				session.invalidate();
+				response.sendRedirect("login/Login.jsp");
+			} else {
+				session.setAttribute("user", obj);
+				session.setAttribute("loginFirst", true);
+				request.getRequestDispatcher("find").forward(request, response);
+			}
+
 		} else if (obj != null && obj instanceof Deanery) {
-			session.setAttribute("user", obj);
-			session.setAttribute("loginFirst", true);
-			request.getRequestDispatcher("find").forward(request, response);
+			String type = request.getParameter("quit");
+			if (type != null && type.equals("q")) {
+				session.invalidate();
+				response.sendRedirect("login/Login.jsp");
+			} else {
+				session.setAttribute("user", obj);
+				session.setAttribute("loginFirst", true);
+				request.getRequestDispatcher("find").forward(request, response);
+			}
+
 		} else {// 重定向到登陆界面
 			response.sendRedirect("login/Login.jsp");
 		}

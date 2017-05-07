@@ -143,13 +143,12 @@ public class ChangeServlet extends HttpServlet {
 					String teacherSpeak = request.getParameter("ts");
 					String date = request.getParameter("date");
 					try {
-						double faceToFace = Double.parseDouble(pj);// 答辩
-						double write = Double.parseDouble(wr);// 笔试
-						double computer = Double.parseDouble(cp);// 机试
-						double average = Localutil.average(faceToFace, write, computer);
+//						double faceToFace = Double.parseDouble(pj);// 答辩
+//						double write = Double.parseDouble(wr);// 笔试
+//						double computer = Double.parseDouble(cp);// 机试
+//						double average = Localutil.average(faceToFace, write, computer);
 						int studentNo = Integer.parseInt(no);
-						daoC.updateStudentHistoryScore(studentNo, faceToFace, write, computer, teacherSpeak, date,
-								average);
+						daoC.updateStudentHistoryScore(studentNo,teacherSpeak, date);
 						if (json == null)
 							json = new JSONObject();
 						json.clear();

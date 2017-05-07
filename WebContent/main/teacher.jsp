@@ -90,7 +90,7 @@
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
-					<input type="text" class="search-query" placeholder="Search">
+					<input type="text" class="search-query" placeholder="请输入学生姓名">
 					<input class="btn btn-danger" style="margin-top: -1px;"
 						type="submit" value="查询">
 				</form>

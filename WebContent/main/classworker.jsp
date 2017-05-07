@@ -84,13 +84,13 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">用户操作 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-								<li><a href="#">退出登陆</a></li>
+								<li><a href="login?quit=q" name="quitLogin">退出登陆</a></li>
 							<li><a id="changePassWord" href='#myModal3'
 								data-toggle='modal'>修改密码</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
-					<input type="text" class="search-query" placeholder="Search">
+					<input type="text" class="search-query" placeholder="请输入学生姓名">
 					<input class="btn btn-danger" style="margin-top: -1px;"
 						type="submit" value="查询">
 				</form>
@@ -119,14 +119,15 @@
 			<h3 id="myModalLabel">请输入本月成绩</h3>
 		</div>
 		<div class="modal-body" style="height: 350px;">
-
+<!--  
 			<p>项目答辩:</p>
 			<input id="mod1_project" type="text"><br>
 			<p>笔试:</p>
 			<input id="mod1_write" type="text"><br>
 			<p>机试:</p>
 			<input id="mod1_computer" type="text"><br>
-			<p>教师评价:</p>
+			-->
+			<p>班主任评价:</p>
 			<input id="mod1_teacherspeak" type="text"><br>
 		</div>
 		<div class="modal-footer">
@@ -571,22 +572,17 @@
 			})
 					//修改学生当月的成绩
 			$("#save_0").click(function(){
-				 project=Number($("#mod1_project").val())
-				 write=Number($("#mod1_write").val())
-				 computer=Number($("#mod1_computer").val())
+				 //project=Number($("#mod1_project").val())
+				// write=Number($("#mod1_write").val())
+				 //computer=Number($("#mod1_computer").val())
 				 studentnum=Number($(".update").html())
 				 date1=$(".update").attr("id")
 				 teacherspeak=$("#mod1_teacherspeak").val()	
-				 //alert(date)
-				// alert(studentnum)
-				if (project != '' && write != ''&&computer!=''||teacherspeak!='') {
+				if (teacherspeak!='') {
 					$.ajax({
 						type : 'post',
 						url : 'change',
 						data : {
-							pj : project,
-							wr : write,
-							cp:computer,
 							ts:teacherspeak,
 							no:studentnum,
 							date:date1,

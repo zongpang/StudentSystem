@@ -90,5 +90,15 @@ public interface MasterDao {
 	 * @param new_pass
 	 */
 	public void changeUserPassWord(String name ,String new_pass);
+    /**
+     * 查出所有学生
+     * @return
+     */
+	public ArrayList<Student> findAllStudentByMaster();
+    /**
+     * 增加一个学生的基础信息
+     * @param stu
+     */
+	public void addNewStudentInSchool(Student stu);
 	
 }

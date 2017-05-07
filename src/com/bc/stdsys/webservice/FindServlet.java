@@ -85,7 +85,7 @@ public class FindServlet extends HttpServlet {
 					}
 				}
 				if (myType == 1) {// 作学生分页查询
-					String classNo = request.getParameter("classNo");// 得到班级号
+					String classNo = request.getParameter("classNo");// 得到当前选中班级号
 					if (classNo == null)
 						classNo = (String) request.getAttribute("classNo");
 					String pageNow = request.getParameter("pageNow");// 得到当前页
@@ -335,7 +335,7 @@ public class FindServlet extends HttpServlet {
 					}
 				}
 				if (myType == 1) {// 作学生分页查询
-					String classNo = request.getParameter("classNo");// 得到班级号
+					String classNo = request.getParameter("classNo");// 得到当前班级号班级号
 					if (classNo == null)
 						classNo = (String) request.getAttribute("classNo");
 					String pageNow = request.getParameter("pageNow");// 得到当前页
@@ -343,20 +343,39 @@ public class FindServlet extends HttpServlet {
 						pageNow = request.getParameter("pageNow");
 					if (daoM == null)
 						daoM = new MasterDaoImpl();// 实例化DeaneryDao
-					ArrayList<Student> students = daoM.findStudentByMaster(classNo);// 得到该班级全体学生的集合
-					int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
-					int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
-					if (pageNowOn > totalP) // 如果当前页大于总页数
-						pageNowOn = totalP;// 设为最后一页
-					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
-					if (json == null)
-						json = new JSONObject();
-					json.clear();
-					json.put(totalP, stu);// 放入数据(以总页数为key)
-					if (pw == null)
-						pw = response.getWriter();// 得到printWriter
-					pw.print(json.toString());// 以字符串的格式传给ajax
-					pw.close();
+					
+					if (classNo.equals("allStudent")) {//查询所有学生
+						ArrayList<Student> students = daoM.findAllStudentByMaster();// 得到该班级全体学生的集合
+						int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+						int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
+						if (pageNowOn > totalP) // 如果当前页大于总页数
+							pageNowOn = totalP;// 设为最后一页
+						ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
+						if (json == null)
+							json = new JSONObject();
+						json.clear();
+						json.put(totalP, stu);// 放入数据(以总页数为key)
+						if (pw == null)
+							pw = response.getWriter();// 得到printWriter
+						pw.print(json.toString());// 以字符串的格式传给ajax
+						pw.close();
+					}else{//按班级查询学生
+						ArrayList<Student> students = daoM.findStudentByMaster(classNo);// 得到该班级全体学生的集合
+						int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+						int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
+						if (pageNowOn > totalP) // 如果当前页大于总页数
+							pageNowOn = totalP;// 设为最后一页
+						ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
+						if (json == null)
+							json = new JSONObject();
+						json.clear();
+						json.put(totalP, stu);// 放入数据(以总页数为key)
+						if (pw == null)
+							pw = response.getWriter();// 得到printWriter
+						pw.print(json.toString());// 以字符串的格式传给ajax
+						pw.close();
+						
+					}
 				} else if (myType == 2) {// 作课程查询
 					List<Course> myCourse = daoM.findCourseByMaster();// 查出所有课程
 					if (json == null)

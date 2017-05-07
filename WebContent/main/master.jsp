@@ -89,7 +89,7 @@
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
-					<input type="text" class="search-query" placeholder="Search">
+					<input type="text" class="search-query" placeholder="请输入学生姓名">
 					<input class="btn btn-danger" style="margin-top: -1px;"
 						type="submit" value="查询">
 				</form>
@@ -105,7 +105,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">×</button>
-			<h3 id="myModalLabel">学生详情信息</h3>
+			<h3 id="myModalLabel">学生历史成绩</h3>
 		</div>
 		<div class="modal-body" STYLE="HEIGHT: 200PX;">
 			<!-- Modal -->
@@ -158,29 +158,7 @@
 			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	</div>
-
-
-	<div style="margin-top: 100px; width: 300px;" id="myModal2"
-		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
-			<h3 id="myModalLabel">请输入学生信息</h3>
-		</div>
-		<div class="modal-body" style="height: 350px;">
-
-			<p>姓名:</p>
-			<input id="mod2_stdName" type="text"><br>
-			<p>学号:</p>
-			<input id="mod2_stdNum" type="text"><br>
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-			<button class="btn " id="add_0" data-dismiss="modal"
-				aria-hidden="true">添加</button>
-		</div>
-	</div>
+	<!--修改用户密码  -->
 	<div style="margin-top: 100px; width: 300px;" id="myModal3"
 		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -202,6 +180,142 @@
 				aria-hidden="true">修改</button>
 		</div>
 	</div>
+	<!--为该班级添加一个学生  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal2"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">请输入学生信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+
+			<p>姓名:</p>
+			<input id="mod2_stdName" type="text"><br>
+			<p>学号:</p>
+			<input id="mod2_stdNum" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_a" id="add_0" data-dismiss="modal"
+				aria-hidden="true">添加</button>
+		</div>
+	</div>
+
+	<!--添加一个学生的详细信息  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal4"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">请输入学生基本信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>姓名:</p>
+			<input id="mod4_stdName" type="text"><br>
+			<p>学号:</p>
+			<input id="mod4_stdNum" type="text"><br>
+			<p>性别:</p>
+			<input id="mod4_stdSex" type="text"><br>
+			<p>班级:</p>
+			<input id="mod4_stdClass" type="text"><br>
+			<p>入学时间:</p>
+			<input id="mod4_stdJoinDate" type="text" placeholder="年-月-日"><br>
+			<p>家庭住址:</p>
+			<input id="mod4_stdAddress" type="text"><br>
+			<p>联系电话:</p>
+			<input id="mod4_stdPhone" type="text"><br>
+			<p>家长电话:</p>
+			<input id="mod4_stdParentPhone" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_a " id="add_1" data-dismiss="modal"
+				aria-hidden="true">添加</button>
+		</div>
+	</div>
+	<!--添加一个教师的详细信息  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal5"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">请输入教师基本信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>姓名:</p>
+			<input id="mod5_teaName" type="text"><br>
+			<p>工号:</p>
+			<input id="mod5_teaNum" type="text"><br>
+			<p>密码:</p>
+			<input id="mod5_teaPass" type="text"><br>
+			<p>电话:</p>
+			<input id="mod5_teaPhone" type="text"><br>
+			<p>住址:</p>
+			<input id="mod5_teaAddress" type="text"><br>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_a " id="add_2" data-dismiss="modal"
+				aria-hidden="true">添加</button>
+		</div>
+	</div>
+	<!--添加一个班主任的详细信息  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal6"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">请输入班主任基本信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>姓名:</p>
+			<input id="mod6_cwName" type="text"><br>
+			<p>工号:</p>
+			<input id="mod6_cwNum" type="text"><br>
+			<p>密码:</p>
+			<input id="mod6_cwPass" type="text"><br>
+			<p>电话:</p>
+			<input id="mod6_cwPhone" type="text"><br>
+			<p>住址:</p>
+			<input id="mod6_cwAddress" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_a " id="add_3" data-dismiss="modal"
+				aria-hidden="true">添加</button>
+		</div>
+	</div>
+	<!--添加一门课程详细信息  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal7"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">请输入课程信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>课程名称:</p>
+			<input id="mod7_couName" type="text"><br>
+			<p>班级:</p>
+			<input id="mod7_couClass" type="text"><br>
+			<p>教师:</p>
+			<input id="mod7_couTeacher" type="text"><br>
+			<p>开课日期:</p>
+			<input id="mod7_couDate" type="text" placeholder="年-月-日"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_a " id="add_4" data-dismiss="modal"
+				aria-hidden="true">添加</button>
+		</div>
+	</div>
 	<!-- Subhead
         ================================================== -->
 	<div class="container">
@@ -213,9 +327,10 @@
 				</div>
 
 				<div id="menu-collapse">
+					<!-- 班级管理模块 -->
 					<div>
 						<h3>
-							<a id="studentM" href="javascript:;">学生管理</a>
+							<a id="studentM" href="javascript:;">班级管理</a>
 						</h3>
 						<div id="studentManager" class="studentManager">
 							<%
@@ -230,6 +345,7 @@
 							%>
 						</div>
 					</div>
+					<!-- 课程管理模块 -->
 					<div>
 						<h3>
 							<a id="classM" href="javascript:;">课程管理</a>
@@ -238,6 +354,7 @@
 							<a href="javascript:;" id="myCourse">所有课程</a>
 						</div>
 					</div>
+					<!-- 员工管理模块 -->
 					<div>
 						<h3>
 							<a id="staffM" href="javascript:;">员工管理</a>
@@ -247,9 +364,17 @@
 								href="javascript:;" id="myClassWorker">班主任</a>
 						</div>
 					</div>
+					<!-- 学生管理模块 -->
+					<div>
+						<h3>
+							<a id="allStudentM" href="javascript:;">学生管理</a>
+						</h3>
+						<div>
+							<a href="javascript:;" id="allStudent">所有学生</a>
+						</div>
+					</div>
 				</div>
 				</section>
-
 			</div>
 
 			<div class="span9">
@@ -304,13 +429,14 @@
 		$(function() {
 			var stdM = $("#studentM").html()//菜单值
 			var claM = $("#classM").html()//菜单值
-			var title = $("#tab_0").html()//学生标题栏	
+			var title = $("#tab_0").html()//标题栏	
 			var now = Number($("#pageNow").html().substring(0, 1));//当前页
 			var total = Number($("#pageT").html());//总页数
-			$("#pageUp,#pageDown,#go,.studentManager_1")
+			$("#pageUp,#pageDown,#go,#allStudent,.studentManager_1")
 					.click(
-							function() {
+							function() {//班级管理模块&学生管理模块
 								classNow = $("#classN").html()//当前选中班级
+
 								id = $(this).attr("id");
 								if (id == "pageUp") {//上翻
 									$("#goto").val("");//goto框滞空
@@ -318,7 +444,6 @@
 									if (now < 1) {//作分页限定
 										now = 1;
 									}
-
 								} else if (id == "pageDown") {//下翻
 									$("#goto").val("");//goto框滞空
 									now = now + 1;
@@ -340,10 +465,16 @@
 											.show();//显示翻页按钮
 									now = 1;
 									classNow = id;
-									$("classN").html(classNow);//给隐藏标签赋值
+									$("#classN").html(classNow);//给隐藏标签赋值
+									if (classNow == "allStudent") {//改变红色添加按钮的href
+										$("#add").attr('href', '#myModal4');
+									} else {
+										$("#add").attr('href', '#myModal2');
+									}
+									$("#table_title").html(id);
+									$("#classN").show();
 								}
-								if (classNow != "") {//判断是否返回了数据
-									//$("#pageNow").html(now + "/" + total)//给pageNow再赋值
+								if (classNow != "") {
 									$
 											.ajax({
 												type : 'post',
@@ -355,6 +486,7 @@
 												},
 												dataType : "json",
 												success : function(data) {
+
 													var Data = data;
 													for ( var key in Data) {
 														var keyVal = Number(key)
@@ -405,9 +537,6 @@
 																	+ "</td>"
 																	+ "</tr>"
 															$("#tab").append(s)
-															$("#classN")
-																	.html(
-																			arr[i].myClass)
 															$("#" + arr[i].num)
 																	.on(
 																			'click',
@@ -544,7 +673,6 @@
 																								}
 																							}
 																						})
-
 																			})
 															//删除本班某一学生
 															$("#d" + arr[i].num)
@@ -568,7 +696,6 @@
 																				classNow = $(
 																						"#classN")
 																						.html()//当前选中班级
-																				//alert(now+"")
 																				$
 																						.ajax({
 																							type : 'post',
@@ -585,52 +712,109 @@
 																										"#go")
 																										.click();
 																							}
-
 																						})
-
 																			})
 														}
 													}
-
 												}
 											})
 								}
-
 							})
-			//为该班级添加一个学生
-			$("#add_0").click(function() {
-				stdName1 = $("#mod2_stdName").val();
-				stdNum = $("#mod2_stdNum").val();
-				classNow = $("#classN").html();//得到当前班级
-				now = $("#pageNow").html().substring(0, 1);//得到当前页
-				if (stdName1 != '' && stdNum != '') {
+			//红色添加按钮的操作
+			$(".btn_a").click(function() {
+				var classNow = $("#classN").html();//得到当前模块所属业务
+				var id = $(this).attr('id');//得到id
+				if (id == "add_0") {//班级管理模块(向当前班级添加一个学生)
+					stdName1 = $("#mod2_stdName").val();
+					stdNum = $("#mod2_stdNum").val();
+					now = $("#pageNow").html().substring(0, 1);//得到当前页
+					if (stdName1 != '' && stdNum != '') {
+						$.ajax({
+							type : 'post',
+							url : 'add',
+							data : {
+								stdN : stdNum,
+								stdName : stdName1,
+								type : 1,
+								classNo : classNow,
+								pageNow : now
+							},
+							dataType : "json",
+							success : function(data) {
+								var Data = data;
+								for ( var key in Data) {
+									var aaa = Data[key];
+									if (aaa == "该生不存在") {
+										alert(aaa)
+									} else {
+										alert("添加成功！")
+										$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
+									}
+								}
+							}
+						})
+					}
+				} else if (id == "add_1") {//学生管理模块（添加一个具体的学生）
+					//<p>姓名:</p>
+					//<input id="mod4_stdName" type="text"><br>
+					//<p>学号:</p>
+					//<input id="mod4_stdNum" type="text"><br>
+					//<p>性别:</p>
+					//<input id="mod4_stdSex" type="text"><br>
+					//<p>班级:</p>
+					//<input id="mod4_stdClass" type="text"><br>
+					//<p>入学时间:</p>
+					//<input id="mod4_stdJoinDate" type="text" placeholder="年-月-日"><br>		
+					//<p>家庭住址:</p>
+					//<input id="mod4_stdAddress" type="text"><br>
+					//<p>联系电话:</p>
+					//<input id="mod4_stdPhone" type="text"><br>
+					//<p>家长电话:</p>
+					//<input id="mod4_stdParentPhone" type="text"><br>
+					alert("add_1触发")
+					var stdName = $("#mod4_stdName").val();
+					var stdNum = $("#mod4_stdNum").val();
+					var stdSex = $("#mod4_stdSex").val();
+					var stdClass = $("#mod4_stdClass").val();
+					var joinDate = $("mod4_stdJoinDate").val();
+					var stdAddress = $("#mod4_stdAddress").val();
+					var stdPhone = $("#mod4_stdPhone").val();
+					var stdParentPhone = $("#mod4_stdParentPhone").val();
+					now = $("#pageNow").html().substring(0, 1);//得到当前页
+
 					$.ajax({
 						type : 'post',
 						url : 'add',
 						data : {
-							stdN : stdNum,
-							stdName : stdName1,
-							type : 1,
-							classNo : classNow,
-							pageNow : now
+							name : stdName,
+							num : stdNum,
+							sex : stdSex,
+							myClass : stdClass,
+							join : joinDate,
+							address : stdAddress,
+							phone : stdPhone,
+							parentPhone : stdParentPhone,
+							pageNow : now,
+							type : 2
 						},
 						dataType : "json",
 						success : function(data) {
 							var Data = data;
 							for ( var key in Data) {
 								var aaa = Data[key];
-								if (aaa == "该生不存在") {
+								if (aaa != "") {
 									alert(aaa)
-								} else {
-									alert("添加成功！")
 									$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
 								}
 							}
-
 						}
 					})
-				}
 
+				} else if (id == "add_2") {//员工管理模块（教师）
+				} else if (id == "add_3") {//员工管理模块（班主任）
+				} else if (id == "add_4") {//课程管理
+
+				}
 			})
 			//修改学生当月的成绩
 			$("#save_0").click(
@@ -641,8 +825,6 @@
 						studentnum = Number($(".update").html())
 						date1 = $(".update").attr("id")
 						teacherspeak = $("#mod1_teacherspeak").val()
-						//alert(date)
-						// alert(studentnum)
 						if (project != '' && write != '' && computer != ''
 								|| teacherspeak != '') {
 							$.ajax({
@@ -670,39 +852,18 @@
 							})
 						}
 					})
-			$("#studentM").click(function() {//点击修改导航栏方法
-				$("#add").show();//隐藏添加按钮
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
-				$("#M").html($("#studentM").html())//让导航栏显示当前菜单
-				$("#table_title").html("学生信息列表")
-				$("#tab").empty()//清空tab下的列表
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
-			})
-			$("#classM").click(function() {//点击修给导航栏方法
-				$("#add").hide();//隐藏添加按钮
-				$("#M").html($("#classM").html())//让导航栏显示当前菜单
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
-				$("#table_title").html("课程信息列表");
-				$("#tab_0").empty();//清空标题栏
-				$(".std_inf").remove();//删除学生列表
-				//alert($("#tab").html());
-			})
-			$("#staffM").click(function() {//点击修给导航栏方法
-				$("#add").hide();//隐藏添加按钮
-				$("#M").html($("#staffM").html())//让导航栏显示当前菜单
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
-				$("#table_title").html("员工信息列表");
-				$("#tab_0").empty();//清空标题栏
-				$(".std_inf").remove();//删除学生列表
-				//alert($("#tab").html());
-			})
 
-			$("#myCourse").click(function() {//点击获取课程信息
+			$("#myCourse")
+					.click(
+							function() {//课程管理模块
+								$("#add").attr('href', '#myModal7')
 								//定义课程标题栏
 								if ($("#tab_0").html() == "") {
-									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th>"
+									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th><th>操作</th>"
 									$("#tab_0").append(courseTitle);//添加标题栏
-									$.ajax({
+									$("#classN").html("myCourse");
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -714,7 +875,8 @@
 													for ( var key in Data) {
 														var aaa = Data[key]
 														for (var i = 0; i < aaa.length; i++) {
-															$("#tab").append(
+															$("#tab")
+																	.append(
 																			"<tr id=tab_1 class=std_inf><td>"
 																					+ aaa[i].name
 																					+ "</td>"
@@ -726,23 +888,34 @@
 																					+ "</td>"
 																					+ "<td>"
 																					+ aaa[i].date
-																					+ "</td></tr>")
+																					+ "</td>"
+																					+ "<td>"
+																					+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#' data-toggle='modal'>"
+																					+ "修改"
+																					+ "</a>"
+																					+ "<a id=d"+aaa[i].myClass+" class="+"delete_course"+" href='javascript:;'>"
+																					+ "/删除"
+																					+ "</a>"
+																					+ "</td>"
+																					+ "</tr>")
 														}
 													}
 												}
 											})
 								}
 							})
-
 			$("#myTeacher,#myClassWorker")
-					.click(function() {
+					.click(
+							function() {//员工管理模块
 								id = $(this).attr("id");
 								$("#tab").empty();
-								var teacherTitle = "<tr id=tab_0><th>姓名</th><th>工号</th><th>家庭住址</th><th>联系电话</th></tr>"
+								var teacherTitle = "<tr id=tab_0><th>姓名</th><th>工号</th><th>家庭住址</th><th>联系电话</th><th>操作</th></tr>"
 								$("#tab").html(teacherTitle);//添加标题栏
-
+								$("#classN").html(id)
 								if (id == "myTeacher") {
-									$.ajax({
+									$("#add").attr('href', '#myModal5')
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -756,7 +929,7 @@
 														for (var i = 0; i < aaa.length; i++) {
 															$("#tab")
 																	.append(
-																			"<tr><td>"
+																			"<tr class='teacher_inf'><td>"
 																					+ aaa[i].name
 																					+ "</td>"
 																					+ "<td>"
@@ -767,13 +940,24 @@
 																					+ "</td>"
 																					+ "<td>"
 																					+ aaa[i].phone
-																					+ "</td></tr>")
+																					+ "</td>"
+																					+ "<td>"
+																					+ "<a id="+aaa[i].name+" class="+"change_teacher"+" href='#' data-toggle='modal'>"
+																					+ "修改"
+																					+ "</a>"
+																					+ "<a id=d"+aaa[i].name+" class="+"delete_teacher"+" href='javascript:;'>"
+																					+ "/删除"
+																					+ "</a>"
+																					+ "</td>"
+																					+ "</tr>")
 														}
 													}
 												}
 											})
 								} else if (id == "myClassWorker") {
-									$.ajax({
+									$("#add").attr('href', '#myModal6')
+									$
+											.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -787,7 +971,7 @@
 														for (var i = 0; i < aaa.length; i++) {
 															$("#tab")
 																	.append(
-																			"<tr><td>"
+																			"<tr class='classworker_inf'><td>"
 																					+ aaa[i].name
 																					+ "</td>"
 																					+ "<td>"
@@ -798,13 +982,56 @@
 																					+ "</td>"
 																					+ "<td>"
 																					+ aaa[i].phone
-																					+ "</td></tr>")
+																					+ "</td>"
+																					+"<td>"
+																					+ "<a id="+aaa[i].name+" class="+"change_classworker"+" href='#' data-toggle='modal'>"
+																					+ "修改"
+																					+ "</a>"
+																					+ "<a id=d"+aaa[i].name+" class="+"delete_classworker"+" href='javascript:;'>"
+																					+ "/删除"
+																					+ "</a>"
+																					+ "</td>"
+																					+ "</tr>")
 														}
 													}
 												}
 											})
 								}
 							})
+
+			$("#studentM").click(function() {//点击修改导航栏方法
+				$("#add").show();//隐藏添加按钮
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
+				$("#M").html($("#studentM").html())//让导航栏显示当前菜单
+				$("#table_title").html("学生信息列表")
+				$("#tab").empty()//清空tab下的列表
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
+			})
+			$("#classM").click(function() {//点击修给导航栏方法
+				$("#M").html($("#classM").html())//让导航栏显示当前菜单
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
+				$("#table_title").html("课程信息列表");
+				$("#tab_0").empty();//清空标题栏
+				$(".std_inf").remove();//清空学生列表
+				$(".teacher_inf").remove();//清空教师信息
+				$(".classworker_inf").remove();//清空班主任
+			})
+			$("#staffM").click(function() {//点击修给导航栏方法
+				$("#M").html($("#staffM").html())//让导航栏显示当前菜单
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
+				$("#table_title").html("员工信息列表");
+				$("#tab_0").empty();//清空标题栏
+				$(".std_inf").remove();//学生列表
+				$(".teacher_inf").remove();//清空教师信息
+				$(".classworker_inf").remove();//清空班主任
+			})
+
+			$("#allStudentM").click(function() {//点击修给导航栏方法
+				$("#M").html($("#allStudentM").html())//让导航栏显示当前菜单
+				$("#table_title").html("所有学生");
+				$("#tab_0").empty();//清空标题栏
+				$(".classworker_inf").remove();
+			})
 
 			$("#change_password").click(function() {//用户修改密码
 				var old_pass = $("#mod3_passOld").val();
@@ -830,7 +1057,6 @@
 						}
 					}
 				})
-
 			})
 		})
 	</script>

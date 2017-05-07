@@ -72,7 +72,7 @@ public interface ClassWorkerDao {
 	 * @param computer
 	 * @param ClassWorkerSpeak
 	 */
-	public void updateStudentHistoryScore(int studentNo,double faceToFace,double write,double computer,String ClassWorkerSpeak,String date,double average);
+	public void updateStudentHistoryScore(int studentNo,String ClassWorkerSpeak,String date);
 	
 	/**
 	 * 修改用户密码

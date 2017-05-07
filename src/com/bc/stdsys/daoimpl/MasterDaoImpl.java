@@ -303,8 +303,6 @@ public class MasterDaoImpl implements MasterDao {
 	public void updateStudentHistoryScore(int studentNo, double faceToFace, double write, double computer,
 			String MasterSpeak, String date, double average) {
 		// TODO Auto-generated method stub
-		Score score = null;
-		List<Score> list = null;
 		String sql = "update score set facetoface=?,writescore=?,computer=?,average=?,teacherspeak=? where studentnum=? and date=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
@@ -415,16 +413,14 @@ public class MasterDaoImpl implements MasterDao {
 	@Override
 	public void changeUserPassWord(String name, String new_pass) {
 		// TODO Auto-generated method stub
-		Score score = null;
-		List<Score> list = null;
 		String sql = "update master set password=? where name=?;";
 		PreparedStatement pst = null;// 预编译对象
 		try {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
-            pst.setString(1, new_pass);
-            pst.setString(2, name);
+			pst.setString(1, new_pass);
+			pst.setString(2, name);
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -438,6 +434,76 @@ public class MasterDaoImpl implements MasterDao {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public ArrayList<Student> findAllStudentByMaster() {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+		ArrayList<Student> listStd = null;
+		String sql = "select * from student;";
+		try {
+			listStd = new ArrayList<Student>();// 创建学生集合
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			rst = pst.executeQuery();
+			Student std = null;
+			while (rst.next()) {
+				std = new Student();// 创建学生对象
+				std.setName(rst.getString("name"));// 姓名
+				std.setCredit(rst.getInt("credit"));// 学分
+				std.setDorm(rst.getString("dorm"));
+				std.setMyClass(rst.getString("myclass"));
+				std.setJoinDate(rst.getString("joinDate"));
+				std.setQuitDate(rst.getString("quitDate"));
+				std.setState(rst.getString("state"));
+				std.setNum(rst.getInt("num"));// 学号
+				std.setSex(rst.getString("sex"));
+				listStd.add(std);
+			}
+			return listStd;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return listStd;
+	}
+
+	@Override
+	public void addNewStudentInSchool(Student stu) {
+		// TODO Auto-generated method stub
+
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "insert into student (num,name,sex,address,phone,parentphone,myclass,joindate) values (?,?,?,?,?,?,?,?);";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, stu.getNum());
+			pst.setString(2, stu.getName());
+			pst.setString(3, stu.getSex());
+			pst.setString(4, stu.getAddress());
+			pst.setString(5, stu.getParentPhone());
+			pst.setString(6, stu.getParentPhone());
+			pst.setString(7, stu.getMyClass());
+			pst.setString(8, stu.getJoinDate());
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
