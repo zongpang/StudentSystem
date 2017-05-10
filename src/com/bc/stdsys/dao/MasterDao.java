@@ -100,5 +100,44 @@ public interface MasterDao {
      * @param stu
      */
 	public void addNewStudentInSchool(Student stu);
+/**
+ * 查看该生是否存在
+ * @param stu
+ * @return
+ */
+	public boolean findStudentInSchool(Student stu);
+/**
+ * 查看课程表中某个班级是否存在
+ * @param c
+ * @return
+ */
+	public boolean findClassInCourse(Course c);
+/**
+ * 为课程表添加一个新的班级
+ * @param c
+ */
+	public void addNewCourse(Course c);
+/**
+ * 查看该教师是否存在
+ * @param t
+ * @return
+ */
+	public boolean findTeacherByName(Teacher t);
+/**
+ * 添加一名新的教师
+ * @param t
+ */
+public void addNewTeacher(Teacher t);
+/**
+ * 按姓名查找教师
+ * @param c
+ * @return
+ */
+public boolean findClassWorkerByName(ClassWorker c);
+/**
+ * 添加一名教师
+ * @param c
+ */
+public void addNewClassWorker(ClassWorker c);
 	
 }

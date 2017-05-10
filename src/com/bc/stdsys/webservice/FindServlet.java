@@ -377,6 +377,8 @@ public class FindServlet extends HttpServlet {
 						
 					}
 				} else if (myType == 2) {// 作课程查询
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
 					List<Course> myCourse = daoM.findCourseByMaster();// 查出所有课程
 					if (json == null)
 						json = new JSONObject();

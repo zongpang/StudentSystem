@@ -721,101 +721,309 @@
 								}
 							})
 			//红色添加按钮的操作
-			$(".btn_a").click(function() {
-				var classNow = $("#classN").html();//得到当前模块所属业务
-				var id = $(this).attr('id');//得到id
-				if (id == "add_0") {//班级管理模块(向当前班级添加一个学生)
-					stdName1 = $("#mod2_stdName").val();
-					stdNum = $("#mod2_stdNum").val();
-					now = $("#pageNow").html().substring(0, 1);//得到当前页
-					if (stdName1 != '' && stdNum != '') {
-						$.ajax({
-							type : 'post',
-							url : 'add',
-							data : {
-								stdN : stdNum,
-								stdName : stdName1,
-								type : 1,
-								classNo : classNow,
-								pageNow : now
-							},
-							dataType : "json",
-							success : function(data) {
-								var Data = data;
-								for ( var key in Data) {
-									var aaa = Data[key];
-									if (aaa == "该生不存在") {
-										alert(aaa)
-									} else {
-										alert("添加成功！")
-										$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
+			$(".btn_a")
+					.click(
+							function() {
+								var classNow = $("#classN").html();//得到当前模块所属业务
+								var id = $(this).attr('id');//得到id
+								if (id == "add_0") {//班级管理模块(向当前班级添加一个学生)
+									stdName1 = $("#mod2_stdName").val();
+									stdNum = $("#mod2_stdNum").val();
+									now = $("#pageNow").html().substring(0, 1);//得到当前页
+									if (stdName1 != '' && stdNum != '') {
+										$.ajax({
+											type : 'post',
+											url : 'add',
+											data : {
+												stdN : stdNum,
+												stdName : stdName1,
+												type : 1,
+												classNo : classNow,
+												pageNow : now
+											},
+											dataType : "json",
+											success : function(data) {
+												var Data = data;
+												for ( var key in Data) {
+													var aaa = Data[key];
+													if (aaa == "该生不存在") {
+														alert(aaa)
+													} else {
+														alert("添加成功！")
+														$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
+													}
+												}
+											}
+										})
 									}
+								} else if (id == "add_1") {//学生管理模块（添加一个具体的学生）
+									var stdName = $("#mod4_stdName").val();
+									var stdNum = $("#mod4_stdNum").val();
+									var stdSex = $("#mod4_stdSex").val();
+									var stdClass = $("#mod4_stdClass").val();
+									var joinDate = $("mod4_stdJoinDate").val();
+									var stdAddress = $("#mod4_stdAddress").val();
+									var stdPhone = $("#mod4_stdPhone").val();
+									var stdParentPhone = $("#mod4_stdParentPhone").val();
+									now = $("#pageNow").html().substring(0, 1);//得到当前页
+									$.ajax({
+										type : 'post',
+										url : 'add',
+										data : {
+											name : stdName,
+											num : stdNum,
+											sex : stdSex,
+											myClass : stdClass,
+											join : joinDate,
+											address : stdAddress,
+											phone : stdPhone,
+											parentPhone : stdParentPhone,
+											pageNow : now,
+											type : 2
+										},
+										dataType : "json",
+										success : function(data) {
+											var Data = data;
+											for ( var key in Data) {
+												var aaa = Data[key];
+												if (aaa != "") {
+													alert(aaa)
+													$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
+												}
+											}
+										}
+									})
+
+								} else if (id == "add_2") {//员工管理模块（教师）	
+									//<p>姓名:</p>
+									//<input id="mod5_teaName" type="text"><br>
+									//<p>工号:</p>
+									//<input id="mod5_teaNum" type="text"><br>
+									//<p>密码:</p>
+									//<input id="mod5_teaPass" type="text"><br>
+									//<p>电话:</p>
+									//<input id="mod5_teaPhone" type="text"><br>
+									//<p>住址:</p>
+									//<input id="mod5_teaAddress" type="text"><br>
+									var teaName1 = $("#mod5_teaName").val();
+									var teaNum1 = $("#mod5_teaNum").val();
+									var teaPassWord1 = $("#mod5_teaPass").val();
+									var teaPhone1 = $("#mod5_teaPhone").val();
+									var teaAddress1 = $("#mod5_teaAddress").val();
+									$ .ajax({
+										type : 'post',
+										url : 'add',
+										data : {
+											teaName : teaName1,
+											teaNum : teaNum1,
+											teaPassWord : teaPassWord1,
+											teaPhone : teaPhone1,
+											teaAddress : teaAddress1,
+											type : 4
+										},
+										dataType : "json",
+										success : function(data) {
+											var Data = data;
+											for ( var key in Data) {
+												var aaa = Data[key];
+												if (aaa != "添加失败") {
+													$("#tab").empty();
+													var teacherTitle = "<tr id=tab_0><th>姓名</th><th>工号</th><th>家庭住址</th><th>联系电话</th><th>操作</th></tr>"
+													$("#tab").html(teacherTitle);//添加标题栏
+													$("#add").attr('href', '#myModal5')
+													$.ajax({
+																type : 'post',
+																url : 'find',
+																data : {
+																	type : 4,
+																},
+																dataType : "json",
+																success : function(data) {
+																	var Data = data;
+																	for ( var key in Data) {
+																		var aaa = Data[key]
+																		for (var i = 0; i < aaa.length; i++) {
+																			$("#tab")
+																					.append(
+																							"<tr class='teacher_inf'><td>"
+																									+ aaa[i].name
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].num
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].aDdress
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].phone
+																									+ "</td>"
+																									+ "<td>"
+																									+ "<a id="+aaa[i].name+" class="+"change_teacher"+" href='#' data-toggle='modal'>"
+																									+ "修改"
+																									+ "</a>"
+																									+ "<a id=d"+aaa[i].name+" class="+"delete_teacher"+" href='javascript:;'>"
+																									+ "/删除"
+																									+ "</a>"
+																									+ "</td>"
+																									+ "</tr>")
+																		}
+																	}
+																}
+															})
+													
+													
+													
+										}else{
+											alert("该教师已存在！")
+											}
+										}
+									}})
+									
+	
+								} else if (id == "add_3") {//员工管理模块（班主任）
+									//<p>姓名:</p>
+									//<input id="mod6_cwName" type="text"><br>
+									//<p>工号:</p>
+									//<input id="mod6_cwNum" type="text"><br>
+									//<p>密码:</p>
+									//<input id="mod6_cwPass" type="text"><br>
+									//<p>电话:</p>
+									//<input id="mod6_cwPhone" type="text"><br>
+									//<p>住址:</p>
+									//<input id="mod6_cwAddress" type="text"><br>
+									var cwName1 = $("#mod6_cwName").val();
+									var cwNum1 = $("#mod6_cwNum").val();
+									var cwPassWord1 = $("#mod6_cwPass").val();
+									var cwPhone1 = $("#mod6_cwPhone").val();
+									var cwAddress1 = $("#mod6_cwAddress").val();
+									$ .ajax({
+										type : 'post',
+										url : 'add',
+										data : {
+											cwName : cwName1,
+											cwNum : teaNum1,
+											cwPassWord : cwPassWord1,
+											cwPhone : cwPhone1,
+											cwAddress : cwAddress1,
+											type : 5
+										},
+										dataType : "json",
+										success : function(data) {
+											var Data = data;
+											for ( var key in Data) {
+												var aaa = Data[key];
+												if (aaa != "添加失败") {//添加成功将返回的数据重新打印
+													$("#tab").empty();
+													var teacherTitle = "<tr id=tab_0><th>姓名</th><th>工号</th><th>家庭住址</th><th>联系电话</th><th>操作</th></tr>"
+													$("#tab").html(teacherTitle);//添加标题栏
+													$("#add").attr('href', '#myModal6')
+													$.ajax({
+																type : 'post',
+																url : 'find',
+																data : {
+																	type : 4,
+																},
+																dataType : "json",
+																success : function(data) {
+																	var Data = data;
+																	for ( var key in Data) {
+																		var aaa = Data[key]
+																		for (var i = 0; i < aaa.length; i++) {
+																			$("#tab")
+																					.append(
+																							"<tr class='teacher_inf'><td>"
+																									+ aaa[i].name
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].num
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].aDdress
+																									+ "</td>"
+																									+ "<td>"
+																									+ aaa[i].phone
+																									+ "</td>"
+																									+ "<td>"
+																									+ "<a id="+aaa[i].name+" class="+"change_teacher"+" href='#' data-toggle='modal'>"
+																									+ "修改"
+																									+ "</a>"
+																									+ "<a id=d"+aaa[i].name+" class="+"delete_teacher"+" href='javascript:;'>"
+																									+ "/删除"
+																									+ "</a>"
+																									+ "</td>"
+																									+ "</tr>")
+																		}
+																	}
+																}
+															})
+										}else{
+											alert("该班主任已存在！")
+											}
+										}
+									}})
+	
+									
+								} else if (id == "add_4") {//课程管理
+									var course = $("#mod7_couName").val();
+									var myClass1 = $("#mod7_couClass").val();
+									var teacher = $("#mod7_couTeacher").val();
+									var date = $("#mod7_couDate").val();
+									$ .ajax({
+												type : 'post',
+												url : 'add',
+												data : {
+													myCourse : course,
+													myClass : myClass1,
+													myTeacher : teacher,
+													myDate : date,
+													type : 3
+												},
+												dataType : "json",
+												success : function(data) {
+													var Data = data;
+													for ( var key in Data) {
+														var aaa = Data[key];
+														if (aaa != "添加失败") {
+															$("#classN").html(
+																	"myCourse");
+															$(".std_inf")
+																	.remove();//清空内容
+															for (var i = 0; i < aaa.length; i++) {
+																$("#tab")
+																		.append(
+																				"<tr id=tab_1 class=std_inf><td>"
+																						+ aaa[i].name
+																						+ "</td>"
+																						+ "<td>"
+																						+ aaa[i].myClass
+																						+ "</td>"
+																						+ "<td>"
+																						+ aaa[i].teacher
+																						+ "</td>"
+																						+ "<td>"
+																						+ aaa[i].date
+																						+ "</td>"
+																						+ "<td>"
+																						+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#' data-toggle='modal'>"
+																						+ "修改"
+																						+ "</a>"
+																						+ "<a id=d"+aaa[i].myClass+" class="+"delete_course"+" href='javascript:;'>"
+																						+ "/删除"
+																						+ "</a>"
+																						+ "</td>"
+																						+ "</tr>")
+															}
+
+														} else {
+															alert("该班级已存在，请进行修改！")
+														}
+
+													}
+												}
+											})
+
 								}
-							}
-						})
-					}
-				} else if (id == "add_1") {//学生管理模块（添加一个具体的学生）
-					//<p>姓名:</p>
-					//<input id="mod4_stdName" type="text"><br>
-					//<p>学号:</p>
-					//<input id="mod4_stdNum" type="text"><br>
-					//<p>性别:</p>
-					//<input id="mod4_stdSex" type="text"><br>
-					//<p>班级:</p>
-					//<input id="mod4_stdClass" type="text"><br>
-					//<p>入学时间:</p>
-					//<input id="mod4_stdJoinDate" type="text" placeholder="年-月-日"><br>		
-					//<p>家庭住址:</p>
-					//<input id="mod4_stdAddress" type="text"><br>
-					//<p>联系电话:</p>
-					//<input id="mod4_stdPhone" type="text"><br>
-					//<p>家长电话:</p>
-					//<input id="mod4_stdParentPhone" type="text"><br>
-					alert("add_1触发")
-					var stdName = $("#mod4_stdName").val();
-					var stdNum = $("#mod4_stdNum").val();
-					var stdSex = $("#mod4_stdSex").val();
-					var stdClass = $("#mod4_stdClass").val();
-					var joinDate = $("mod4_stdJoinDate").val();
-					var stdAddress = $("#mod4_stdAddress").val();
-					var stdPhone = $("#mod4_stdPhone").val();
-					var stdParentPhone = $("#mod4_stdParentPhone").val();
-					now = $("#pageNow").html().substring(0, 1);//得到当前页
-
-					$.ajax({
-						type : 'post',
-						url : 'add',
-						data : {
-							name : stdName,
-							num : stdNum,
-							sex : stdSex,
-							myClass : stdClass,
-							join : joinDate,
-							address : stdAddress,
-							phone : stdPhone,
-							parentPhone : stdParentPhone,
-							pageNow : now,
-							type : 2
-						},
-						dataType : "json",
-						success : function(data) {
-							var Data = data;
-							for ( var key in Data) {
-								var aaa = Data[key];
-								if (aaa != "") {
-									alert(aaa)
-									$("#pageDown").click();//添加成功后调用#pageDown的点击事件进行刷新
-								}
-							}
-						}
-					})
-
-				} else if (id == "add_2") {//员工管理模块（教师）
-				} else if (id == "add_3") {//员工管理模块（班主任）
-				} else if (id == "add_4") {//课程管理
-
-				}
-			})
+							})
 			//修改学生当月的成绩
 			$("#save_0").click(
 					function() {
@@ -853,9 +1061,7 @@
 						}
 					})
 
-			$("#myCourse")
-					.click(
-							function() {//课程管理模块
+			$("#myCourse").click(function() {//课程管理模块
 								$("#add").attr('href', '#myModal7')
 								//定义课程标题栏
 								if ($("#tab_0").html() == "") {
@@ -904,8 +1110,7 @@
 											})
 								}
 							})
-			$("#myTeacher,#myClassWorker")
-					.click(
+			$("#myTeacher,#myClassWorker").click(
 							function() {//员工管理模块
 								id = $(this).attr("id");
 								$("#tab").empty();
@@ -914,8 +1119,7 @@
 								$("#classN").html(id)
 								if (id == "myTeacher") {
 									$("#add").attr('href', '#myModal5')
-									$
-											.ajax({
+									$.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -983,7 +1187,7 @@
 																					+ "<td>"
 																					+ aaa[i].phone
 																					+ "</td>"
-																					+"<td>"
+																					+ "<td>"
 																					+ "<a id="+aaa[i].name+" class="+"change_classworker"+" href='#' data-toggle='modal'>"
 																					+ "修改"
 																					+ "</a>"
