@@ -139,5 +139,15 @@ public boolean findClassWorkerByName(ClassWorker c);
  * @param c
  */
 public void addNewClassWorker(ClassWorker c);
+/**
+ * 根据学号删除一个学生（在学生表中）
+ * @param stdNum
+ */
+public void deleteStudent(String stdNum);
+/**
+ * 删除一门课程
+ * @param myClass
+ */
+public void deleteCourse(String myClass);
 	
 }

@@ -646,11 +646,11 @@ public class MasterDaoImpl implements MasterDao {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
-	        pst.setString(1, t.getName());
-	        pst.setInt(2, t.getNum());
-	        pst.setString(3, t.getPassWord());
-	        pst.setString(4, t.getPhone());
-	        pst.setString(5, t.getaDdress());
+			pst.setString(1, t.getName());
+			pst.setInt(2, t.getNum());
+			pst.setString(3, t.getPassWord());
+			pst.setString(4, t.getPhone());
+			pst.setString(5, t.getaDdress());
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -706,11 +706,11 @@ public class MasterDaoImpl implements MasterDao {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
-	        pst.setString(1, c.getName());
-	        pst.setInt(2, c.getNum());
-	        pst.setString(3, c.getPassWord());
-	        pst.setString(4, c.getPhone());
-	        pst.setString(5, c.getaDdress());
+			pst.setString(1, c.getName());
+			pst.setInt(2, c.getNum());
+			pst.setString(3, c.getPassWord());
+			pst.setString(4, c.getPhone());
+			pst.setString(5, c.getaDdress());
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -724,6 +724,58 @@ public class MasterDaoImpl implements MasterDao {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void deleteStudent(String stdNum) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "delete from student where num=?";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, stdNum);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public void deleteCourse(String myClass) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "delete from course where myclass=?";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, myClass);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

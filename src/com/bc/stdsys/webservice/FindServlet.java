@@ -31,15 +31,15 @@ import com.bc.stdsys.util.Localutil;
 import net.sf.json.JSONObject;
 
 public class FindServlet extends HttpServlet {
-	
-	HttpSession session;//session
+
+	HttpSession session;// session
 	TeacherDao daoT;// 教师操作接口
 	ClassWorkerDao daoC;// 班主任操作接口
 	DeaneryDao daoD;// 院长操作接口
-	MasterDao daoM;//管理员操作接口
+	MasterDao daoM;// 管理员操作接口
 	final int PAGE_SIZE = 2;// 分页查找每页的容量
 	JSONObject json;// 创建JO对象
-	PrintWriter pw;//printerwriter
+	PrintWriter pw;// printerwriter
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -282,8 +282,8 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				} else if (myType == 4) {
-					List<Teacher> myTeacher = daoD.findAllTeacher();// 查出所教师
+				} else if (myType == 4) {// 查出所有教师
+					List<Teacher> myTeacher = daoD.findAllTeacher();
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
@@ -293,8 +293,8 @@ public class FindServlet extends HttpServlet {
 					pw.print(json.toString());
 					pw.close();
 
-				}else if (myType==5) {
-					List<ClassWorker> myTeacher = daoD.findAllClassWorker();// 查出所教师
+				} else if (myType == 5) {// 查出所有班主任
+					List<ClassWorker> myTeacher = daoD.findAllClassWorker();
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
@@ -307,11 +307,11 @@ public class FindServlet extends HttpServlet {
 			}
 
 		} else {
-			System.out.println("master进来了");
+			System.out.println("find master进来了");
 			boolean teacherFlag = (boolean) session.getAttribute("loginFirst");// 判断首次登陆
 			Master master = (Master) obj;
 			if (teacherFlag) {// 首次登陆数据初始化
-				daoM =  new MasterDaoImpl();
+				daoM = new MasterDaoImpl();
 				List<String> list = daoM.findMyclassByMaster();// 查出所教班级的名称
 				session.setAttribute("myClass", list);// 向session中放入班级
 				session.setAttribute("loginFirst", false);// 首次登陆置否
@@ -343,8 +343,8 @@ public class FindServlet extends HttpServlet {
 						pageNow = request.getParameter("pageNow");
 					if (daoM == null)
 						daoM = new MasterDaoImpl();// 实例化DeaneryDao
-					
-					if (classNo.equals("allStudent")) {//查询所有学生
+
+					if (classNo.equals("allStudent")) {// 查询所有学生
 						ArrayList<Student> students = daoM.findAllStudentByMaster();// 得到该班级全体学生的集合
 						int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
 						int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
@@ -359,7 +359,7 @@ public class FindServlet extends HttpServlet {
 							pw = response.getWriter();// 得到printWriter
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
-					}else{//按班级查询学生
+					} else {// 按班级查询学生
 						ArrayList<Student> students = daoM.findStudentByMaster(classNo);// 得到该班级全体学生的集合
 						int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
 						int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
@@ -374,7 +374,7 @@ public class FindServlet extends HttpServlet {
 							pw = response.getWriter();// 得到printWriter
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
-						
+
 					}
 				} else if (myType == 2) {// 作课程查询
 					if (daoM == null)
@@ -389,6 +389,8 @@ public class FindServlet extends HttpServlet {
 					pw.print(json.toString());
 					pw.close();
 				} else if (myType == 3) {// 作学生详情展示
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
 					String stdNum = request.getParameter("stdN");
 					if (stdNum == null)
 						stdNum = (String) request.getAttribute("stdNum");
@@ -401,8 +403,10 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-				} else if (myType == 4) {
-					List<Teacher> myTeacher = daoM.findAllTeacher();// 查出所教师
+				} else if (myType == 4) {// 查出所有教师
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
+					List<Teacher> myTeacher = daoM.findAllTeacher();
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
@@ -412,8 +416,10 @@ public class FindServlet extends HttpServlet {
 					pw.print(json.toString());
 					pw.close();
 
-				}else if (myType==5) {
-					List<ClassWorker> myTeacher = daoM.findAllClassWorker();// 查出所教师
+				} else if (myType == 5) {// 查出所有班主任
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
+					List<ClassWorker> myTeacher = daoM.findAllClassWorker();
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
@@ -422,7 +428,20 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
-					
+
+				} else if (myType == 6) {
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
+					List<Course> list = daoM.findCourseByMaster();
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(master.getName(), list);// 以教师的姓名或工号作为返回key
+//					if (pw == null)
+//						pw = response.getWriter();
+					PrintWriter pw=response.getWriter();
+					pw.print(json.toString());
+					pw.close();
 				}
 			}
 

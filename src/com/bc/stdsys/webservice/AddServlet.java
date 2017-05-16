@@ -22,7 +22,6 @@ import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Master;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
-
 import net.sf.json.JSONObject;
 
 /**
@@ -30,13 +29,14 @@ import net.sf.json.JSONObject;
  */
 @WebServlet("/AddServlet")
 public class AddServlet extends HttpServlet {
-	JSONObject json;// 创建JO对象
+
 	HttpSession session;
 	TeacherDao daoT;
 	ClassWorkerDao daoC;
 	MasterDao daoM;
 	final int PAGE_SIZE = 2;// 分页查找每页的容量
-	PrintWriter pw;
+	JSONObject json;// 创建JO对象
+	PrintWriter pw;//打印器
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -143,7 +143,7 @@ public class AddServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-				} else if (myType == 2) {
+				} else if (myType == 2) {//添加一名新生
 					String name = request.getParameter("name");
 					String num = request.getParameter("num");
 					if (num == null) {
@@ -192,7 +192,7 @@ public class AddServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-				} else if (myType == 3) {
+				} else if (myType == 3) {//添加一个班级
 					String myCourse = request.getParameter("myCourse");
 					String myClass = request.getParameter("myClass");
 					String myTeacher = request.getParameter("myTeacher");
@@ -213,8 +213,9 @@ public class AddServlet extends HttpServlet {
 							json = new JSONObject();
 						json.clear();
 						json.put("添加成功", list);//
-						if (pw == null)
-							pw = response.getWriter();// 得到printWriter
+//						if (pw == null)
+//							pw = response.getWriter();// 得到printWriter
+						PrintWriter pw=response.getWriter();
 						// System.out.println(json.toString());
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
@@ -310,9 +311,7 @@ public class AddServlet extends HttpServlet {
 
 				}
 			}
-		} else {
-
-		}
+		} 
 
 	}
 
