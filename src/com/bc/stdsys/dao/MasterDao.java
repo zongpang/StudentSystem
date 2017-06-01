@@ -200,6 +200,12 @@ public List<Score> findZhangSanScore();
  * @param nowDate
  */
 public void addAnewScore(List<Student> students, String nowDate);
+/**
+ * 按姓名模糊查询学生
+ * @param name
+ * @return
+ */
+public List<Student> findstudentByName(String name);
 
 	
 }

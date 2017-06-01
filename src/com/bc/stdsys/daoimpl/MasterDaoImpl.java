@@ -1069,7 +1069,7 @@ public class MasterDaoImpl implements MasterDao {
 			 */
 			PreparedStatement pst2 = null;// 预编译对象
 			ResultSet rst2 = null;// 结果集
-		    String course=null;
+			String course = null;
 			try {
 				String sql = "select name from course where myclass=?;";
 				if (conn == null || conn.isClosed())
@@ -1078,7 +1078,7 @@ public class MasterDaoImpl implements MasterDao {
 				pst2.setString(1, students.get(i).getMyClass());
 				rst2 = pst2.executeQuery();
 				while (rst2.next()) {
-				       course=rst2.getString("name");
+					course = rst2.getString("name");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1121,6 +1121,52 @@ public class MasterDaoImpl implements MasterDao {
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<Student> findstudentByName(String name) {
+
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+		ArrayList<Student> listStd = null;
+		String sql = "select * from student where name like ?;";
+		try {
+			listStd = new ArrayList<Student>();// 创建学生集合
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, "%"+name+"%");
+			rst = pst.executeQuery();
+			Student std = null;
+			while (rst.next()) {
+				std = new Student();// 创建学生对象
+				std.setName(rst.getString("name"));// 姓名
+				std.setCredit(rst.getInt("credit"));// 学分
+				std.setDorm(rst.getString("dorm"));
+				std.setMyClass(rst.getString("myclass"));
+				std.setJoinDate(rst.getString("joinDate"));
+				std.setQuitDate(rst.getString("quitDate"));
+				std.setState(rst.getString("state"));
+				std.setNum(rst.getInt("num"));// 学号
+				std.setSex(rst.getString("sex"));
+				listStd.add(std);
+			}
+			return listStd;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return listStd;
+
 	}
 
 }

@@ -89,9 +89,9 @@
 						</ul></li>
 				</ul>
 				<form class="navbar-search ">
-					<input type="text" class="search-query" placeholder="请输入学生姓名">
+					<input id="mohu" type="text" class="search-query" placeholder="请输入学生姓名">
 					<input class="btn btn-danger" style="margin-top: -1px;"
-						type="submit" value="查询">
+						type="submit" value="查询" id="findStdByName">
 				</form>
 
 			</div>
@@ -595,12 +595,8 @@
 																								var Data = data
 																								for ( var key in Data) {
 																									var arr = Data[key];//得到数据
-																									$(
-																											"#score_info")
-																											.empty();
-																									$(
-																											"#score_info")
-																											.append(
+																									$("#score_info").empty();
+																									$("#score_info").append(
 																													"<tr>"//添加标题
 																															+ "<th>学号</th>"
 																															+ "<th>班级</th>"
@@ -662,9 +658,7 @@
 																																	+ "<a href='#myModal1' role='button' data-toggle='modal'>修改</a>"
 																																	+ "</td></tr>");
 																										} else {
-																											$(
-																													"#score_info")
-																													.append(
+																											$("#score_info").append(
 																															"<tr>"
 																																	+ "<td>"
 																																	+ arr[i].studentNum
@@ -710,30 +704,13 @@
 																						})
 																			})
 															//删除本班某一学生
-															$("#d" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {
-																				var nn = $(
-																						this)
-																						.attr(
-																								"id");
-																				var stdNum = nn
-																						.substring(
-																								1,
-																								nn.length);//得到该学生的id
-																				now = $(
-																						"#pageNow")
-																						.html()
-																						.substring(
-																								0,
-																								1);//得到当前页
-																				classNow = $(
-																						"#classN")
-																						.html()//当前选中班级
+															$("#d" + arr[i].num).on('click',function() {
+																				var nn = $(this).attr("id");
+																				var stdNum = nn.substring(1,nn.length);//得到该学生的id
+																				now = $("#pageNow").html().substring(0,1);//得到当前页
+																				classNow = $("#classN").html()//当前选中班级
 																				if (classNow != 'allStudent') {//将该学生所在班级清空
-																					$
-																							.ajax({
+																					$.ajax({
 																								type : 'post',
 																								url : 'delete',
 																								data : {
@@ -768,7 +745,6 @@
 																							})
 																				}
 																				$("#pageDown").trigger('click');//(注意success外边调用)
-
 																			})
 														}
 													}
@@ -1632,6 +1608,39 @@
 							}
 						}
 				})
+			})
+			
+			$("#findStdByName").click(function(){//按姓名查出学生信息
+				var name1=$("#mohu").val();
+				$.ajax({
+					type:'post',
+					url:'find',
+					data:{
+						type:8,
+					    name:name1,
+					},
+					dataType:'json',
+				    success:function(data){
+						var Data = data;
+						for ( var key in Data) {
+				         var attr=Data[key];
+							if (attr!='没有该生信息') {
+								//$("#tab").empty();//清空tab
+								var s;
+								//$("#tab").append("<tr id=tab_0>"+"<th>学号</th><th>姓名</th><th>电话</th>"+"</tr>")//tab添加标题栏	
+								for (var i = 0; i < attr.length; i++) {
+									s=("学号："+ attr[i].num+ "   姓名："+ attr[i].name+ "   电话："+ attr[i].phone)
+									alert(s);
+								}
+							
+							}else{
+								alert(attr);
+							}
+							
+							}
+						}
+					
+					})
 			})
 		})
 	</script>
