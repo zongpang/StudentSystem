@@ -2,6 +2,11 @@ package com.bc.stdsys.webservice;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,12 +23,16 @@ import com.bc.stdsys.daoimpl.DeaneryDaoImpl;
 import com.bc.stdsys.daoimpl.MasterDaoImpl;
 import com.bc.stdsys.daoimpl.TeacherDaoImpl;
 import com.bc.stdsys.entitys.ClassWorker;
+import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Deanery;
 import com.bc.stdsys.entitys.Master;
+import com.bc.stdsys.entitys.Score;
+import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import com.bc.stdsys.util.Localutil;
 
 import net.sf.json.JSONObject;
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
 
 public class ChangeServlet extends HttpServlet {
 	JSONObject json;// 创建JO对象
@@ -143,12 +152,13 @@ public class ChangeServlet extends HttpServlet {
 					String teacherSpeak = request.getParameter("ts");
 					String date = request.getParameter("date");
 					try {
-//						double faceToFace = Double.parseDouble(pj);// 答辩
-//						double write = Double.parseDouble(wr);// 笔试
-//						double computer = Double.parseDouble(cp);// 机试
-//						double average = Localutil.average(faceToFace, write, computer);
+						// double faceToFace = Double.parseDouble(pj);// 答辩
+						// double write = Double.parseDouble(wr);// 笔试
+						// double computer = Double.parseDouble(cp);// 机试
+						// double average = Localutil.average(faceToFace, write,
+						// computer);
 						int studentNo = Integer.parseInt(no);
-						daoC.updateStudentHistoryScore(studentNo,teacherSpeak, date);
+						daoC.updateStudentHistoryScore(studentNo, teacherSpeak, date);
 						if (json == null)
 							json = new JSONObject();
 						json.clear();
@@ -199,7 +209,7 @@ public class ChangeServlet extends HttpServlet {
 				}
 			}
 
-		} else if (obj instanceof Master) {//详细作修改操作
+		} else if (obj instanceof Master) {// 详细作修改操作
 			String type = request.getParameter("type");// 表示查询类型
 			if (type != null) {
 				Integer myType = Integer.parseInt(type);
@@ -237,7 +247,7 @@ public class ChangeServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-				} else if (myType == 2) {
+				} else if (myType == 2) {// 修改密码
 					String new_p = request.getParameter("new_p");
 					String old_p = request.getParameter("old_p");
 					String userName = ((Master) obj).getName();
@@ -266,12 +276,40 @@ public class ChangeServlet extends HttpServlet {
 
 					}
 
+				} else if (myType == 3) {// 作修改某一课程
+					String myClass = request.getParameter("myClass");
+					String course = request.getParameter("course");
+					String date = request.getParameter("date");
+					daoM.changeCourse(myClass,course,date);//修改课程
+					List<Course> list=daoM.findCourseByMaster();//查出
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put("修改成功", list);// 修改成功
+					if (pw == null)
+						pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					pw.close();
+				}else if (myType==4) {//师资分配
+					String myClass = request.getParameter("myClass");
+					String teacher=request.getParameter("teacher");
+					String classWorker=request.getParameter("classWorker");
+					daoM.changeTeacherAndClassWorkerInCourseAndMyclass(myClass,teacher,classWorker);
+					List<Course> list=daoM.findCourseByMaster();//查出
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put("修改成功", list);// 修改成功
+					if (pw == null)
+						pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					pw.close();
 				}
 			}
 
-		} else if(obj instanceof Deanery){
+		} else if (obj instanceof Deanery) {
 			String type = request.getParameter("type");// 表示查询类型
-			if (type != null) {//院长修改密码
+			if (type != null) {// 院长修改密码
 				Integer myType = Integer.parseInt(type);
 				if (myType == 2) {
 					String new_p = request.getParameter("new_p");
@@ -300,7 +338,6 @@ public class ChangeServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-
 				}
 			}
 

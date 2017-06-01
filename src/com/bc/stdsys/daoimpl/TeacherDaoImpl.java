@@ -95,7 +95,8 @@ public class TeacherDaoImpl implements TeacherDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				rst.close();
+				if (rst != null)
+					rst.close();
 				pst.close();
 				conn.close();
 			} catch (SQLException e) {
@@ -330,7 +331,7 @@ public class TeacherDaoImpl implements TeacherDao {
 	}
 
 	@Override
-	public void changeUserPassWord(String name,String new_pass) {
+	public void changeUserPassWord(String name, String new_pass) {
 		// TODO Auto-generated method stub
 		Score score = null;
 		List<Score> list = null;
@@ -340,8 +341,8 @@ public class TeacherDaoImpl implements TeacherDao {
 			if (conn == null || conn.isClosed())
 				conn = DButil.getConnection();
 			pst = conn.prepareStatement(sql);
-            pst.setString(1, new_pass);
-            pst.setString(2, name);
+			pst.setString(1, new_pass);
+			pst.setString(2, name);
 			pst.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

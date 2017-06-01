@@ -40,7 +40,7 @@ public class FindServlet extends HttpServlet {
 	final int PAGE_SIZE = 2;// 分页查找每页的容量
 	JSONObject json;// 创建JO对象
 	PrintWriter pw;// printerwriter
-
+	ArrayList<Student> students;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -93,7 +93,7 @@ public class FindServlet extends HttpServlet {
 						pageNow = request.getParameter("pageNow");
 					if (daoT == null)
 						daoT = new TeacherDaoImpl();// 实例化teacherDao
-					ArrayList<Student> students = daoT.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
+				    students = daoT.findStudentByTeacher(classNo);// 得到该班级全体学生的集合
 					int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
 					int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
 					if (pageNowOn > totalP) // 如果当前页大于总页数
@@ -106,7 +106,12 @@ public class FindServlet extends HttpServlet {
 					if (pw == null)
 						pw = response.getWriter();// 得到printWriter
 					pw.print(json.toString());// 以字符串的格式传给ajax
-					pw.close();
+					try {
+						 pw.close();
+					} catch (Exception e) {
+						pw=response.getWriter();
+						pw.close();
+					}
 				} else if (myType == 2) {// 作课程查询
 					List<Course> myCourse = daoT.findCourseByTeacher(teacher);// 查出所有课程
 					if (json == null)
@@ -130,6 +135,33 @@ public class FindServlet extends HttpServlet {
 						pw = response.getWriter();
 					pw.print(json.toString());
 					pw.close();
+				}else if (myType==4) {//按钮分页
+					String classNo = request.getParameter("classNo");// 得到当前选中班级号
+					if (classNo == null)
+						classNo = (String) request.getAttribute("classNo");
+					String pageNow = request.getParameter("pageNow");// 得到当前页
+					if (pageNow == null)
+						pageNow = request.getParameter("pageNow");
+					if (daoT == null)
+						daoT = new TeacherDaoImpl();// 实例化teacherDao
+					int totalP = Localutil.totalPage(students.size(), PAGE_SIZE);// 总页数
+					int pageNowOn = Integer.parseInt(pageNow);// 得到当前页
+					if (pageNowOn > totalP) // 如果当前页大于总页数
+						pageNowOn = totalP;// 设为最后一页
+					ArrayList<Student> stu = Localutil.findStudentByPage(students, PAGE_SIZE, pageNowOn);// （学生集合，每页条数，当前页）得到分页后每页的集合
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put(totalP, stu);// 放入数据(以总页数为key)
+					if (pw == null)
+						pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					try {
+						 pw.close();
+					} catch (Exception e) {
+						pw=response.getWriter();
+						pw.close();
+					}
 				}
 			}
 
@@ -440,6 +472,17 @@ public class FindServlet extends HttpServlet {
 //					if (pw == null)
 //						pw = response.getWriter();
 					PrintWriter pw=response.getWriter();
+					pw.print(json.toString());
+					pw.close();
+				}else if (myType==7) {
+					if (daoM == null)
+						daoM = new MasterDaoImpl();// 实例化DeaneryDao
+					List<String> list = daoM.findMyclassByMaster();// 查出所教班级的名称
+					session.setAttribute("myClass", list);// 向session中放入班级
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put("返回班级名称", list);
 					pw.print(json.toString());
 					pw.close();
 				}

@@ -5,12 +5,13 @@ import java.io.Serializable;
 public class Course implements Serializable {
 	private int id;
 	private int teacherNum;// 教师工号
+	private int classWorkerNum;//班主任工号
 	private String name;// 课程名称
 	private String myClass;// 所受班级
 	private String teacher;// 教师姓名
 	private String date;// 开课日期
-
-
+    private String classWorker;
+    
 	public Course() {
 
 	}
@@ -74,5 +75,19 @@ public class Course implements Serializable {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public int getClassWorkerNum() {
+		return classWorkerNum;
+	}
 
+	public void setClassWorkerNum(int classWorkerNum) {
+		this.classWorkerNum = classWorkerNum;
+	}
+
+	public String getClassWorker() {
+		return classWorker;
+	}
+
+	public void setClassWorker(String classWorker) {
+		this.classWorker = classWorker;
+	}
 }

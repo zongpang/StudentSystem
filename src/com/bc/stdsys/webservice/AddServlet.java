@@ -2,6 +2,10 @@ package com.bc.stdsys.webservice;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -20,6 +24,7 @@ import com.bc.stdsys.daoimpl.TeacherDaoImpl;
 import com.bc.stdsys.entitys.ClassWorker;
 import com.bc.stdsys.entitys.Course;
 import com.bc.stdsys.entitys.Master;
+import com.bc.stdsys.entitys.Score;
 import com.bc.stdsys.entitys.Student;
 import com.bc.stdsys.entitys.Teacher;
 import net.sf.json.JSONObject;
@@ -36,7 +41,7 @@ public class AddServlet extends HttpServlet {
 	MasterDao daoM;
 	final int PAGE_SIZE = 2;// 分页查找每页的容量
 	JSONObject json;// 创建JO对象
-	PrintWriter pw;//打印器
+	PrintWriter pw;// 打印器
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,6 +57,16 @@ public class AddServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		session = request.getSession();
 		Object obj = session.getAttribute("user");
+		if (daoT == null) {
+			daoT = new TeacherDaoImpl();
+		}
+		if (daoC == null) {
+			daoC = new ClassWorkerDaoImpl();
+		}
+		if (daoM == null) {
+			daoM = new MasterDaoImpl();
+		}
+
 		if (obj instanceof Teacher) {
 			String type = request.getParameter("type");// 表示请求类型
 			if (type != null) {
@@ -143,7 +158,7 @@ public class AddServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-				} else if (myType == 2) {//添加一名新生
+				} else if (myType == 2) {// 添加一名新生
 					String name = request.getParameter("name");
 					String num = request.getParameter("num");
 					if (num == null) {
@@ -192,7 +207,7 @@ public class AddServlet extends HttpServlet {
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					}
-				} else if (myType == 3) {//添加一个班级
+				} else if (myType == 3) {// 添加一门课程并在班级（myClass）表中新增一个班级
 					String myCourse = request.getParameter("myCourse");
 					String myClass = request.getParameter("myClass");
 					String myTeacher = request.getParameter("myTeacher");
@@ -205,18 +220,17 @@ public class AddServlet extends HttpServlet {
 					if (daoM == null)
 						daoM = new MasterDaoImpl();
 					boolean a = daoM.findClassInCourse(c);
-
-					if (a) {
+					boolean b = daoM.findclassInMyClass(c);
+					if (a && b) {
 						daoM.addNewCourse(c);
-						List<Course> list = daoM.findCourseByMaster();
+						daoM.addNewMyClass(c);// 向班级（myclass）中新增一个班级
+						List<Course> list = daoM.findCourseByMaster();// 查出素有课程
 						if (json == null)
 							json = new JSONObject();
 						json.clear();
 						json.put("添加成功", list);//
-//						if (pw == null)
-//							pw = response.getWriter();// 得到printWriter
-						PrintWriter pw=response.getWriter();
-						// System.out.println(json.toString());
+						if (pw == null)
+							pw = response.getWriter();// 得到printWriter
 						pw.print(json.toString());// 以字符串的格式传给ajax
 						pw.close();
 					} else {
@@ -237,7 +251,7 @@ public class AddServlet extends HttpServlet {
 					String address = request.getParameter("teaAddress");
 					Teacher t = new Teacher();
 					t.setName(name);
-					if (num == null){
+					if (num == null) {
 						num = "-1";
 					}
 					t.setNum(Integer.parseInt(num));//
@@ -277,7 +291,7 @@ public class AddServlet extends HttpServlet {
 					String address = request.getParameter("cwAddress");
 					ClassWorker c = new ClassWorker();
 					c.setName(name);
-					if (num == null){
+					if (num == null) {
 						num = "-1";
 					}
 					c.setNum(Integer.parseInt(num));
@@ -309,9 +323,47 @@ public class AddServlet extends HttpServlet {
 						pw.close();
 					}
 
+				} else if (myType == 6) {
+					Date date = new Date();
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					String nowDate = format.format(date);
+					List<Student> students = daoM.findAllStudentByMaster();// 查出所有学生
+					List<Score> zhangSanScore = daoM.findZhangSanScore();// 查出张三的历史成绩（数据库中的张三为坐标不可删除学号：201711114）
+					Collections.sort(zhangSanScore, new Comparator<Score>() {// 按id排序
+						@Override
+						public int compare(Score o1, Score o2) {
+							Integer a = o1.getId();
+							Integer b = o2.getId();
+							return b.compareTo(a);
+						}
+					});// 给句id给张三的日期排序，找出最近的日期
+					String zhangSanDate = zhangSanScore.get(0).getDate();// 找出张三的最新成绩日期
+					StringBuilder sb1 = new StringBuilder();
+					sb1.append(zhangSanDate.substring(0, 4));
+					sb1.append(zhangSanDate.substring(5, 7));
+					StringBuilder sb2 = new StringBuilder();
+					sb2.append(nowDate.substring(0, 4));
+					sb2.append(nowDate.substring(5, 7));
+					int dateNow = Integer.parseInt(sb2.toString());// 算出张三的最新成绩日期
+					int dateZhangSan = Integer.parseInt(sb1.toString());// 当前的日期
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					if (dateNow == dateZhangSan) {
+						if (pw == null)
+							pw = response.getWriter();// 得到printWriter
+						json.put("添加失败", "您本月已生成模板！");
+						pw.print(json.toString());// 以字符串的格式传给ajax
+					} else {
+						if (pw == null)
+							pw = response.getWriter();// 得到printWriter
+						daoM.addAnewScore(students, nowDate);// 向成绩表（score）为每一个学生插入一条当月的成绩模板
+						json.put("添加成功", "添加成功。");
+						pw.print(json.toString());// 以字符串的格式传给ajax
+					}
 				}
 			}
-		} 
+		}
 
 	}
 

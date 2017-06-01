@@ -60,7 +60,7 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".bs-docs-sidebar"
+<body id="body" data-spy="scroll" data-target=".bs-docs-sidebar"
 	data-twttr-rendered="true">
 	<%
 		Master master = (Master) session.getAttribute("user");
@@ -316,6 +316,48 @@
 				aria-hidden="true">添加</button>
 		</div>
 	</div>
+	<!--修改一门课程详细信息  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal8"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">修改课程信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>课程名称:</p>
+			<input id="mod8_couName" type="text"><br>
+			<p>开课日期:</p>
+			<input id="mod8_couDate" type="text" placeholder="年-月-日"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_b " id="change_1" data-dismiss="modal"
+				aria-hidden="true">修改</button>
+		</div>
+	</div>
+	<!--修改师资分配  -->
+	<div style="margin-top: 100px; width: 300px;" id="myModal9"
+		class="modal hide fade" tabindex="-2" role="dialog" dialog="false"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">师资信息</h3>
+		</div>
+		<div class="modal-body" style="height: 350px;">
+			<p>教师：</p>
+			<input id="mod9_teacher" type="text"><br>
+			<p>班主任：</p>
+			<input id="mod9_classworker" type="text"><br>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn_b " id="change_2" data-dismiss="modal"
+				aria-hidden="true">修改</button>
+		</div>
+	</div>
 	<!-- Subhead
         ================================================== -->
 	<div class="container">
@@ -351,7 +393,8 @@
 							<a id="classM" href="javascript:;">课程管理</a>
 						</h3>
 						<div>
-							<a href="javascript:;" id="myCourse">所有课程</a>
+							<a href="javascript:;" id="myCourse">所有课程</a><br> <a
+								href="javascript:;" id="distribution">师资分配</a>
 						</div>
 					</div>
 					<!-- 员工管理模块 -->
@@ -360,7 +403,7 @@
 							<a id="staffM" href="javascript:;">员工管理</a>
 						</h3>
 						<div>
-							<a href="javascript:;" id="myTeacher">教师</a> <a
+							<a href="javascript:;" id="myTeacher">教师</a> <br> <a
 								href="javascript:;" id="myClassWorker">班主任</a>
 						</div>
 					</div>
@@ -371,6 +414,15 @@
 						</h3>
 						<div>
 							<a href="javascript:;" id="allStudent">所有学生</a>
+						</div>
+					</div>
+					<!-- 成绩管理模块 -->
+					<div>
+						<h3>
+							<a id="scoreM" href="javascript:;">成绩管理</a>
+						</h3>
+						<div>
+							<a href="javascript:;" id="score">生成本月成绩</a>
 						</div>
 					</div>
 				</div>
@@ -423,7 +475,8 @@
 	<!--记录点击事件（教师、班主任）  -->
 	<p id="TorC" hidden></p>
 	<!-- 作删除课程后刷新数据用 -->
- 
+	<p id="change_some" hidden></p>
+
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="main/assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -433,11 +486,10 @@
 			var title = $("#tab_0").html()//标题栏	
 			var now = Number($("#pageNow").html().substring(0, 1));//当前页
 			var total = Number($("#pageT").html());//总页数
-			$("#pageUp,#pageDown,#go,#allStudent,.studentManager_1")
-					.click(
+			//$("#pageUp,#pageDown,#go,#allStudent,.studentManager_1").on('click',function() {//班级管理模块&学生管理模块
+			$("#body").on('click',"#pageUp,#pageDown,#go,#allStudent,.studentManager_1",
 							function() {//班级管理模块&学生管理模块
 								classNow = $("#classN").html()//当前选中班级
-
 								id = $(this).attr("id");
 								if (id == "pageUp") {//上翻
 									$("#goto").val("");//goto框滞空
@@ -462,8 +514,7 @@
 										now = 1
 									}
 								} else {
-									$("#pageUp,#pageDown,#go,#goto,#pageNow")
-											.show();//显示翻页按钮
+									$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//显示翻页按钮
 									now = 1;
 									classNow = id;
 									$("#classN").html(classNow);//给隐藏标签赋值
@@ -476,8 +527,7 @@
 									$("#classN").show();
 								}
 								if (classNow != "") {
-									$
-											.ajax({
+									$.ajax({
 												type : 'post',
 												url : 'find',
 												data : {
@@ -497,18 +547,10 @@
 														}
 														$("#pageT")
 																.html(keyVal)//为隐藏总页数赋值
-														$("#pageNow")
-																.html(
-																		now
-																				+ "/"
-																				+ total);
+														$("#pageNow").html(now+ "/"+ total);
 														var arr = Data[key];
 														$("#tab").empty();//tab滞空重新赋值
-														$("#tab")
-																.append(
-																		"<tr id=tab_0>"
-																				+ title
-																				+ "</tr>")//tab添加标题栏		
+														$("#tab").append("<tr id=tab_0>"+ title+ "</tr>")//tab添加标题栏		
 														for (var i = 0; i < arr.length; i++) {
 															s = "<tr id=tab_1 class=std_inf><td>"
 																	+ arr[i].num
@@ -538,16 +580,9 @@
 																	+ "</td>"
 																	+ "</tr>"
 															$("#tab").append(s)
-															$("#" + arr[i].num)
-																	.on(
-																			'click',
-																			function() {//显示详情
-																				var stdNum = $(
-																						this)
-																						.attr(
-																								"value");//得到学生的学号
-																				$
-																						.ajax({//查出该生的历史信息
+															$("#" + arr[i].num).on('click',function() {//显示详情
+																				var stdNum = $(this).attr("value");//得到学生的学号
+																				$.ajax({//查出该生的历史信息
 																							type : 'post',
 																							url : 'find',
 																							data : {
@@ -715,7 +750,8 @@
 																							})
 																					//$("#pageDown").trigger('click');//改(注意success外边调用)
 																				} else {//删除数据库中的学生
-																					$.ajax({
+																					$
+																							.ajax({
 																								type : 'post',
 																								url : 'delete',
 																								data : {
@@ -725,7 +761,8 @@
 																									pageNow : now
 																								},
 																								dataType : "json",
-																								success : function(data) {//将返回数据进行处理
+																								success : function(
+																										data) {//将返回数据进行处理
 
 																								}
 																							})
@@ -739,9 +776,8 @@
 											})
 								}
 							})
-			//红色添加按钮的操作
-			$(".btn_a")
-					.click(
+			//添加按钮的操作
+			$("#body").on('click',".btn_a",
 							function() {
 								var classNow = $("#classN").html();//得到当前模块所属业务
 								var id = $(this).attr('id');//得到id
@@ -781,11 +817,9 @@
 									var stdSex = $("#mod4_stdSex").val();
 									var stdClass = $("#mod4_stdClass").val();
 									var joinDate = $("mod4_stdJoinDate").val();
-									var stdAddress = $("#mod4_stdAddress")
-											.val();
+									var stdAddress = $("#mod4_stdAddress").val();
 									var stdPhone = $("#mod4_stdPhone").val();
-									var stdParentPhone = $(
-											"#mod4_stdParentPhone").val();
+									var stdParentPhone = $("#mod4_stdParentPhone").val();
 									now = $("#pageNow").html().substring(0, 1);//得到当前页
 									$.ajax({
 										type : 'post',
@@ -820,10 +854,8 @@
 									var teaNum1 = $("#mod5_teaNum").val();
 									var teaPassWord1 = $("#mod5_teaPass").val();
 									var teaPhone1 = $("#mod5_teaPhone").val();
-									var teaAddress1 = $("#mod5_teaAddress")
-											.val();
-									$
-											.ajax({
+									var teaAddress1 = $("#mod5_teaAddress").val();
+									$.ajax({
 												type : 'post',
 												url : 'add',
 												data : {
@@ -842,9 +874,7 @@
 														if (aaa != "添加失败") {
 															$("#tab").empty();
 															var teacherTitle = "<tr id=tab_0><th>姓名</th><th>工号</th><th>家庭住址</th><th>联系电话</th><th>操作</th></tr>"
-															$("#tab")
-																	.html(
-																			teacherTitle);//添加标题栏
+															$("#tab").html(teacherTitle);//添加标题栏
 															$("#add").attr('href','#myModal5')
 															$.ajax({
 																		type : 'post',
@@ -859,10 +889,7 @@
 																			for ( var key in Data) {
 																				var aaa = Data[key]
 																				for (var i = 0; i < aaa.length; i++) {
-																					$(
-																							"#tab")
-																							.append(
-																									"<tr class='teacher_inf'><td>"
+																					$("#tab").append("<tr class='teacher_inf'><td>"
 																											+ aaa[i].name
 																											+ "</td>"
 																											+ "<td>"
@@ -884,6 +911,26 @@
 																											+ "</td>"
 																											+ "</tr>")
 																				}
+																				$('#tab').on('click','.delete_teacher',
+																								function() {//作删除一位老师
+																									var ida = $(this).attr("id");
+																									var id1 = ida.substring(1)
+																									$.ajax({
+																												type : 'post',
+																												url : 'delete',
+																												data : {
+																													name : id1,
+																													type : 4
+																												},
+																												dataType : "json",
+																												success : function(
+																														data) {
+
+																												}
+
+																											})
+																									$("#"+ ida).parent().parent().remove();//在页面删除一行
+																								})
 																			}
 																		}
 																	})
@@ -935,7 +982,8 @@
 																			for ( var key in Data) {
 																				var aaa = Data[key]
 																				for (var i = 0; i < aaa.length; i++) {
-																					$("#tab").append("<tr class='teacher_inf'><td>"
+																					$("#tab").append(
+																									"<tr class='classworker_inf'><td>"
 																											+ aaa[i].name
 																											+ "</td>"
 																											+ "<td>"
@@ -948,15 +996,34 @@
 																											+ aaa[i].phone
 																											+ "</td>"
 																											+ "<td>"
-																											+ "<a id="+aaa[i].name+" class="+"change_teacher"+" href='#' data-toggle='modal'>"
+																											+ "<a id="+aaa[i].name+" class="+"change_classworker"+" href='#' data-toggle='modal'>"
 																											+ "修改"
 																											+ "</a>"
-																											+ "<a id=d"+aaa[i].name+" class="+"delete_teacher"+" href='javascript:;'>"
+																											+ "<a id=d"+aaa[i].name+" class="+"delete_classworker"+" href='javascript:;'>"
 																											+ "/删除"
 																											+ "</a>"
 																											+ "</td>"
 																											+ "</tr>")
 																				}
+																				$('.delete_classworker').on('click',function() {//作删除一位班主任
+																									var ida = $(this).attr("id");
+																									var id1 = ida.substring(1)
+																									$.ajax({
+																												type : 'post',
+																												url : 'delete',
+																												data : {
+																													name : id1,
+																													type : 5
+																												},
+																												dataType : "json",
+																												success : function(
+																														data) {
+
+																												}
+
+																											})
+																									$("#"+ ida).parent().parent().remove();//在页面删除一行
+																								})
 																			}
 																		}
 																	})
@@ -988,13 +1055,16 @@
 													for ( var key in Data) {
 														var aaa = Data[key];
 														if (aaa != "添加失败") {
-															$("#classN").html("myCourse");
-															$(".std_inf").remove();//清空内容
+															$("#classN").html(
+																	"myCourse");
+															$(".std_inf")
+																	.remove();//清空内容
 															$("#tab").empty()//清空原有内容
-															$("#tab").append("<tr id=tab_0><th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th><th>操作</th></tr>");
+															$("#tab")
+																	.append(
+																			"<tr id=tab_0><th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th><th>操作</th></tr>");
 															for (var i = 0; i < aaa.length; i++) {
-																$("#tab").append(
-																				"<tr id=tab_1 class=course_inf><td>"
+																$("#tab").append("<tr id=tab_1 class=course_inf><td>"
 																						+ aaa[i].name
 																						+ "</td>"
 																						+ "<td>"
@@ -1016,25 +1086,30 @@
 																						+ "</td>"
 																						+ "</tr>")
 															}
-															$('.delete_course').on('click',function() {//作删除某一课程
-																var ida= $(this).attr("id");
-																var id1=ida.substring(1)
-																	$.ajax({
-																		type : 'post',
-																		url : 'delete',
-																		data : {
-																	       myClass:id1 ,
-																	       type:3
-																		},
-																		dataType : "json",
-																		success : function(data) {
-																		 
-																		}
-																	})
-																	 $("#"+ida).parent().parent().remove();
-																
-															})
-											
+															$('#tab').on('click','.delete_course',function() {//作删除某一课程
+																				var ida = $(this).attr("id");
+																				var id1 = ida.substring(1)
+																				$.ajax({
+																							type : 'post',
+																							url : 'delete',
+																							data : {
+																								myClass : id1,
+																								type : 3
+																							},
+																							dataType : "json",
+																							success : function(
+																									data) {
+
+																							}
+																						})
+																				$("#"+ ida).parent().parent().remove();//在页面删除一行
+
+																			})
+															$('#tab').on('click','.change_course',function() {//作修改某一课程
+																				var ida = $(this).attr("id");
+
+																			})
+
 														} else {
 															alert("该班级已存在，请进行修改！")
 														}
@@ -1042,12 +1117,128 @@
 													}
 												}
 											})
-
 								}
 							})
+
+			$("#body").on('click',".btn_b",function() {//修改按钮的操作
+				var change=$("#change_some").html();
+			    var id=$(this).attr("id");
+			  if (id=="change_1") {//作课程修改
+				var myClass1=$("#change_some").html();//得到班级号
+				var course1=$("#mod8_couName").val();//得到课程名
+				var date1=$("#mod8_couDate").val();//得到日期
+				//以下清空以往数据并重新赋值
+             	$("#tab_0").empty();
+				$(".std_inf").remove();
+				var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th><th>操作</th>"
+				$("#tab_0").append(courseTitle);
+				$("#classN").html("myCourse");
+				$.ajax({
+						type:'post',
+						url:'change',
+						data:{
+							myClass:myClass1,
+							course:course1,
+							date:date1,
+							type:3,
+						},
+						dataType:'json'	,
+						success:function(data){
+							var Data = data;
+							for ( var key in Data) {
+								var aaa = Data[key]
+								for (var i = 0; i < aaa.length; i++) {
+									$("#tab").append("<tr id=tab_1 class=std_inf><td>"
+															+ aaa[i].name
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].myClass
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].teacher
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].date
+															+ "</td>"
+															+ "<td>"
+															+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#myModal8' data-toggle='modal'>"
+															+ "修改"
+															+ "</a>"
+															+ "<a id=d"+aaa[i].myClass+" class="+"delete_course"+" href='javascript:;'>"
+															+ "/删除"
+															+ "</a>"
+															+ "</td>"
+															+ "</tr>")
+
+								}
+						}
+						}
+				}) 
+			}else if (id=="change_2") {//作师资分配
+				//<div class="modal-body" style="height: 350px;">
+				//<p>教师：</p>
+				//<input id="mod9_teacher" type="text"><br>
+				//<p>班主任：</p>
+				//<input id="mod9_classworker" type="text"><br>
+			    //</div>
+			    //<div class="modal-footer">
+				//<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+				//<button class="btn_b " id="change_2" data-dismiss="modal"
+				//aria-hidden="true">修改</button>
+			    //</div>
+				//alert($("#change_some").html());
+				var myClass1=$("#change_some").html();//得到班级号
+				var teacher1=$("#mod9_teacher").val();//得到教师
+				var classWorker1=$("#mod9_classworker").val();//得到班主任
+				//以下清空以往数据并重新赋值
+             	$("#tab_0").empty();
+				$(".std_inf").remove();
+				var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>班主任</th><th>操作</th>"
+				$("#tab_0").append(courseTitle);
+				$("#classN").html("myCourse");
+				$.ajax({
+						type:'post',
+						url:'change',
+						data:{
+							myClass:myClass1,
+							teacher:teacher1,
+							classWorker:classWorker1,
+							type:4,
+						},
+						dataType:'json'	,
+						success:function(data){
+							var Data = data;
+							for ( var key in Data) {
+								var aaa = Data[key]
+								for (var i = 0; i < aaa.length; i++) {
+									$("#tab").append("<tr id=tab_1 class=std_inf><td>"
+															+ aaa[i].name
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].myClass
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].teacher
+															+ "</td>"
+															+ "<td>"
+															+ aaa[i].classWorker
+															+ "</td>"
+															+ "<td>"
+															+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#myModal9' data-toggle='modal'>"
+															+ "修改"
+															+ "</a>"
+															+ "</td>"
+															+ "</tr>")
+								}
+						}
+						}
+				}) 
+			}
+			})
+		
+
 			//修改学生当月的成绩
-			$("#save_0").click(
-					function() {
+			$("#save_0").click(function() {
 						project = Number($("#mod1_project").val())
 						write = Number($("#mod1_write").val())
 						computer = Number($("#mod1_computer").val())
@@ -1082,9 +1273,11 @@
 						}
 					})
 
-			$("#myCourse").click(function() {//课程管理模块
+			$("#body").on('click','#myCourse',function() {//课程管理模块(全部课程)
 								$("#add").attr('href', '#myModal7')
 								//定义课程标题栏
+								$("#tab_0").empty();
+								$(".std_inf").remove();
 								if ($("#tab_0").html() == "") {
 									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>开课日期</th><th>操作</th>"
 									$("#tab_0").append(courseTitle);//添加标题栏
@@ -1114,7 +1307,7 @@
 																					+ aaa[i].date
 																					+ "</td>"
 																					+ "<td>"
-																					+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#' data-toggle='modal'>"
+																					+ "<a id="+aaa[i].myClass+" class="+"change_course"+" href='#myModal8' data-toggle='modal'>"
 																					+ "修改"
 																					+ "</a>"
 																					+ "<a id=d"+aaa[i].myClass+" class="+"delete_course"+" href='javascript:;'>"
@@ -1122,32 +1315,89 @@
 																					+ "</a>"
 																					+ "</td>"
 																					+ "</tr>")
-													
+
 														}
-														$('.delete_course').on('click',function() {//作删除某一课程
-															var ida= $(this).attr("id");
-															var id1=ida.substring(1)
-																$.ajax({
-																	type : 'post',
-																	url : 'delete',
-																	data : {
-																       myClass:id1 ,
-																       type:3
-																	},
-																	dataType : "json",
-																	success : function(data) {
-																		
-																	}
-																	
-																})
-																 $("#"+ida).parent().parent().remove();
-														})
-				
+														$('#body').on('click','.delete_course',function() {//作删除某一课程
+																			var ida = $(this).attr("id");
+																			var id1 = ida.substring(1)
+																			$.ajax({
+																						type : 'post',
+																						url : 'delete',
+																						data : {
+																							myClass : id1,
+																							type : 3
+																						},
+																						dataType : "json",
+																						success : function(data) {
+																						
+																						}
+
+																					})
+																			$("#"+ ida).parent().parent().remove();//在页面删除一行
+																		})
+
+														$('#body').on('click','.change_course',function() {//作修改某一课程
+																			var ida = $(this).attr("id");
+                                                                             $("#change_some").html(ida);
+																		})
 													}
 												}
 											})
 								}
 							})
+			$("#body").on('click','#distribution',function() {//课程管理模块(师资分配)
+								//$("#add").attr('href', '#myModal7')
+								$("#table_title").html("师资分配");
+								$("#tab_0").empty();
+								$(".std_inf").remove();
+								if ($("#tab_0").html() == "") {
+									var courseTitle = "<th>课程名称</th><th>班级</th><th>教师</th><th>班主任</th><th>操作</th>"
+									$("#tab_0").append(courseTitle);//添加标题栏
+									$("#classN").html("myCourse");
+									$.ajax({
+												type : 'post',
+												url : 'find',
+												data : {
+													type : 2,
+												},
+												dataType : "json",
+												success : function(data) {
+													var Data = data;
+													for ( var key in Data) {
+														var aaa = Data[key]
+														for (var i = 0; i < aaa.length; i++) {
+															$("#tab").append("<tr id=tab_1 class=std_inf><td>"
+																					+ aaa[i].name
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].myClass
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].teacher
+																					+ "</td>"
+																					+ "<td>"
+																					+ aaa[i].classWorker
+																					+ "</td>"
+																					+ "<td>"
+																					+ "<a id="+aaa[i].myClass+" class="+"change_myClass_some"+" href='#myModal9' data-toggle='modal'>"
+																					+ "修改"
+																					+ "</a>"
+																					+ "</td>"
+																					+ "</tr>")
+
+														}
+														$("#body").on('click','.change_myClass_some',function(){
+															$("#change_some").html($(this).attr("id"));
+														});
+														}
+													}
+									})
+								}
+								
+			});
+							
+							
+							
 			$("#myTeacher,#myClassWorker").click(function() {//员工管理模块
 								id = $(this).attr("id");
 								$("#tab").empty();
@@ -1168,9 +1418,7 @@
 													for ( var key in Data) {
 														var aaa = Data[key]
 														for (var i = 0; i < aaa.length; i++) {
-															$("#tab")
-																	.append(
-																			"<tr class='teacher_inf'><td>"
+															$("#tab").append("<tr class='teacher_inf'><td>"
 																					+ aaa[i].name
 																					+ "</td>"
 																					+ "<td>"
@@ -1192,6 +1440,26 @@
 																					+ "</td>"
 																					+ "</tr>")
 														}
+														$('.delete_teacher').on('click',function() {//作删除一位老师
+																			var ida = $(this).attr("id");
+																			var id1 = ida.substring(1)
+																			$.ajax({
+																						type : 'post',
+																						url : 'delete',
+																						data : {
+																							name : id1,
+																							type : 4
+																						},
+																						dataType : "json",
+																						success : function(
+																								data) {
+
+																						}
+
+																					})
+																			$("#"+ ida).parent().parent().remove();//在页面删除一行
+																		})
+
 													}
 												}
 											})
@@ -1232,6 +1500,25 @@
 																					+ "</td>"
 																					+ "</tr>")
 														}
+														$('.delete_classworker').on('click',function() {//作删除一位班主任
+																			var ida = $(this).attr("id");
+																			var id1 = ida.substring(1)
+																			$.ajax({
+																						type : 'post',
+																						url : 'delete',
+																						data : {
+																							name : id1,
+																							type : 5
+																						},
+																						dataType : "json",
+																						success : function(
+																								data) {
+
+																						}
+
+																					})
+																			$("#"+ ida).parent().parent().remove();//在页面删除一行
+																		})
 													}
 												}
 											})
@@ -1239,13 +1526,36 @@
 							})
 
 			$("#studentM").click(function() {//点击修改导航栏方法
-				$("#add").show();//隐藏添加按钮
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
-				$("#M").html($("#studentM").html())//让导航栏显示当前菜单
-				$("#table_title").html("学生信息列表")
-				$("#tab").empty()//清空tab下的列表
-				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
-			})
+						$("#add").show();//隐藏添加按钮
+						$("#pageUp,#pageDown,#go,#goto,#pageNow").show();//隐藏翻页按钮
+						$("#M").html($("#studentM").html())//让导航栏显示当前菜单
+						$("#table_title").html("学生信息列表")
+						$("#tab").empty()//清空tab下的列表
+						$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
+						$.ajax({
+							type : 'post',
+							url : 'find',
+							data : {
+								type : 7,//找出所有班级
+							},
+							dataType : "json",
+							success : function(data) {
+								var Data = data;
+								for ( var key in Data) {
+									var attr = Data[key];
+									if (attr != '') {
+										$("#studentManager").empty();
+										for (var i = 0; i < attr.length; i++) {
+											$("#studentManager").append(
+													"<a class=studentManager_1 href='javascript:;' id="+attr[i]+">"
+															+ attr[i]
+															+ "</a><br>");
+										}
+									}
+								}
+							}
+						})
+					})
 			$("#classM").click(function() {//点击修给导航栏方法
 				$("#M").html($("#classM").html())//让导航栏显示当前菜单
 				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
@@ -1270,6 +1580,15 @@
 				$("#table_title").html("所有学生");
 				$("#tab_0").empty();//清空标题栏
 				$(".classworker_inf").remove();
+			})
+			
+			$("#scoreM").click(function(){
+				$("#M").html($("#scoreM").html())//让导航栏显示当前菜单
+				$("#tab").empty();//清空tab
+				$("#pageUp,#pageDown,#go,#goto,#pageNow").hide();//隐藏翻页按钮
+				$("#table_title").empty();
+				$("#classN").html("scoreM");
+				$("#classN").show();
 			})
 
 			$("#change_password").click(function() {//用户修改密码
@@ -1297,10 +1616,24 @@
 					}
 				})
 			})
+			$("#score").click(function(){
+				$.ajax({
+					type:'post',
+					url:'add',
+				    data:{
+				    	 type:6
+				    	},
+				    dataType:'json',
+				    success:function(data){
+						var Data = data;
+						for ( var key in Data) {
+				         var attr=Data[key];
+							alert(attr);
+							}
+						}
+				})
+			})
 		})
-				
-		
-		
 	</script>
 
 	<script src="main/assets/js/bootstrap.min.js" type="text/javascript"></script>

@@ -53,6 +53,8 @@ public class MasterDaoImpl implements MasterDao {
 				c.setMyClass(rst.getString("myclass"));
 				c.setTeacher(rst.getString("teacher"));
 				c.setTeacherNum(rst.getInt("teachernum"));
+				c.setClassWorker(rst.getString("classworker"));
+				c.setTeacherNum(rst.getInt("classworkernum"));
 				myCourse.add(c);
 			}
 
@@ -776,6 +778,349 @@ public class MasterDaoImpl implements MasterDao {
 			}
 		}
 
+	}
+
+	@Override
+	public void deleteTeacher(String name) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "delete from teacher where name=?";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, name);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public void deleteClassWorker(String name) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "delete from classworker where name=?";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, name);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public boolean findclassInMyClass(Course c) {
+		// TODO Auto-generated method stub
+		String sql = "select * from myclass where name=?;";
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, c.getMyClass());
+			rst = pst.executeQuery();
+			while (rst.next()) {
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void addNewMyClass(Course c) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "insert into myclass (name,teacher) values (?,?);";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, c.getMyClass());
+			pst.setString(2, c.getTeacher());
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public void deleteMyclass(String myClass) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// 预编译对象
+		String sql = "delete from myclass where name=?";
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, myClass);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void changeCourse(String myClass, String course, String date) {
+		// TODO Auto-generated method stub
+		String sql = "update course set name=?,date=? where myclass=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, course);
+			pst.setString(2, date);
+			pst.setString(3, myClass);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public void changeTeacherAndClassWorkerInCourseAndMyclass(String myClass, String teacher, String classWorker) {
+		// TODO Auto-generated method stub
+		String sql = "update course set teacher=?,classworker=? where myclass=?;";
+		PreparedStatement pst = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, teacher);
+			pst.setString(2, classWorker);
+			pst.setString(3, myClass);
+			pst.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		String sql2 = "update myclass set teacher=?,classworker=? where name=?;";
+		PreparedStatement pst2 = null;// 预编译对象
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst2 = conn.prepareStatement(sql2);
+			pst2.setString(1, teacher);
+			pst2.setString(2, classWorker);
+			pst2.setString(3, myClass);
+			pst2.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public List<Score> findZhangSanScore() {
+		// TODO Auto-generated method stub
+		List<Score> listScore = new ArrayList<Score>();
+		String sql = "select * from score where studentnum=?;";
+		PreparedStatement pst = null;// 预编译对象
+		ResultSet rst = null;// 结果集
+		try {
+			if (conn == null || conn.isClosed())
+				conn = DButil.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, 20111114);
+			rst = pst.executeQuery();
+			Score c = null;
+			while (rst.next()) {
+				c = new Score();
+				c.setId(rst.getInt("id"));
+				c.setDate(rst.getString("date"));
+				listScore.add(c);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				rst.close();
+				pst.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return listScore;
+	}
+
+	@Override
+	public void addAnewScore(List<Student> students, String nowDate) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < students.size(); i++) {
+			/*
+			 * 根据学生所在班级查出教师与班主任
+			 */
+			PreparedStatement pst1 = null;// 预编译对象
+			ResultSet rst1 = null;// 结果集
+			String teacher = null;
+			String classWorker = null;
+			try {
+				String sql = "select * from myclass where name=?;";
+				if (conn == null || conn.isClosed())
+					conn = DButil.getConnection();
+				pst1 = conn.prepareStatement(sql);
+				pst1.setString(1, students.get(i).getMyClass());
+				rst1 = pst1.executeQuery();
+				while (rst1.next()) {
+					teacher = rst1.getString("teacher");
+					classWorker = rst1.getString("classworker");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					rst1.close();
+					pst1.close();
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			/*
+			 * 根据班级查出学生课程名称
+			 */
+			PreparedStatement pst2 = null;// 预编译对象
+			ResultSet rst2 = null;// 结果集
+		    String course=null;
+			try {
+				String sql = "select name from course where myclass=?;";
+				if (conn == null || conn.isClosed())
+					conn = DButil.getConnection();
+				pst2 = conn.prepareStatement(sql);
+				pst2.setString(1, students.get(i).getMyClass());
+				rst2 = pst2.executeQuery();
+				while (rst2.next()) {
+				       course=rst2.getString("name");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					rst2.close();
+					pst2.close();
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			/*
+			 * 以下为插入语句
+			 */
+
+			PreparedStatement pst = null;// 预编译对象
+			String sql = "insert into score (studentnum,date,myclass,teacher,classworker,course) values (?,?,?,?,?,?);";
+			try {
+				if (conn == null || conn.isClosed())
+					conn = DButil.getConnection();
+				pst = conn.prepareStatement(sql);
+				pst.setInt(1, students.get(i).getNum());
+				pst.setString(2, nowDate);
+				pst.setString(3, students.get(i).getMyClass());
+				pst.setString(4, teacher);
+				pst.setString(5, classWorker);
+				pst.setString(6, course);
+				pst.execute();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					pst.close();
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

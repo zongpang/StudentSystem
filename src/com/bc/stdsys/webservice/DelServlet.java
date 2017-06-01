@@ -115,18 +115,38 @@ public class DelServlet extends HttpServlet {
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 
-				} else if (myType == 3) {
-					String cl = request.getParameter("myClass");
-					System.out.println(cl);
-					daoM.deleteCourse(cl);// 根据班级删除课程表
-					List<Course> list = daoM.findCourseByMaster();
+				} else if (myType == 3) {//删除一门课程
+					String myClass = request.getParameter("myClass");
+					daoM.deleteCourse(myClass);// 根据班级删除课程表
+					daoM.deleteMyclass(myClass);//根据班级删除myclass表中的一行数据
 					if (json == null)
 						json = new JSONObject();
 					json.clear();
-					json.put("删除成功", list.toString());//
-					// if (pw == null)
-					// pw = response.getWriter();// 得到printWriter
-					PrintWriter pw = response.getWriter();
+					json.put("删除成功", "删除成功");//
+					 if (pw == null)
+					 pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					pw.close();
+				}else if (myType==4) {//删除一位老师
+					String name=request.getParameter("name");
+					daoM.deleteTeacher(name);//根据姓名删除一名老师
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put("删除成功", "删除成功");//
+					 if (pw == null)
+					 pw = response.getWriter();// 得到printWriter
+					pw.print(json.toString());// 以字符串的格式传给ajax
+					pw.close();
+				}else if (myType==5) {
+					String name=request.getParameter("name");
+					daoM.deleteClassWorker(name);//根据姓名删除一名老师
+					if (json == null)
+						json = new JSONObject();
+					json.clear();
+					json.put("删除成功", "删除成功");//
+					 if (pw == null)
+					 pw = response.getWriter();// 得到printWriter
 					pw.print(json.toString());// 以字符串的格式传给ajax
 					pw.close();
 				}

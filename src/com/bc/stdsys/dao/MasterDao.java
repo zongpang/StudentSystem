@@ -149,5 +149,57 @@ public void deleteStudent(String stdNum);
  * @param myClass
  */
 public void deleteCourse(String myClass);
+/**
+ * 删除一位老师
+ * @param name
+ */
+public void deleteTeacher(String name);
+/**
+ * 删除一位班主任
+ * @param name
+ */
+public void deleteClassWorker(String name);
+/**
+ * 查找该班级是否存在（myclass表）
+ * @param c
+ * @return
+ */
+public boolean findclassInMyClass(Course c);
+/**
+ * 在班级表中新增一个班级
+ * @param c
+ */
+public void addNewMyClass(Course c);
+/**
+ * 根据班级删除myclass表中的一行数据
+ * @param myClass
+ */
+public void deleteMyclass(String myClass);
+/**
+ * 修改课程表
+ * @param myClass
+ * @param course
+ * @param date
+ */
+public void changeCourse(String myClass, String course, String date);
+/**
+ * 作师资分配 该方法将改变course&myclass
+ * @param myClass
+ * @param teacher
+ * @param classWorker
+ */
+public void changeTeacherAndClassWorkerInCourseAndMyclass(String myClass, String teacher, String classWorker);
+/**
+ * 在数据库中找出张三（201711114）
+ * @return
+ */
+public List<Score> findZhangSanScore();
+/**
+ * 向成绩表（score）为每一个学生插入一条当月的成绩模板
+ * @param students
+ * @param nowDate
+ */
+public void addAnewScore(List<Student> students, String nowDate);
+
 	
 }
